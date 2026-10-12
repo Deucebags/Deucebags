@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="28">
+<meta name="app-version" content="31">
 <title>Deucebags</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="favicon-64.png">
@@ -133,6 +133,7 @@ button{cursor:pointer;font-family:var(--heading)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---- additions ---- */
+.seg.quad{grid-auto-flow:row;grid-template-columns:1fr 1fr}
 .flag{background:#FFF4D6;border:2px solid #B7791F;border-radius:12px;padding:10px 12px;font-weight:700;font-size:14.5px;color:#5C3D0A;margin:0 0 10px}
 .linkbtn.inl{display:inline;padding:0;font-size:inherit;color:var(--navy)}
 .badge .medal{width:40px;height:40px}
@@ -752,6 +753,7 @@ button{transition:transform .12s ease}
         <button class="primary" id="doneCard">Share match card</button>
         <button class="secondary" id="doneStats">Match stats and awards</button>
         <button class="secondary" id="doneSwap">Swap partners, next set</button>
+        <button class="secondary hide" id="doneSession">Send the whole session</button>
         <button class="secondary" id="doneRematch">Rematch</button>
         <button class="secondary" id="doneNew">Start new match</button>
         <button class="linkbtn light" id="doneUndo">Undo last point</button>
@@ -829,6 +831,7 @@ button{transition:transform .12s ease}
   <div class="field"><label for="rowNotes">Notes</label><textarea id="rowNotes" placeholder="Venue, partner, how it went"></textarea></div>
   <div class="btns">
     <button class="primary" id="rowCard">Share match card</button>
+    <button class="primary hide" id="rowSession">Send the whole session</button>
     <button class="secondary" id="rowSend">Send result to players</button>
     <button class="secondary" id="rowSave">Save notes</button>
     <button class="secondary" id="rowEdit">Edit score</button>
@@ -865,7 +868,7 @@ button{transition:transform .12s ease}
     <div class="seg three" id="segBest"><button data-v="1">One set</button><button data-v="3">Best of 3</button><button data-v="5">Best of 5</button></div>
   </div>
   <div class="field"><span class="lbl">Games per set</span>
-    <div class="seg" id="segGames"><button data-v="6">6 games</button><button data-v="4">4 games (short sets)</button></div>
+    <div class="seg quad" id="segGames"><button data-v="6">6 games</button><button data-v="4">4 games</button><button data-v="r3">First to 3</button><button data-v="r5">First to 5</button></div>
     <p class="help" id="gamesHelp"></p>
   </div>
   <div class="field" id="deciderField"><span class="lbl">Deciding set</span>
@@ -1037,6 +1040,20 @@ button{transition:transform .12s ease}
   <div class="btns"><button class="secondary" id="ratingClose">Got it</button></div>
 </section>
 
+<section class="sheet" id="watchAppSheet" aria-label="Score from your watch">
+  <h3>Score from your watch</h3>
+  <p>Open the Deucebags app on your Galaxy Watch. Tap the top half for the opponents and the bottom half for your team, and press and hold to undo.</p>
+  <p class="help">Keep Deucebags open on your phone while you play. Every tap on the watch shows up here straight away, animations and all.</p>
+  <div class="btns"><button class="secondary" id="watchAppOk">Got it</button></div>
+</section>
+
+<section class="sheet" id="watchNoSheet" aria-label="Watch controls">
+  <h3>Watch controls need Chrome</h3>
+  <p>Scoring from your watch's music controls works in Chrome on Android. Open Deucebags in Chrome, or from its home screen icon, and try again.</p>
+  <p class="help">On a Galaxy Watch with the Deucebags watch app installed, use that instead. It doesn't need this button.</p>
+  <div class="btns"><button class="secondary" id="watchNoOk">Got it</button></div>
+</section>
+
 <section class="sheet" id="recapSheet" aria-label="Your week in padel">
   <h3>Your week in padel</h3>
   <div id="recapBody"></div>
@@ -1060,12 +1077,13 @@ button{transition:transform .12s ease}
     <button class="secondary" id="dataRestore">Restore from a backup</button>
     <button class="secondary" id="dataCsv">Export results to a spreadsheet</button>
     <button class="secondary" id="dataEdit">Make a clip from a video</button>
+    <button class="secondary" id="dataWelcome">Show the welcome again</button>
     <button class="secondary" id="dataTour">Take the tour</button>
     <button class="secondary" id="privacyBtn">Privacy</button>
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
   <input type="file" id="restoreFile" accept="application/json,.json" class="hide">
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags version 28</p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags version 31</p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -1270,8 +1288,9 @@ function replay(cfg,pts){
     st.p=[0,0];st.deuces=0;st.decider=false;gameDeuce=false;st.G++;
     s.g[w]++;
     st.games.push({w,srv,s:st.sets.length-1,g:s.g.slice()});
-    if(s.g[w]>=N&&s.g[w]-s.g[o]>=2)endSet(w);
-    else if(s.g[0]===N&&s.g[1]===N){st.mode='tb';st.tbStart=normalServer();st.tbIdx=0}
+    if(cfg.race){if(s.g[w]>=N)endSet(w)}
+    else if(s.g[w]>=N&&s.g[w]-s.g[o]>=2)endSet(w);
+    else if(!cfg.race&&s.g[0]===N&&s.g[1]===N){st.mode='tb';st.tbStart=normalServer();st.tbIdx=0}
   }
   function winTb(w){
     const s=st.sets[st.sets.length-1];
@@ -1354,7 +1373,7 @@ function formatText(cfg){
   const d={adv:'Advantage',star:'Star point',golden:'Golden point'}[cfg.deuce];
   const l={1:'one set',3:'best of 3',5:'best of 5'}[cfg.bestOf];
   let t=d+', '+l;
-  if(cfg.games===4)t+=', short sets';
+  if(cfg.race)t+=', first to '+cfg.games+' games';else if(cfg.games===4)t+=', short sets';
   if(cfg.bestOf>1&&cfg.decider==='stb')t+=', match tiebreak decider';
   return t;
 }
@@ -1377,6 +1396,7 @@ function recordHistory(){
 function point(w){
   if(S.done!==null)return;
   if(!M.start)M.start=Date.now();
+  M.last=Date.now();
   M.pts.push(w);
   const prev=S;
   S=replay(M.cfg,M.pts);
@@ -1466,6 +1486,7 @@ function render(){
     $('doneTitle').textContent=n+(plural?' win':' wins');
     $('doneScore').textContent=setLine(S);
     $('doneSwap').style.display=fourPlayers(M.cfg)?'':'none';
+    $('doneSession').classList.toggle('hide',!(M.session&&sessionEntries(M.session.id).length>1));
   }else d.classList.remove('on');
   $('undoBtn').disabled=!M.pts.length;
   updateSession();
@@ -1560,9 +1581,9 @@ function syncSetup(){
   $('inA').placeholder=joinNames([$('pA1').value,$('pA2').value])||'Team name (optional)';
   $('inB').placeholder=joinNames([$('pB1').value,$('pB2').value])||'Team name (optional)';
   segSet('segFirst',draft.first);segSet('segDeuce',draft.deuce);segSet('segBest',draft.bestOf);
-  segSet('segGames',draft.games);segSet('segDecider',draft.decider);
+  segSet('segGames',draft.race?'r'+draft.games:draft.games);segSet('segDecider',draft.decider);
   $('deuceHelp').textContent=HELP[draft.deuce];
-  $('gamesHelp').textContent=draft.games===6?'Tiebreak at 6–6.':'First to 4 games, tiebreak at 4–4.';
+  $('gamesHelp').textContent=draft.race?'First pair to '+draft.games+' games wins. No tiebreak, so it\'s quick. Great for swapping partners.':draft.games===6?'Win by two games, tiebreak at 6–6.':'Short sets. Win by two games, tiebreak at 4–4.';
   $('deciderField').classList.toggle('hide',draft.bestOf===1);
   $('firstA').textContent=teamNameFrom($('inA').value,$('pA1').value,$('pA2').value,'Us');
   $('firstB').textContent=teamNameFrom($('inB').value,$('pB1').value,$('pB2').value,'Them');
@@ -1585,7 +1606,8 @@ function openSetup(){
   $('startBtn').textContent=inProgress?'Start new match':'Start match';
   syncSetup();showSheet('setup');
 }
-[['segFirst','first',Number],['segDeuce','deuce',String],['segBest','bestOf',Number],['segGames','games',Number],['segDecider','decider',String]].forEach(([id,key,cast])=>{
+document.querySelectorAll('#segGames button').forEach(b=>b.onclick=()=>{const v=b.dataset.v;draft.race=v[0]==='r';draft.games=+(draft.race?v.slice(1):v);syncSetup()});
+[['segFirst','first',Number],['segDeuce','deuce',String],['segBest','bestOf',Number],['segDecider','decider',String]].forEach(([id,key,cast])=>{
   document.querySelectorAll('#'+id+' button').forEach(b=>b.onclick=()=>{draft[key]=cast(b.dataset.v);syncSetup()});
 });
 ['inA','inB','pA1','pA2','pB1','pB2'].forEach(id=>$(id).oninput=syncSetup);
@@ -1667,7 +1689,8 @@ function watchSignal(label){
   $('watchLast').textContent='Last signal from your watch: '+label+' at '+s+'.';$('watchLast').classList.add('got');
 }
 async function watchStart(){
-  if(!('mediaSession' in navigator)){toast('This browser doesn\'t support watch controls.');return}
+  if(window.DeucebagsNative){showSheet('watchAppSheet');return}
+  if(!('mediaSession' in navigator)){showSheet('watchNoSheet');return}
   if(!wAudio){wUrl=wUrl||silentWav(30);wAudio=new Audio(wUrl);wAudio.loop=true;wAudio.volume=1}
   const ms=navigator.mediaSession;
   const keep=()=>{wAudio&&wAudio.play().catch(()=>{});try{ms.playbackState='playing'}catch(e){}};
@@ -1696,6 +1719,7 @@ function watchStop(){
 }
 $('watchBtn').onclick=()=>watchOn?showSheet('watchSheet'):watchStart();
 $('watchOk').onclick=hideSheet;
+$('watchAppOk').onclick=hideSheet;$('watchNoOk').onclick=hideSheet;
 $('watchOff').onclick=()=>{watchStop();hideSheet()};
 
 /* ================= filming ================= */
@@ -2166,7 +2190,9 @@ function openRow(id){
   $('rowTitle').textContent=r.unfinished?(r.h.leader===0?r.a+' led '+r.b:r.h.leader===1?r.b+' led '+r.a:r.a+' v '+r.b):r.winner===0?r.a+' beat '+r.b:r.winner===1?r.b+' beat '+r.a:r.a+' v '+r.b;
   $('rowWhen').textContent=dLong(r.date)+(groupOf(r.cfg)?', '+groupOf(r.cfg):'')+(r.h.manual?'. Added manually.':r.unfinished?'. Ended early'+(r.h.counts?', counts in the league.':', doesn\'t count in the league.'):'. Scored live.');
   $('rowBody').innerHTML='<p class="setline">'+esc(r.score)+'</p>'+awardsHtml(r)+(r.st?statsTable(r.cfg,r.st,h.start,h.end)+(r.st.log.length>3?'<p class="sh">Momentum</p>'+momentumSvg(r.st,r.cfg):''):'');
-  $('rowCard').onclick=()=>openCard(r);$('rowSend').style.display=r.winner===null?'none':'';$('rowSend').onclick=()=>sendResult(h);
+  $('rowCard').onclick=()=>openCard(r);
+  if(h.session){$('rowBody').insertAdjacentHTML('afterbegin',sessionHtml(h.session))}
+  $('rowSession').classList.toggle('hide',!h.session);$('rowSession').onclick=()=>sendSession(h.session);$('rowSend').style.display=r.winner===null?'none':'';$('rowSend').onclick=()=>sendResult(h);
   $('rowNotes').value=r.notes;
   $('rowEdit').style.display=h.manual?'':'none';
   showSheet('rowSheet');
@@ -2427,14 +2453,15 @@ function matchAwards(row,full){
     if(s.deuceGames>=5)add('Proper deucebags',null,s.deuceGames+' games went to deuce. Nobody wanted to finish a point.');
     if(row.dur&&row.dur>=100*60000)add('Marathon',null,'Over '+Math.floor(row.dur/60000)+' minutes on court.');
   }else if(cfg.bestOf!==1&&row.sets.length>1&&row.sets[0].g[W]<row.sets[0].g[Lr])add('Comeback kings',W,name(W)+' lost the first set and still won.');
+  const shortRace=cfg.race&&N<5;
   row.sets.forEach(set=>{
-    const g=set.g;if(set.super)return;
+    const g=set.g;if(set.super||shortRace)return;
     [0,1].forEach(t=>{const o=1-t;if(g[t]>=N&&g[o]===0)add('Bagel',t,name(t)+' won a set '+g[t]+'–0.');else if(g[t]>=N&&g[o]===1)add('Breadstick',t,name(t)+' won a set '+g[t]+'–1.')});
   });
   const tbs=row.sets.filter(x=>x.tb||x.super||(!row.st&&Math.abs(x.g[0]-x.g[1])===1&&Math.max(...x.g)>N));
   const tbW=tbs.filter(x=>(x.g[W]>x.g[Lr])).length;
   if(tbs.length&&tbW===tbs.length)add('Tiebreak titans',W,name(W)+' won '+(tbs.length>1?'every tiebreak':'the tiebreak')+'.');
-  if(row.sw[Lr]===0&&row.gw[Lr]<=(cfg.bestOf>1?4:1)&&!out.some(a=>a.title==='Bagel'))add('Statement win',W,name(W)+' dropped just '+row.gw[Lr]+' game'+(row.gw[Lr]===1?'':'s')+'.');
+  if(!cfg.race&&row.sw[Lr]===0&&row.gw[Lr]<=(cfg.bestOf>1?4:1)&&!out.some(a=>a.title==='Bagel'))add('Statement win',W,name(W)+' dropped just '+row.gw[Lr]+' game'+(row.gw[Lr]===1?'':'s')+'.');
   const seen={};const res=out.filter(a=>{const k=a.title+':'+a.team;if(seen[k])return false;seen[k]=1;return true});
   awardCache[key]=res;return full?res:res.slice(0,3);
 }
@@ -2973,7 +3000,7 @@ function initBadgeState(p){Object.assign(p,{bestStreak:0,bagels:0,tbw:0,partners
 function runBadges(p,r,side,gap,grudge,allP){
   const o=1-side,won=r.winner===side,N=r.cfg.games||6,aw=rowAwards(r);
   p.bestStreak=Math.max(p.bestStreak,p.streak);
-  r.sets.forEach(s=>{if(!s.super&&s.g[side]>=N&&s.g[o]===0)p.bagels++});
+  if(!(r.cfg.race&&N<5))r.sets.forEach(s=>{if(!s.super&&s.g[side]>=N&&s.g[o]===0)p.bagels++});
   r.sets.forEach(s=>{if((s.tb||s.super||(!r.st&&Math.abs(s.g[0]-s.g[1])===1&&Math.max(...s.g)>N))&&s.g[side]>s.g[o])p.tbw++});
   p.maxRating=Math.max(p.maxRating,p.rating);
   p.maxOpp=Math.max(0,...Object.values(p.opps).map(x=>x.p));
@@ -3233,7 +3260,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='28';
+const APP_VERSION='31';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -3352,7 +3379,7 @@ async function openScanner(){
   catch(e){closeScanner();toast(camError(e));return}
   const tick=async()=>{
     if(!scanStream)return;
-    try{const codes=await det.detect($('scanVid'));const hit=codes.map(c=>c.rawValue).find(v=>/#(friend|match)=/.test(v));
+    try{const codes=await det.detect($('scanVid'));const hit=codes.map(c=>c.rawValue).find(v=>/#(friend|match|session)=/.test(v));
       if(hit){closeScanner();try{navigator.vibrate&&navigator.vibrate(40)}catch(e){}handleLink(hit.slice(hit.indexOf('#')));return}}catch(e){}
     scanTimer=setTimeout(tick,250);
   };tick();
@@ -3363,8 +3390,9 @@ $('scanClose').onclick=closeScanner;
 /* --- incoming links: a friend code or a match result --- */
 let incoming=null;
 async function handleLink(hash){
-  const m=(hash||'').match(/#(friend|match)=([A-Za-z0-9_\-]+)/);if(!m)return false;
+  const m=(hash||'').match(/#(friend|match|session)=([A-Za-z0-9_\-]+)/);if(!m)return false;
   let data;try{data=await unpackData(m[2])}catch(e){toast('That link looks incomplete. Ask your friend to send it again.');return true}
+  if(m[1]==='session'&&data&&Array.isArray(data.items)){await handleSession(data);return true}
   if(m[1]==='friend'&&data&&data.n){
     const f=cardToFriend(data);
     const mine=(PROF.id&&f.id===PROF.id);
@@ -3423,6 +3451,8 @@ $('inYes').onclick=()=>{
         f.name=alt;f.key=k}
       FRIENDS.push(f);saveFriends();hideSheet();toast(f.name+' added as a friend.');
     }
+  }else if(incoming.type==='session'){
+    const n=incoming.items.length;incoming.items.forEach(e=>history.push(e));history.sort((a,b)=>((b.date||b.start||0)-(a.date||a.start||0)));saveH();hideSheet();toast(n+(n===1?' round':' rounds')+' added to your results.');
   }else{
     history.push(incoming.e);history.sort((a,b)=>((b.date||b.start||0)-(a.date||a.start||0)));saveH();hideSheet();toast('Match added to your results.');
   }
@@ -3437,7 +3467,7 @@ $('inSame').onclick=()=>{
   saveFriends();hideSheet();toast('Linked to '+f.name+'.');incoming=null;if($('resultsView').classList.contains('on'))setTab(tab);
 };
 async function checkHash(){
-  if(/#(friend|match)=/.test(location.hash)){const h=location.hash;try{window.history.replaceState(null,'',appUrl())}catch(e){}await handleLink(h)}
+  if(/#(friend|match|session)=/.test(location.hash)){const h=location.hash;try{window.history.replaceState(null,'',appUrl())}catch(e){}await handleLink(h)}
 }
 window.addEventListener('hashchange',checkHash);
 setTimeout(checkHash,500);
@@ -3570,6 +3600,7 @@ $('tourBack').onclick=()=>{if(tourI>0){tourI--;showTourStep()}};
 $('tourSkip').onclick=endTour;
 window.addEventListener('resize',()=>{if($('tourView').classList.contains('on'))setTimeout(showTourStep,120)});
 document.addEventListener('keydown',e=>{if(!$('tourView').classList.contains('on'))return;if(e.key==='Escape')endTour();if(e.key==='ArrowRight')$('tourNext').click();if(e.key==='ArrowLeft')$('tourBack').click()});
+$('dataWelcome').onclick=()=>{hideSheet();$('resultsView').classList.remove('on');setTimeout(openWelcome,250)};
 $('dataTour').onclick=()=>{hideSheet();$('resultsView').classList.remove('on');setTimeout(startTour,200)};
 
 $('obLogo').src=$('logo').src;
@@ -3840,6 +3871,7 @@ function openSwap(fromDone){
 }
 function doSwap(p){
   const session=M.session||{id:'s'+Date.now().toString(36),players:fourPlayers(M.cfg)};
+  if(S.done!==null){const prevH=history.find(x=>x.id===M.id);if(prevH&&!prevH.session){prevH.session=session.id;saveH()}}
   if(S.done===null){
     // save the set just played as its own result, so it credits those exact pairs
     const entry={id:M.id,cfg:Object.assign({},M.cfg,{bestOf:1,decider:'set'}),pts:M.pts.slice(),start:M.start,end:Date.now(),session:session.id};
@@ -3852,6 +3884,7 @@ function doSwap(p){
   toast('New pairs: '+cfg.a+' v '+cfg.b+'. Next set, 0–0.');
 }
 $('doneSwap').onclick=()=>openSwap(true);
+$('doneSession').onclick=()=>{if(M.session)sendSession(M.session.id)};
 
 
 /* ================= names: tidy, spot near-duplicates, rename and merge ================= */
@@ -3912,7 +3945,16 @@ function matchSig(h){
   return[day+'|'+side(0)+'|'+side(1)+'|'+sets,day+'|'+side(1)+'|'+side(0)+'|'+rev];
 }
 function findDuplicate(h){
-  try{const [a]=matchSig(h);return history.find(x=>x.id!==h.id&&matchSig(x).includes(a))||null}catch(e){return null}
+  try{
+    const [a]=matchSig(h);
+    return history.find(x=>{
+      if(x.id===h.id||!matchSig(x).includes(a))return false;
+      // two rounds in the same evening can share players and score; only call it a duplicate if they started at about the same time
+      if(h.start&&x.start&&Math.abs(h.start-x.start)>10*60000)return false;
+      if(h.session&&x.session&&h.session===x.session)return false;
+      return true;
+    })||null;
+  }catch(e){return null}
 }
 
 /* ================= safer storage for results ================= */
@@ -4079,10 +4121,70 @@ function usernameClash(u,exceptId){
   const f=FRIENDS.find(x=>x.username&&x.username.toLowerCase()===k&&x.id!==exceptId);return f?f.name:null;
 }
 
+
+/* ================= sessions: a whole evening of rotating rounds ================= */
+const sessionEntries=sid=>history.filter(h=>h.session===sid).sort((a,b)=>(a.start||a.date||0)-(b.start||b.date||0));
+function sessionSummary(sid){
+  const rows=sessionEntries(sid).map(rowOf).filter(r=>r.winner!==null);
+  const P={},pairs={};
+  rows.forEach(r=>{[0,1].forEach(s=>{const won=r.winner===s,ms=members(r.cfg,s);
+    ms.forEach(n=>{const k=pkey(n),o=P[k]=P[k]||{name:n,w:0,l:0};won?o.w++:o.l++});
+    if(ms.length===2){const k=ms.map(pkey).sort().join('+'),o=pairs[k]=pairs[k]||{name:joinNames(ms),w:0,l:0};won?o.w++:o.l++}})});
+  const table=Object.values(P).sort((a,b)=>b.w-a.w||a.l-b.l);
+  const best=Object.values(pairs).filter(p=>p.w>0).sort((a,b)=>b.w-a.w||a.l-b.l)[0]||null;
+  const d=rows.length?new Date(rows[0].date):new Date();
+  return{rows,table,best,day:d.toLocaleDateString('en-GB',{weekday:'long'})};
+}
+function sessionHtml(sid){
+  const s=sessionSummary(sid);if(!s.rows.length)return'';
+  return'<p class="sh">'+esc(s.day)+'\'s session, '+s.rows.length+' round'+(s.rows.length===1?'':'s')+'</p><div class="tablewrap"><table class="grid rtable"><thead><tr><th>Player</th><th>Rounds won</th><th>Lost</th></tr></thead><tbody>'+
+    s.table.map(p=>'<tr><td><b>'+esc(p.name)+'</b></td><td class="num">'+p.w+'</td><td class="num">'+p.l+'</td></tr>').join('')+'</tbody></table></div>'+
+    (s.best?'<p class="help" style="margin:-8px 2px 16px">Best pairing: '+esc(s.best.name)+', '+s.best.w+'–'+s.best.l+'.</p>':'');
+}
+async function sendSession(sid){
+  const items=sessionEntries(sid).filter(h=>!h.unfinished||h.counts).map(h=>{const e={id:h.id,cfg:h.cfg,pts:h.pts,start:h.start,end:h.end,session:sid};const ids=idsFor(h.cfg);if(Object.keys(ids).length)e.ids=ids;return e});
+  if(!items.length){toast('No finished rounds in this session yet.');return}
+  const url=appUrl()+'#session='+await packData({v:1,items});
+  const s=sessionSummary(sid),top=s.table[0];
+  const text=s.day+'\'s padel: '+s.rows.length+' rounds.'+(top?' '+top.name+' won '+top.w+' of '+(top.w+top.l)+'.':'')+(s.best?' Best pairing '+s.best.name+' ('+s.best.w+'–'+s.best.l+').':'')+' Tap to add every round to your Deucebags:';
+  if(navigator.share){try{await navigator.share({title:'Deucebags session',text,url});return}catch(e){if(e&&e.name==='AbortError')return}}
+  try{await navigator.clipboard.writeText(text+' '+url);toast('Link copied. Paste it into your group chat.')}catch(e){toast('Couldn\'t share the link here.')}
+}
+function prepIncoming(e){
+  let x=localiseNames(e);delete x.ids;const me=meKey();
+  if(me&&members(x.cfg||{},1).some(n=>pkey(n)===me)&&!members(x.cfg||{},0).some(n=>pkey(n)===me))x=flipEntry(x);
+  return x;
+}
+async function handleSession(data){
+  const items=(data.items||[]).map(prepIncoming);
+  const fresh=items.filter(e=>!history.some(h=>h.id===e.id)&&!findDuplicate(e));
+  incoming={type:'session',items:fresh};
+  const rows=items.map(rowOf);
+  $('inTitle').textContent=fresh.length?'Add '+(fresh.length===items.length?'all ':'')+fresh.length+' round'+(fresh.length===1?'':'s')+'?':'You\'ve already got this session';
+  $('inBody').innerHTML='<ul class="recent">'+rows.map(r=>'<li><div class="linkrow"><span class="res '+(r.winner===0?'w':'l')+'">'+(r.winner===0?'W':'L')+'</span><span>'+esc(r.a)+' v '+esc(r.b)+'</span><span class="sc">'+esc(r.score)+'</span></div></li>').join('')+'</ul>'+
+    '<p class="help">'+(fresh.length===items.length?'Every round goes into your results, the league and your rivals, exactly as it was scored.':fresh.length?(items.length-fresh.length)+' of these are already in your results, so only the new ones are added.':'Every round is already in your results, so there\'s nothing to add.')+'</p>';
+  $('inYes').textContent='Add to my results';$('inYes').classList.toggle('hide',!fresh.length);$('inSame').classList.add('hide');
+  showSheet('incomingSheet');
+}
+
 /* ================= go ================= */
 window.__dbg={replay,labels,ruleText,pressureText};
 render();
+function freshStart(){
+  const last=M.last||M.end||M.start||0,hours=(Date.now()-last)/3600000;
+  if(S.done!==null&&M.pts.length){M=newMatch(Object.assign({},M.cfg));S=replay(M.cfg,M.pts);saveM();render();setTimeout(openSetup,350);return true}
+  if(M.pts.length&&hours>=3){
+    setTimeout(async()=>{
+      const dt=new Date(last),when=dt.toLocaleDateString('en-GB',{weekday:'long'})+' at '+dt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+      if(await ask('Carry on with this match?','You were playing '+nm(0)+' v '+nm(1)+' on '+when+', at '+(setLine(S)||'0–0')+'.','Carry on',false,'Start a new one'))return;
+      endMatch(false);setTimeout(openSetup,400);
+    },500);
+    return true;
+  }
+  return false;
+}
 if(!onboarded())setTimeout(openWelcome,300);
+else if(!firstRun)freshStart();
 else if(firstRun)setTimeout(openSetup,300);
 if('serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(()=>{})}
 })();
