@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="27">
+<meta name="app-version" content="28">
 <title>Deucebags</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="favicon-64.png">
@@ -133,6 +133,13 @@ button{cursor:pointer;font-family:var(--heading)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---- additions ---- */
+.flag{background:#FFF4D6;border:2px solid #B7791F;border-radius:12px;padding:10px 12px;font-weight:700;font-size:14.5px;color:#5C3D0A;margin:0 0 10px}
+.linkbtn.inl{display:inline;padding:0;font-size:inherit;color:var(--navy)}
+.badge .medal{width:40px;height:40px}
+.badge .medal svg{width:22px!important;height:22px!important;fill:none!important}
+.badge .medal svg *{fill:none!important}
+.t1 .medal,.t3 .medal,.t4 .medal{color:var(--navy)}
+.t2 .medal{color:var(--white)}
 .unf.man{background:transparent;border-style:dashed}
 .form i.d{background:var(--ice);color:var(--navy);box-shadow:inset 0 0 0 1.5px var(--navy)}
 .livetoggle{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:var(--navy);margin:0 2px 10px}
@@ -964,7 +971,7 @@ button{transition:transform .12s ease}
 <section class="sheet" id="incomingSheet" aria-label="From a friend">
   <h3 id="inTitle"></h3>
   <div id="inBody"></div>
-  <div class="btns"><button class="primary" id="inYes"></button><button class="secondary" id="inNo">Not now</button></div>
+  <div class="btns"><button class="primary" id="inYes"></button><button class="secondary hide" id="inSame"></button><button class="secondary" id="inNo">Not now</button></div>
 </section>
 
 <section class="sheet" id="endSheet" aria-label="End the match early">
@@ -1014,6 +1021,22 @@ button{transition:transform .12s ease}
   <div class="btns"><button class="primary" id="rnSave">Rename</button><button class="secondary" id="rnCancel">Cancel</button></div>
 </section>
 
+<section class="sheet" id="ratingSheet" aria-label="How ratings work">
+  <h3>How ratings work</h3>
+  <div class="privacy">
+    <p class="pv-lead">Everyone starts on 1,000. Your rating goes up when you win and down when you lose. How far it moves depends on who you played.</p>
+    <h4>Who you play matters</h4>
+    <p>Your pair's strength is the average of your two ratings. Before each match the app works out how likely each pair was to win. Beat a stronger pair and you gain a lot. Beat a weaker pair and you gain a little. Losing works the same way in reverse.</p>
+    <h4>Some examples</h4>
+    <p>Two pairs both on 1,000: the winners gain 16 and the losers drop 16.</p>
+    <p>You're on 1,000 and beat a pair on 1,200: you gain about 24. Lose to them and you only drop about 8, because you weren't expected to win.</p>
+    <p>The most anyone can gain or lose from one match is 32.</p>
+    <h4>Fair for everyone</h4>
+    <p>Both players in a pair move by the same amount, and the other pair moves the opposite way, so points are swapped, never created. A single rotation set counts for half a match. Changing partners doesn't matter, because everyone has their own rating.</p>
+  </div>
+  <div class="btns"><button class="secondary" id="ratingClose">Got it</button></div>
+</section>
+
 <section class="sheet" id="recapSheet" aria-label="Your week in padel">
   <h3>Your week in padel</h3>
   <div id="recapBody"></div>
@@ -1042,7 +1065,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
   <input type="file" id="restoreFile" accept="application/json,.json" class="hide">
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags version 27</p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags version 28</p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -2314,12 +2337,13 @@ const formDots=f=>'<span class="form">'+f.slice(-5).map(x=>'<i class="'+(x==='W'
 function renderLeague(){
   const L=computeLeague(RES.group);
   if(!L.length){$('leagueBody').innerHTML='<p class="empty">Add player names when you set up a match and the league takes it from there. Ratings move after every result.</p>';return}
-  $('leagueBody').innerHTML='<p class="help" style="margin:0 2px 10px">Everyone starts on 1,000. Win and your rating goes up, lose and it goes down. Beating a higher-rated pair earns you more. A rotation set counts for half.</p>'+
+  $('leagueBody').innerHTML='<p class="help" style="margin:0 2px 10px">Everyone starts on 1,000. Win and your rating goes up, lose and it goes down. Beating a higher-rated pair earns you more. A rotation set counts for half. <button class="linkbtn inl" id="rateHelp">How ratings work</button></p>'+
   '<label class="livetoggle"><input type="checkbox" id="liveOnly"'+(store.get('db-live-only')===true?' checked':'')+'> Only count matches scored live (ignore results added by hand)</label>'+
   '<div class="tablewrap"><table class="grid"><thead><tr><th>#</th><th>Player</th><th>Rating</th><th>Played</th><th>Won</th><th>Lost</th><th>Win rate</th><th>Form</th><th>Last match</th></tr></thead><tbody>'+
   L.map((p,i)=>'<tr data-p="'+esc(p.key)+'"><td class="rank r'+(i+1)+'">'+(i+1)+'</td><td><b>'+esc(p.name)+'</b></td><td class="num"><b>'+Math.round(p.rating)+'</b></td><td class="num">'+p.p+'</td><td class="num">'+p.w+'</td><td class="num">'+p.l+'</td><td class="num">'+Math.round(p.w/Math.max(1,p.p)*100)+'%</td><td>'+formDots(p.form)+'</td><td class="num '+(p.delta>=0?'up':'down')+'">'+(p.delta>=0?'+':'')+Math.round(p.delta)+'</td></tr>').join('')+
   '</tbody></table></div>';
   $('leagueBody').querySelectorAll('tbody tr').forEach(tr=>tr.onclick=()=>openPlayer(tr.dataset.p));
+  $('rateHelp').onclick=openRatingHelp;
   $('liveOnly').onchange=e=>{store.set('db-live-only',e.target.checked);renderLeague();renderPlayers()};
 }
 function renderPlayers(){
@@ -2821,6 +2845,62 @@ function isChangeEnds(prev,next){
   return false;
 }
 
+
+/* ================= a unique icon for every achievement (24 x 24 line drawings) ================= */
+const BADGE_ICON={
+  first_serve:'<circle cx="12" cy="12" r="8"/><path d="M5.5 8.5c3 2 10 2 13 0M5.5 15.5c3-2 10-2 13 0"/>',
+  off_mark:'<path d="M6 21V4"/><path d="M6 4h11l-2.5 4L17 12H6"/>',
+  regular:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9.5h16M8.5 3v4M15.5 3v4"/><path d="M8 13.5h2M12 13.5h2M16 13.5h.01M8 16.5h2M12 16.5h2"/>',
+  hot_streak:'<path d="M12 21c-4 0-6.5-2.6-6.5-6.2 0-3.3 2.3-5.2 3.6-8.3.5 2.3 1.6 3.4 2.8 3.9C12.6 7.5 14 4.8 13.5 3c3.4 2.2 5 6.4 5 10.6 0 4.3-2.6 7.4-6.5 7.4z"/>',
+  team_player:'<circle cx="8.5" cy="8" r="3"/><circle cx="15.5" cy="8" r="3"/><path d="M3 20c.6-3.4 2.8-5.5 5.5-5.5S13.4 16.6 14 20M10 20c.6-3.4 2.8-5.5 5.5-5.5S20.4 16.6 21 20"/>',
+  tb_first:'<circle cx="12" cy="12" r="9"/><path d="M8.5 8h7l-4.5 9"/>',
+  nerves:'<path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/><path d="M9.5 4.5 12 7l2.5-2.5M9.5 19.5 12 17l2.5 2.5"/>',
+  rising:'<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
+  rivalry:'<circle cx="7" cy="12" r="4"/><circle cx="17" cy="12" r="4"/><path d="M11 12h2"/>',
+  first_set:'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/>',
+  golden_touch:'<path d="M12 3l1.8 6.2L20 11l-6.2 1.8L12 19l-1.8-6.2L4 11l6.2-1.8z"/><path d="M19 3v3M17.5 4.5h3"/>',
+  early_bird:'<path d="M3 18h18M6.5 18a5.5 5.5 0 0 1 11 0"/><path d="M12 5v3M4.6 9.6l2 2M19.4 9.6l-2 2"/>',
+  habit:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/>',
+  court_rat:'<rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M5 12h14M12 6.5v11M5 6.5h14M5 17.5h14"/>',
+  on_fire:'<circle cx="12" cy="12" r="9"/><path d="M12 17c-2 0-3.2-1.3-3.2-3 0-1.7 1.2-2.6 1.8-4.2.4 1.1.9 1.7 1.4 1.9.4-1.2 1-2.5.8-3.4 1.7 1.1 2.4 3.2 2.4 5.3 0 2-1.3 3.4-3.2 3.4z"/>',
+  baker:'<ellipse cx="12" cy="12.5" rx="9" ry="6.5"/><ellipse cx="12" cy="12" rx="3" ry="1.8"/>',
+  comeback:'<path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>',
+  brick_wall:'<rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 9.7h18M3 14.3h18M9 5v4.7M15 5v4.7M6 9.7v4.6M12 9.7v4.6M18 9.7v4.6M9 14.3V19M15 14.3V19"/>',
+  giant:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>',
+  butterfly:'<path d="M12 7v12"/><path d="M12 10C9 4 3 4 4 9c.6 3 4.5 3.5 8 3M12 10c3-6 9-6 8-1-.6 3-4.5 3.5-8 3M12 12.5c-3 .5-6.5 2-5 5 1.2 2 4-.5 5-3.5M12 12.5c3 .5 6.5 2 5 5-1.2 2-4-.5-5-3.5"/>',
+  tb_titan:'<path d="M12 3l8 3v6c0 4.5-3.4 7.8-8 9-4.6-1.2-8-4.5-8-9V6z"/><path d="M9 9h6l-3.5 7"/>',
+  contender:'<path d="M4 20V14M9.3 20V10M14.6 20V7M20 20V4"/><path d="M3 20h18"/>',
+  marathon:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M10 2.5h4M12 2.5V5M18.5 6.5l1.5-1.5"/>',
+  breaker:'<path d="M13 2 5 13.5h6L10 22l8-11.5h-6z"/>',
+  night_owl:'<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/><path d="M17 3.5v2M16 4.5h2"/>',
+  set_collector:'<path d="M12 3 3 8l9 5 9-5z"/><path d="M3 12.5l9 5 9-5M3 16.5l9 5 9-5"/>',
+  weekend:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9.5h16M8.5 3v4M15.5 3v4"/><path d="M12 12l1.1 2.2 2.4.3-1.8 1.6.5 2.4-2.2-1.2-2.2 1.2.5-2.4-1.8-1.6 2.4-.3z"/>',
+  serial:'<circle cx="12" cy="9" r="6"/><path d="M8.5 13.8 7 22l5-3 5 3-1.5-8.2"/><path d="M12 6.5l.9 1.8 2 .3-1.4 1.4.3 2-1.8-1-1.8 1 .3-2-1.4-1.4 2-.3z"/>',
+  unstoppable:'<path d="M14 4c3.5 0 6 2.5 6 6-1.5 2-4 4.5-7 6l-5-5c1.5-3 4-5.5 6-7z"/><circle cx="15" cy="9" r="1.6"/><path d="M8 11l-3.5.5L3 15l4 .5M13 16l-.5 3.5L9 21l-.5-4M6.5 17.5 4 20"/>',
+  escape:'<path d="M13 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h7"/><path d="M15 8l4 4-4 4M19 12H10"/>',
+  head_baker:'<path d="M7 14h10v6H7z"/><path d="M7 14c-2.5 0-4-1.8-4-4a4 4 0 0 1 5.5-3.7 4 4 0 0 1 7 0A4 4 0 0 1 21 10c0 2.2-1.5 4-4 4"/><path d="M10 17h4"/>',
+  fortress:'<path d="M4 21V9h3V6h3v3h4V6h3v3h3v12z"/><path d="M10 21v-4a2 2 0 0 1 4 0v4"/>',
+  statement:'<path d="M3 10v4l11 5V5z"/><path d="M14 8.5a4 4 0 0 1 0 7M7 15v4.5"/><path d="M18 7l2.5-1.5M18 17l2.5 1.5M19 12h2.5"/>',
+  grudge:'<path d="M4 4l10 10M20 4 10 14"/><path d="M14 14l2.5 2.5M10 14l-2.5 2.5M16.5 16.5 20 20M7.5 16.5 4 20M17.5 13.5l-4 4M6.5 13.5l4 4"/>',
+  goliath:'<path d="M2 20 9 7l4 6 2-3 7 10z"/><path d="M15 10V4l3 1.5L15 7"/>',
+  elite:'<path d="M6 4h12l3.5 5.5L12 21 2.5 9.5z"/><path d="M2.5 9.5h19M9 4 7.5 9.5 12 21M15 4l1.5 5.5L12 21"/>',
+  perfect_week:'<path d="M4 6h16M4 12h16M4 18h16" stroke-dasharray="1.5 3.2"/><circle cx="12" cy="12" r="9"/>',
+  lives_here:'<path d="M3 11 12 3l9 8"/><path d="M5.5 9v11h13V9"/><path d="M10 20v-5h4v5"/>',
+  everyone:'<circle cx="12" cy="7" r="2.7"/><circle cx="5.5" cy="10" r="2.3"/><circle cx="18.5" cy="10" r="2.3"/><path d="M7.5 20c.4-3.3 2.2-5.3 4.5-5.3s4.1 2 4.5 5.3M2 20c.3-2.5 1.6-4 3.5-4M22 20c-.3-2.5-1.6-4-3.5-4"/>',
+  set_machine:'<circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/>',
+  rival_king:'<path d="M3 18 5 7l4.5 4L12 5l2.5 6L19 7l2 11z"/><path d="M3 21h18"/>',
+  iron_legs:'<path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/>',
+  hall:'<path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3.5 3.5M17 6h3a3 3 0 0 1-3.5 3.5M12 14v3.5M8 21h8l-1-3.5H9z"/>',
+  invincible:'<path d="M12 3l8 3v6c0 4.5-3.4 7.8-8 9-4.6-1.2-8-4.5-8-9V6z"/><path d="M12 8l1.2 2.4 2.6.4-1.9 1.8.5 2.6-2.4-1.3-2.4 1.3.5-2.6-1.9-1.8 2.6-.4z"/>',
+  houdini:'<path d="M4 20 15 9"/><path d="M15 9l2-2M17.5 3v2.5M20.5 6H18M20 3.5l-1.7 1.7M13 3.5v1.5M21 11h-1.5"/>',
+  golden_bagel:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.2"/><path d="M19 2.5v3M17.5 4h3"/>',
+  untouchable:'<circle cx="12" cy="12" r="9"/><path d="M13 5.5 8.5 12.5h4l-1.5 6 4.5-7h-4z"/>',
+  top_dog:'<path d="M8 21v-8h8v8M2 21v-5h6M16 21v-4h6M2 21h20"/><path d="M12 3l1 2 2.2.3-1.6 1.5.4 2.2-2-1-2 1 .4-2.2-1.6-1.5L11 5z"/>',
+  unbreakable:'<rect x="5" y="10.5" width="14" height="10.5" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5M12 14.5v2.5"/>',
+  complete:'<path d="M12 2.5l1.5 3.2 3.4.5-2.5 2.4.6 3.4-3-1.6-3 1.6.6-3.4-2.5-2.4 3.4-.5z"/><path d="M6 13.5l1 2 2.2.3-1.6 1.6.4 2.2-2-1-2 1 .4-2.2-1.6-1.6 2.2-.3zM18 13.5l1 2 2.2.3-1.6 1.6.4 2.2-2-1-2 1 .4-2.2-1.6-1.6 2.2-.3z"/>'
+};
+const badgeSvg=id=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(BADGE_ICON[id]||BADGE_ICON.first_serve)+'</svg>';
+
 /* ================= achievements ================= */
 const TIERS=[null,{n:'Rookie',c:'t1'},{n:'Club',c:'t2'},{n:'Pro',c:'t3'},{n:'Legend',c:'t4'}];
 const DAY=86400000;
@@ -2833,7 +2913,7 @@ const BADGES=[
   ['team_player','Team player',1,'Win with 3 different partners',c=>c.p.partnersWon.size>=3,p=>[p.partnersWon.size,3]],
   ['tb_first','Tiebreak winner',1,'Win a tiebreak',c=>c.p.tbw>=1,p=>[p.tbw,1]],
   ['nerves','Nerves of steel',1,'Win more golden or star points than the other pair in a match',c=>c.has('Ice cold',c.side)],
-  ['rising','Rising star',1,'Reach a rating of 1,050',c=>c.p.maxRating>=1050,p=>[Math.round(p.maxRating),1050]],
+  ['rising','Rising star',1,'Reach a rating of 1,050',c=>c.p.maxRating>=1050,p=>p.p?[Math.max(0,Math.round(p.maxRating)-1000),50,'Rating '+Math.round(p.maxRating).toLocaleString('en-GB')+' of 1,050']:null],
   ['rivalry','Rivalry',1,'Play against the same person 5 times',c=>c.p.maxOpp>=5,p=>[p.maxOpp,5]],
   ['first_set','First set',1,'Win a set',c=>c.p.setsWon>=1,p=>[p.setsWon,1]],
   ['golden_touch','Golden touch',1,'Win a golden or star point',c=>!!(c.r.st&&c.r.st.stats.deciders[c.side]>=1)],
@@ -2848,7 +2928,7 @@ const BADGES=[
   ['giant','Giant killer',2,'Beat a pair rated 100 or more above yours',c=>c.won&&c.gap>=100],
   ['butterfly','Social butterfly',2,'Win with 5 different partners',c=>c.p.partnersWon.size>=5,p=>[p.partnersWon.size,5]],
   ['tb_titan','Tiebreak titan',2,'Win 5 tiebreaks',c=>c.p.tbw>=5,p=>[p.tbw,5]],
-  ['contender','Contender',2,'Reach a rating of 1,150',c=>c.p.maxRating>=1150,p=>[Math.round(p.maxRating),1150]],
+  ['contender','Contender',2,'Reach a rating of 1,150',c=>c.p.maxRating>=1150,p=>p.p?[Math.max(0,Math.round(p.maxRating)-1000),150,'Rating '+Math.round(p.maxRating).toLocaleString('en-GB')+' of 1,150']:null],
   ['marathon','Marathon',2,'Play a match lasting 100 minutes or more',c=>c.r.dur>=100*60000],
   ['breaker','Break specialist',2,'Break serve 5 times in one match',c=>!!(c.r.st&&c.r.st.stats.breaks[c.side]>=5)],
   ['night_owl','Night owl',2,'Play a match that starts after 9pm',c=>!c.r.h.manual&&new Date(c.r.date).getHours()>=21],
@@ -2863,7 +2943,7 @@ const BADGES=[
   ['statement','Statement win',3,'Win a best-of-three match dropping 2 games or fewer',c=>c.won&&c.r.cfg.bestOf>=3&&c.r.sw[c.side]>=2&&c.r.gw[c.o]<=2],
   ['grudge','Grudge match',3,'Beat someone you\'d lost to 3 times before',c=>c.won&&c.grudge],
   ['goliath','David and Goliath',3,'Beat a pair rated 200 or more above yours',c=>c.won&&c.gap>=200],
-  ['elite','Elite',3,'Reach a rating of 1,300',c=>c.p.maxRating>=1300,p=>[Math.round(p.maxRating),1300]],
+  ['elite','Elite',3,'Reach a rating of 1,300',c=>c.p.maxRating>=1300,p=>p.p?[Math.max(0,Math.round(p.maxRating)-1000),300,'Rating '+Math.round(p.maxRating).toLocaleString('en-GB')+' of 1,300']:null],
   ['perfect_week','Perfect week',3,'Win 5 matches in 7 days',c=>c.p.winDates.length>=5&&c.r.date-c.p.winDates[c.p.winDates.length-5]<=7*DAY],
   ['lives_here','Lives at the club',3,'Play 150 matches',c=>c.p.p>=150,p=>[p.p,150]],
   ['everyone','Everyone\'s partner',3,'Win with 15 different partners',c=>c.p.partnersWon.size>=15,p=>[p.partnersWon.size,15]],
@@ -2875,7 +2955,7 @@ const BADGES=[
   ['invincible','Invincible',4,'Win 20 matches in a row',c=>c.p.bestStreak>=20,p=>[p.bestStreak,20]],
   ['houdini','Houdini',4,'Save 3 or more match points and still win',c=>c.won&&c.hasN('Bottle job',c.o)>=3],
   ['golden_bagel','Golden bagel',4,'Win a best-of-three match without dropping a game',c=>c.won&&c.r.cfg.bestOf>=3&&c.r.sw[c.side]>=2&&c.r.gw[c.o]===0],
-  ['untouchable','Untouchable',4,'Reach a rating of 1,500',c=>c.p.maxRating>=1500,p=>[Math.round(p.maxRating),1500]],
+  ['untouchable','Untouchable',4,'Reach a rating of 1,500',c=>c.p.maxRating>=1500,p=>p.p?[Math.max(0,Math.round(p.maxRating)-1000),500,'Rating '+Math.round(p.maxRating).toLocaleString('en-GB')+' of 1,500']:null],
   ['top_dog','Top dog',4,'Top the league after playing at least 20 matches',c=>c.p.p>=20&&c.top],
   ['unbreakable','Unbreakable',4,'Hold every service game in 10 different matches',c=>c.p.wallMatches>=10,p=>[p.wallMatches,10]],
   ['complete','Completionist',4,'Unlock every other achievement',c=>Object.keys(c.p.badges).filter(k=>k!=='complete').length>=BADGES.length-1]
@@ -2914,8 +2994,8 @@ function tierSummary(p){
 function badgeTile(b,p,i){
   const d=(p.badges||{})[b[0]],tier=TIERS[b[2]];
   let prog='';
-  if(!d&&b[5]){const[a,z]=b[5](p);if(z>1){const pc=Math.min(100,Math.round(a/z*100));prog='<em class="prog"><i style="width:'+pc+'%"></i></em><span class="pn">'+Math.min(a,z).toLocaleString('en-GB')+' of '+z.toLocaleString('en-GB')+'</span>'}}
-  return'<div class="badge '+tier.c+(d?' on':'')+'" style="--i:'+i+'"><i class="medal"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z"/></svg></i><b>'+esc(b[1])+'</b><span>'+esc(d?'Unlocked '+dShort(d):b[3])+'</span>'+prog+'</div>';
+  if(!d&&b[5]){const pr=b[5](p);if(pr){const[a,z,lab]=pr;if(z>1){const pc=Math.min(100,Math.round(a/z*100));prog='<em class="prog"><i style="width:'+pc+'%"></i></em><span class="pn">'+(lab||Math.min(a,z).toLocaleString('en-GB')+' of '+z.toLocaleString('en-GB'))+'</span>'}}}
+  return'<div class="badge '+tier.c+(d?' on':'')+'" style="--i:'+i+'"><i class="medal">'+badgeSvg(b[0])+'</i><b>'+esc(b[1])+'</b><span>'+esc(d?'Unlocked '+dShort(d):b[3])+'</span>'+prog+'</div>';
 }
 function badgesHtml(p,compact){
   const got=p.badges||{},n=Object.keys(got).length;
@@ -2943,7 +3023,7 @@ function newBadgesHtml(){
   const l=(S.done!==null&&M.newBadges)||[];if(!l.length)return'';
   const g={};l.forEach(x=>{(g[x.id]=g[x.id]||{x,who:[]}).who.push(x.who)});
   const and=a=>a.length>1?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:a[0];
-  return'<p class="sh">New achievements</p><div class="newbadges">'+Object.values(g).map(({x,who},i)=>'<div class="badge on '+TIERS[x.tier].c+'" style="--i:'+i+'"><i class="medal"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z"/></svg></i><b>'+esc(x.name)+' <small>'+TIERS[x.tier].n+'</small></b><span>Unlocked by '+esc(and(who))+'.</span></div>').join('')+'</div>';
+  return'<p class="sh">New achievements</p><div class="newbadges">'+Object.values(g).map(({x,who},i)=>'<div class="badge on '+TIERS[x.tier].c+'" style="--i:'+i+'"><i class="medal">'+badgeSvg(x.id)+'</i><b>'+esc(x.name)+' <small>'+TIERS[x.tier].n+'</small></b><span>Unlocked by '+esc(and(who))+'.</span></div>').join('')+'</div>';
 }
 
 /* ================= this is me ================= */
@@ -3137,20 +3217,23 @@ $('peFile').onchange=async e=>{
 };
 const segVal=id=>{const b=document.querySelector('#'+id+' button[aria-pressed="true"]');return b?b.dataset.v:''};
 $('peSave').onclick=()=>{
-  const name=$('peName').value.trim();
+  const name=tidyName($('peName').value),oldId=PROF.id;
   if(!name){toast('Add the name you play under first.');$('peName').focus();return}
+  if(FRIENDS.some(f=>f.key===pkey(name))){toast('One of your friends already goes by '+name+'. Pick something that tells you apart.');return}
   PROF={photo:draftPhoto,name,username:cleanHandle($('peUser').value),bio:$('peBio').value.trim().slice(0,160),
     side:segVal('peSide'),hand:segVal('peHand'),level:segVal('peLevel'),club:$('peClub').value.trim(),racket:$('peRacket').value.trim(),
     since:($('peSince').value||'').replace(/\D/g,'').slice(0,4),shot:segVal('peShot')};
   SOCIALS.forEach(([k])=>PROF[k]=cleanHandle($('pe_'+k).value));
+  PROF.id=PROF.id||oldId||newId();
   try{saveProf()}catch(e){}
+  const uc=usernameClash(PROF.username,PROF.id);if(uc&&uc!=='you')setTimeout(()=>toast('Heads up: '+uc+' already uses @'+PROF.username+'.'),1200);
   setMe(pkey(name));hideSheet();renderProfile();syncAvatar();toast('Profile saved.');
 };
 $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='27';
+const APP_VERSION='28';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -3219,12 +3302,13 @@ function smallPhoto(src,size){
   return new Promise(res=>{if(!src)return res('');const i=new Image();i.onload=()=>{const c=document.createElement('canvas');c.width=c.height=size;c.getContext('2d').drawImage(i,0,0,size,size);res(c.toDataURL('image/jpeg',.72))};i.onerror=()=>res('');i.src=src});
 }
 async function myCard(withPhoto){
-  const c={v:1,n:PROF.name,u:PROF.username,b:PROF.bio,s:PROF.side,h:PROF.hand,l:PROF.level,c:PROF.club,r:PROF.racket,y:PROF.since,f:PROF.shot,ig:PROF.ig,tt:PROF.tiktok,x:PROF.x,yt:PROF.yt};
+  if(!PROF.id){PROF.id=newId();saveProf()}
+  const c={v:1,i:PROF.id,n:PROF.name,u:PROF.username,b:PROF.bio,s:PROF.side,h:PROF.hand,l:PROF.level,c:PROF.club,r:PROF.racket,y:PROF.since,f:PROF.shot,ig:PROF.ig,tt:PROF.tiktok,x:PROF.x,yt:PROF.yt};
   Object.keys(c).forEach(k=>{if(!c[k])delete c[k]});
   if(withPhoto&&PROF.photo)c.p=await smallPhoto(PROF.photo,96);
   return c;
 }
-const cardToFriend=c=>({key:pkey(c.n),name:c.n,username:c.u||'',bio:c.b||'',side:c.s||'',hand:c.h||'',level:c.l||'',club:c.c||'',racket:c.r||'',since:c.y||'',shot:c.f||'',ig:c.ig||'',tiktok:c.tt||'',x:c.x||'',yt:c.yt||'',photo:c.p||''});
+const cardToFriend=c=>({id:c.i||'',key:pkey(c.n),name:c.n,username:c.u||'',bio:c.b||'',side:c.s||'',hand:c.h||'',level:c.l||'',club:c.c||'',racket:c.r||'',since:c.y||'',shot:c.f||'',ig:c.ig||'',tiktok:c.tt||'',x:c.x||'',yt:c.yt||'',photo:c.p||''});
 
 /* --- share my friend code --- */
 let qrLib=null,friendLink='';
@@ -3282,15 +3366,32 @@ async function handleLink(hash){
   const m=(hash||'').match(/#(friend|match)=([A-Za-z0-9_\-]+)/);if(!m)return false;
   let data;try{data=await unpackData(m[2])}catch(e){toast('That link looks incomplete. Ask your friend to send it again.');return true}
   if(m[1]==='friend'&&data&&data.n){
-    const f=cardToFriend(data);incoming={type:'friend',f};
-    const mine=PROF.name&&f.key===pkey(PROF.name),have=friendOf(f.key);
-    $('inTitle').textContent=mine?'That\'s your own code':have?'Update '+f.name+'?':'Add '+f.name+' as a friend?';
+    const f=cardToFriend(data);
+    const mine=(PROF.id&&f.id===PROF.id);
+    const sameId=friendById(f.id),nameIsMe=!mine&&PROF.name&&f.key===pkey(PROF.name);
+    const nameFriend=!sameId&&friendOf(f.key);const namePlayer=!sameId&&!nameFriend&&!nameIsMe&&knownNames().some(n=>pkey(n)===f.key);
+    const clash=usernameClash(f.username,f.id);
+    incoming={type:'friend',f,sameId,mode:mine?'mine':sameId?'update':nameIsMe?'rename':nameFriend?'choose':namePlayer?'player':'new'};
+    const T={mine:'That\'s your own code',update:'Update '+(sameId?sameId.name:f.name)+'?',rename:'They have the same name as you',choose:'You already have a friend called '+f.name,player:'Is this the '+f.name+' you\'ve played with?',new:'Add '+f.name+' as a friend?'};
+    const H={mine:'Send it to friends so they can add you.',
+      update:'You\'re already friends. This updates their photo and details'+(sameId&&sameId.name!==f.name?', and they now go by '+esc(f.name)+'. You can keep calling them '+esc(sameId.name)+'.':'.'),
+      rename:'Give them a different name in your app, so your records stay separate.',
+      choose:'If it\'s someone else, give them a different name so your records stay separate.',
+      player:'If it\'s the same person, their past matches link to them. If not, give them a different name.',
+      new:'Their photo, details and socials will show on their profile. Add them to matches as "'+esc(f.name)+'".'};
+    $('inTitle').textContent=T[incoming.mode];
+    const needAlt=['rename','choose','player'].includes(incoming.mode);
     $('inBody').innerHTML='<div class="inprof">'+avatar('pav big',f.name,f.photo)+'<div><b>'+esc(f.name)+'</b>'+(f.username?'<span>@'+esc(f.username)+'</span>':'')+'</div></div>'+(f.bio?'<p class="bio">'+esc(f.bio)+'</p>':'')+
-      '<p class="help">'+(mine?'Send it to friends so they can add you.':have?'You\'re already friends. This updates their photo and details.':'Their photo, details and socials will show on their profile. Add them to matches as "'+esc(f.name)+'".')+'</p>';
-    $('inYes').textContent=have?'Update details':'Add friend';$('inYes').classList.toggle('hide',!!mine);
+      (clash?'<p class="flag">Heads up: @'+esc(f.username)+' is also the username of '+(clash==='you'?'your own profile':esc(clash))+'.</p>':'')+
+      '<p class="help">'+H[incoming.mode]+'</p>'+
+      (needAlt?'<div class="field"><label for="inAlt">Call them</label><input type="text" id="inAlt" maxlength="20" value="'+esc(uniqueName(f.name))+'"></div>':'');
+    $('inYes').textContent=incoming.mode==='update'?'Update details':needAlt?'Add with this name':'Add friend';
+    $('inYes').classList.toggle('hide',incoming.mode==='mine');
+    $('inSame').classList.toggle('hide',!(incoming.mode==='choose'||incoming.mode==='player'));
+    $('inSame').textContent=incoming.mode==='player'?'Yes, same person':'Same person, update them';
     showSheet('incomingSheet');
   }else if(m[1]==='match'&&data&&data.id){
-    let e=data;const me=meKey();
+    let e=localiseNames(data);delete e.ids;const me=meKey();
     if(me&&members(e.cfg||{},1).some(n=>pkey(n)===me)&&!members(e.cfg||{},0).some(n=>pkey(n)===me))e=flipEntry(e);
     const have=history.some(h=>h.id===e.id),dup=!have&&findDuplicate(e),r=rowOf(e);incoming={type:'match',e};
     $('inTitle').textContent=have?'You\'ve already got this match':dup?'Looks like you\'ve already got this one':'Add this match to your results?';
@@ -3313,9 +3414,15 @@ function flipEntry(e){
 $('inYes').onclick=()=>{
   if(!incoming)return;
   if(incoming.type==='friend'){
-    const i=FRIENDS.findIndex(f=>f.key===incoming.f.key),f=Object.assign({added:Date.now()},incoming.f);
-    if(i>=0)FRIENDS[i]=Object.assign(FRIENDS[i],f);else FRIENDS.push(f);
-    saveFriends();hideSheet();toast(f.name+(i>=0?'\'s details updated.':' added as a friend.'));
+    const f=Object.assign({added:Date.now()},incoming.f);
+    if(incoming.mode==='update'){const ex=incoming.sameId;Object.assign(ex,f,{name:ex.name,key:ex.key});saveFriends();hideSheet();toast(ex.name+'\'s details updated.')}
+    else{
+      if($('inAlt')){const alt=tidyName($('inAlt').value);const k=pkey(alt);
+        if(!alt){toast('Give them a name first.');return}
+        if((PROF.name&&k===pkey(PROF.name))||FRIENDS.some(x=>x.key===k)||knownNames().some(n=>pkey(n)===k)){toast('That name is already taken in your app. Try another.');return}
+        f.name=alt;f.key=k}
+      FRIENDS.push(f);saveFriends();hideSheet();toast(f.name+' added as a friend.');
+    }
   }else{
     history.push(incoming.e);history.sort((a,b)=>((b.date||b.start||0)-(a.date||a.start||0)));saveH();hideSheet();toast('Match added to your results.');
   }
@@ -3323,6 +3430,12 @@ $('inYes').onclick=()=>{
   if($('resultsView').classList.contains('on'))setTab(tab);
 };
 $('inNo').onclick=()=>{incoming=null;hideSheet()};
+$('inSame').onclick=()=>{
+  if(!incoming||incoming.type!=='friend')return;const f=incoming.f;
+  const ex=friendOf(f.key);
+  if(ex){Object.assign(ex,f,{name:ex.name,key:ex.key})}else FRIENDS.push(Object.assign({added:Date.now()},f));
+  saveFriends();hideSheet();toast('Linked to '+f.name+'.');incoming=null;if($('resultsView').classList.contains('on'))setTab(tab);
+};
 async function checkHash(){
   if(/#(friend|match)=/.test(location.hash)){const h=location.hash;try{window.history.replaceState(null,'',appUrl())}catch(e){}await handleLink(h)}
 }
@@ -3332,6 +3445,7 @@ setTimeout(checkHash,500);
 /* --- send a finished match to the other players --- */
 async function sendResult(h){
   const e=h.manual?{id:h.id,manual:true,date:h.date,sets:h.sets,cfg:h.cfg}:{id:h.id,cfg:h.cfg,pts:h.pts,start:h.start,end:h.end};
+  const ids=idsFor(h.cfg);if(Object.keys(ids).length)e.ids=ids;if(h.session)e.session=h.session;
   const url=appUrl()+'#match='+await packData(e);
   const r=rowOf(h);
   const text=(r.winner===0?r.a+' beat '+r.b:r.b+' beat '+r.a)+' '+(r.winner===1?r.score.replace(/(\d+)–(\d+)/g,'$2–$1'):r.score)+'. Add it to your Deucebags:';
@@ -3399,7 +3513,7 @@ $('obSkip2').onclick=()=>obStep(2);
 $('obNext').onclick=()=>{
   const name=$('obName').value.trim();
   if(!name){toast('Add your name or tap Skip for now.');return}
-  PROF=Object.assign({},PROF,{name,photo:obPhoto});saveProf();setMe(pkey(name));syncAvatar();
+  PROF=Object.assign({},PROF,{name,photo:obPhoto,id:PROF.id||newId()});saveProf();setMe(pkey(name));syncAvatar();
   $('obHello').textContent='Nice one, '+name.split(' ')[0]+'.';obStep(2);
 };
 $('obTour').onclick=()=>finishWelcome(true);
@@ -3896,6 +4010,73 @@ if(NATIVE){
     };
   }
   setTimeout(pushNative,300);
+}
+
+
+/* ================= back button: close what's on top instead of leaving the app ================= */
+(function(){
+  const LAYERS=['askWrap','tourView','celView','dimView','scanView','edView','camView','resultsView'];
+  let guard=false,skip=0,t=null;
+  const sheetOpen=()=>document.querySelector('.sheet.on');
+  const anyOpen=()=>!!sheetOpen()||LAYERS.some(id=>$(id).classList.contains('on'));
+  function sync(){
+    clearTimeout(t);t=setTimeout(()=>{
+      const open=anyOpen();
+      if(open&&!guard){window.history.pushState({deucebags:1},'');guard=true}
+      else if(!open&&guard){guard=false;skip++;window.history.back()}
+    },60);
+  }
+  function closeTop(){
+    if($('askWrap').classList.contains('on')){askDone(false);return}
+    if($('tourView').classList.contains('on')){endTour();return}
+    if($('celView').classList.contains('on')){closeCelebration();return}
+    if($('dimView').classList.contains('on')){$('dimView').classList.remove('on');return}
+    if($('scanView').classList.contains('on')){closeScanner();return}
+    const s=sheetOpen();
+    if(s){if(s.id==='clipSheet')$('footClose').click();else hideSheet();return}
+    if($('edView').classList.contains('on')){if(ED.busy){toast('Your clip is still being made. Nearly there.');return}closeEditor();return}
+    if($('camView').classList.contains('on')){closeCam();return}
+    if($('resultsView').classList.contains('on')){$('resultsView').classList.remove('on');return}
+  }
+  window.addEventListener('popstate',()=>{
+    if(skip){skip--;return}
+    guard=false;closeTop();sync();
+  });
+  const mo=new MutationObserver(sync);
+  document.querySelectorAll('.sheet').forEach(el=>mo.observe(el,{attributes:true,attributeFilter:['class']}));
+  LAYERS.forEach(id=>mo.observe($(id),{attributes:true,attributeFilter:['class']}));
+})();
+
+/* ================= how ratings work ================= */
+$('ratingHelpBtnHolder')&&0;
+function openRatingHelp(){showSheet('ratingSheet')}
+$('ratingClose').onclick=()=>hideSheet();
+
+/* ================= identity: a hidden ID behind every profile, so names can't collide ================= */
+const newId=()=>'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+if(PROF.name&&!PROF.id){PROF.id=newId();saveProf()}
+const friendById=id=>id?FRIENDS.find(f=>f.id===id):null;
+function idsFor(cfg){
+  const out={};[0,1].forEach(s=>members(cfg,s).forEach(n=>{const k=pkey(n);
+    if(PROF.name&&k===pkey(PROF.name)&&PROF.id)out[n]=PROF.id;else{const f=friendOf(k);if(f&&f.id)out[n]=f.id}}));
+  return out;
+}
+// when a result arrives, swap in the names you use for the same people
+function localiseNames(e){
+  if(!e.ids)return e;
+  const map={};Object.entries(e.ids).forEach(([n,id])=>{
+    if(PROF.id&&id===PROF.id)map[pkey(n)]=PROF.name;else{const f=friendById(id);if(f)map[pkey(n)]=f.name}});
+  if(!Object.keys(map).length)return e;
+  const c=Object.assign({},e.cfg),fix=l=>(l||[]).map(n=>map[pkey(n||'')]||n);
+  c.pa=fix(c.pa);c.pb=fix(c.pb);
+  if(!c.an&&c.pa.filter(Boolean).length)c.a=joinNames(c.pa);if(!c.bn&&c.pb.filter(Boolean).length)c.b=joinNames(c.pb);
+  return Object.assign({},e,{cfg:c});
+}
+function uniqueName(base){let n=2,name=base+' '+n;const taken=k=>knownNames().some(x=>pkey(x)===k)||FRIENDS.some(f=>pkey(f.name)===k)||(PROF.name&&pkey(PROF.name)===k);while(taken(pkey(name))){n++;name=base+' '+n}return name}
+function usernameClash(u,exceptId){
+  if(!u)return null;const k=u.toLowerCase();
+  if(PROF.username&&PROF.username.toLowerCase()===k&&PROF.id!==exceptId)return'you';
+  const f=FRIENDS.find(x=>x.username&&x.username.toLowerCase()===k&&x.id!==exceptId);return f?f.name:null;
 }
 
 /* ================= go ================= */
