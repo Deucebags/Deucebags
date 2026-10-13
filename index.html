@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="4.8">
+<meta name="app-version" content="4.9">
 <title>Deucebags</title>
 <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1179x2556.jpg">
 <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1290x2796.jpg">
@@ -1338,7 +1338,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
   <input type="file" id="restoreFile" accept="application/json,.json" class="hide">
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v4.8<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v4.9<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -3547,7 +3547,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='4.8';
+const APP_VERSION='4.9';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -5046,7 +5046,7 @@ async function deleteAccount(){
     for(const g of (GRP.list||[])){
       try{await db.collection('groups').doc(g.id).collection('live').doc(uid).delete()}catch(e){}
       try{if(g.members.length===1){if(g.inv)await db.collection('invites').doc(g.inv).delete().catch(()=>{});await db.collection('groups').doc(g.id).delete()}
-        else await db.collection('groups').doc(g.id).update({members:FV.arrayRemove(uid),admins:FV.arrayRemove(uid),['names.'+uid]:FV.delete()})}catch(e){}
+        else await db.collection('groups').doc(g.id).update(leaveUpdate(g,uid))}catch(e){}
     }
     try{await db.collection('profiles').doc(uid).delete()}catch(e){}
     if(PROF.username){try{await db.collection('usernames').doc(PROF.username.toLowerCase()).delete()}catch(e){}}
@@ -5297,12 +5297,18 @@ async function joinGroup(){
     hideSheet();toast('You\'re in '+g.name+'.');pendingJoin=null;setTimeout(()=>syncNow(true),800);
   }catch(e){toast(e&&e.code==='permission-denied'?'That invite link has expired. Ask for a new one.':fbError(e))}
 }
+// leaving a group: drop your admin rights, and hand them on if you were the only admin
+function leaveUpdate(g,uid){
+  const FV=firebase.firestore.FieldValue,others=(g.members||[]).filter(u=>u!==uid);
+  const admins=(g.admins||[]).filter(u=>u!==uid&&others.includes(u));
+  return{members:FV.arrayRemove(uid),admins:admins.length?admins:[others[0]],['names.'+uid]:FV.delete()};
+}
 async function leaveGroup(g){
   if(!(await ask('Leave '+g.name+'?','You\'ll stop seeing its shared league and live scores. Matches already on your phone stay.','Leave group',true)))return;
   const me=FB.user.uid,FV=firebase.firestore.FieldValue;
   try{
     if(g.members.length===1){if(g.inv)await FB.db.collection('invites').doc(g.inv).delete().catch(()=>{});await FB.db.collection('groups').doc(g.id).delete()}
-    else await FB.db.collection('groups').doc(g.id).update({members:FV.arrayRemove(me),['names.'+me]:FV.delete()});
+    else await FB.db.collection('groups').doc(g.id).update(leaveUpdate(g,me));
     toast('You\'ve left '+g.name+'.');
   }catch(e){toast(fbError(e))}
 }
