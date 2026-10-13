@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="3.8">
+<meta name="app-version" content="4.1">
 <title>Deucebags</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="favicon-64.png">
@@ -133,6 +133,9 @@ button{cursor:pointer;font-family:var(--heading)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---- additions ---- */
+#setup.singles #pA2,#setup.singles #pB2,#setup.singles #inA,#setup.singles #inB{display:none}
+#setup.singles .teambox .pair{grid-template-columns:1fr}
+
 .builtby{font-family:var(--heading);font-weight:600;font-size:12.5px;letter-spacing:.2px;color:var(--muted);opacity:.85;margin:6px 0 0}
 .obstep .builtby{font-size:12px;opacity:.65;margin-top:10px}
 #avatarSheet{z-index:21}
@@ -902,6 +905,9 @@ button{transition:transform .12s ease}
   <datalist id="playerNames"></datalist>
   <div class="field"><label for="inGroup">Group (optional)</label><input type="text" id="inGroup" list="groupNames" maxlength="24" autocomplete="off" placeholder="For example, Sunday crew"><p class="help">Keeps different friend groups apart. Filter by group in Results.</p></div>
   <datalist id="groupNames"></datalist>
+  <div class="field"><span class="lbl">Format</span>
+    <div class="seg" id="segPlay"><button data-v="doubles">Doubles</button><button data-v="singles">Singles</button></div>
+  </div>
   <div class="field"><span class="lbl">Serving first</span>
     <div class="seg" id="segFirst"><button data-v="0" id="firstA">Us</button><button data-v="1" id="firstB">Them</button></div>
   </div>
@@ -1170,7 +1176,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
   <input type="file" id="restoreFile" accept="application/json,.json" class="hide">
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v3.8<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v4.1<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -1502,6 +1508,7 @@ function point(w){
   try{navigator.vibrate&&navigator.vibrate(S.done!==null?[60,60,60]:30)}catch(e){}
 }
 function undo(){
+  if(M.preFix&&M.pts.length===M.fixLen){M.pts=M.preFix.pts;M.cfg.setFirst=M.preFix.setFirst;M.adjusted=M.preFix.adjusted;delete M.preFix;delete M.fixLen;S=replay(M.cfg,M.pts);prevL=null;prevGames='';saveM();recordHistory();render();toast('Score fix undone.');return}
   if(!M.pts.length){toast('Nothing to undo yet.');return}
   M.pts.pop();tickSound('undo');
   changeEndsNow=false;M.newBadges=null;
@@ -1666,6 +1673,9 @@ const HELP={
 function segSet(id,val){document.querySelectorAll('#'+id+' button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===String(val))))}
 function teamNameFrom(custom,a,b,fallback){return custom.trim()||joinNames([a,b])||fallback}
 function syncSetup(){
+  const sg=!!draft.singles;$('setup').classList.toggle('singles',sg);segSet('segPlay',sg?'singles':'doubles');
+  if(sg){$('pA2').value='';$('pB2').value=''}
+  $('pA1').placeholder=sg?'You':'You';$('pB1').placeholder=sg?'Opponent':'Player 1';
   $('inA').placeholder=joinNames([$('pA1').value,$('pA2').value])||'Team name (optional)';
   $('inB').placeholder=joinNames([$('pB1').value,$('pB2').value])||'Team name (optional)';
   segSet('segFirst',draft.first);segSet('segDeuce',draft.deuce);segSet('segBest',draft.bestOf);
@@ -1695,6 +1705,7 @@ function openSetup(){
   $('startBtn').textContent=inProgress?'Start new match':'Start match';
   syncSetup();showSheet('setup');renderQuickPick();
 }
+document.querySelectorAll('#segPlay button').forEach(b=>b.onclick=()=>{draft.singles=b.dataset.v==='singles';syncSetup();renderQuickPick()});
 document.querySelectorAll('#segGames button').forEach(b=>b.onclick=()=>{const v=b.dataset.v;draft.race=v[0]==='r';draft.games=+(draft.race?v.slice(1):v);syncSetup()});
 [['segFirst','first',Number],['segDeuce','deuce',String],['segBest','bestOf',Number],['segDecider','decider',String]].forEach(([id,key,cast])=>{
   document.querySelectorAll('#'+id+' button').forEach(b=>b.onclick=()=>{draft[key]=cast(b.dataset.v);syncSetup()});
@@ -3357,7 +3368,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='3.8';
+const APP_VERSION='4.1';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -4344,7 +4355,8 @@ $('fixSave').onclick=()=>{
   const pts=tb?d.points.slice():d.points.map((p,i)=>p===4?4:p);
   const target={sets:d.sets,games:d.games,points:tb?pts:(pts[0]===4||pts[1]===4)?[pts[0]===4?4:3,pts[1]===4?4:3]:pts};
   const keepSetFirst=Object.assign({},cfg.setFirst||{});
-  M.cfg.setFirst=keepSetFirst;M.pts=buildPts(cfg,target);M.adjusted=true;if(!M.start)M.start=Date.now();M.last=Date.now();
+  M.preFix={pts:M.pts.slice(),setFirst:Object.assign({},cfg.setFirst||{}),adjusted:!!M.adjusted};
+  M.cfg.setFirst=keepSetFirst;M.pts=buildPts(cfg,target);M.fixLen=M.pts.length;M.adjusted=true;if(!M.start)M.start=Date.now();M.last=Date.now();
   S=replay(M.cfg,M.pts);
   if(!tb&&S.server!==null&&S.server!==d.server){const idx=S.sets.length-1;M.cfg.setFirst=Object.assign({},M.cfg.setFirst,{[idx]:d.server^((S.G-S.setStartG)%2)});S=replay(M.cfg,M.pts)}
   prevL=null;prevGames='';changeEndsNow=false;saveM();recordHistory();render();hideSheet();
@@ -4365,18 +4377,19 @@ function quickPickNames(){
   return Object.values(recent).sort((a,b)=>a.i-b.i).slice(0,16).map(x=>x.name);
 }
 const SLOTS=['pA1','pA2','pB1','pB2'];
+const activeSlots=()=>draft&&draft.singles?['pA1','pB1']:SLOTS;
 function renderQuickPick(){
   const names=quickPickNames(),box=$('quickPick');
   if(names.length<2){box.innerHTML='';box.classList.add('hide');return}
   box.classList.remove('hide');
   const slotOf=n=>SLOTS.find(id=>pkey($(id).value||'')===pkey(n));
   const lab={pA1:'You',pA2:'Partner',pB1:'Opp',pB2:'Opp'};
-  box.innerHTML='<p class="lbl" style="margin:0 0 8px">Quick pick<span class="lblhelp" style="display:inline;margin-left:6px">Tap four players in order: your team, then the opponents.</span></p><div class="qpchips">'+
-    names.map(n=>{const s=slotOf(n);return'<button class="qp'+(s?' on':'')+'" data-n="'+esc(n)+'">'+avatar('pav',n,photoFor(n))+'<span>'+esc(n)+'</span>'+(s?'<em>'+(s[1]==='A'?'Your team':'Opponents')+'</em>':'')+'</button>'}).join('')+
+  box.innerHTML='<p class="lbl" style="margin:0 0 8px">Quick pick<span class="lblhelp" style="display:inline;margin-left:6px">'+(draft&&draft.singles?'Tap two players: you, then your opponent.':'Tap four players in order: your team, then the opponents.')+'</span></p><div class="qpchips">'+
+    names.map(n=>{const s=slotOf(n);return'<button class="qp'+(s?' on':'')+'" data-n="'+esc(n)+'">'+avatar('pav',n,photoFor(n))+'<span>'+esc(n)+'</span>'+(s?'<em>'+(s[1]==='A'?(draft&&draft.singles?'You':'Your team'):(draft&&draft.singles?'Opponent':'Opponents'))+'</em>':'')+'</button>'}).join('')+
     '</div><button class="linkbtn" id="qpClear">Clear players</button>';
   box.querySelectorAll('.qp').forEach(b=>b.onclick=()=>{
     const n=b.dataset.n,s=slotOf(n);
-    if(s){$(s).value=''}else{const free=SLOTS.find(id=>!$(id).value.trim());if(!free){toast('All four places are taken. Tap a player to remove them.');return}$(free).value=n}
+    if(s){$(s).value=''}else{const free=activeSlots().find(id=>!$(id).value.trim());if(!free){toast(draft.singles?'Both places are taken. Tap a player to remove them.':'All four places are taken. Tap a player to remove them.');return}$(free).value=n}
     syncSetup();renderQuickPick();
   });
   $('qpClear').onclick=()=>{SLOTS.forEach(id=>$(id).value='');syncSetup();renderQuickPick()};
@@ -4508,14 +4521,14 @@ const AV={
   bg:['#7FC8F8','#DFFF32','#183B60','#EAF7FF','#FFB3C7','#B9F0D0'],
   top:['#071B33','#DFFF32','#FFFFFF','#7FC8F8','#E8505B','#2E9D6A'],
   wrap:['#183B60','#2E9D6A','#E8505B','#6E4AA0','#C9A227','#F2EDE4'],
-  hair:[['short','Short'],['fade','Skin fade'],['side','Side part'],['buzz','Buzz cut'],['mullet','Mullet'],['curly','Curly'],['afro','Afro'],['medium','Medium'],['long','Long'],['bun','Bun'],['ponytail','Ponytail'],['bald','No hair'],['scarf','Headscarf'],['turban','Turban']],
+  hair:[['short','Short'],['side','Side part'],['buzz','Buzz cut'],['curly','Curly'],['afro','Afro'],['medium','Medium'],['long','Long'],['bun','Bun'],['ponytail','Ponytail'],['bald','No hair'],['scarf','Headscarf'],['turban','Turban'],['kufi','Kufi']],
   face:[['none','None'],['stubble','Stubble'],['beard','Beard'],['moustache','Moustache']],
   head:[['none','None'],['band','Sweatband'],['visor','Visor'],['cap','Cap']]
 };
 const AV_DEF={skin:2,hair:'short',hairCol:1,face:'none',glasses:false,freckles:false,earrings:false,head:'none',bg:0,top:0,wrap:0};
 function avatarSvg(o){
   const s=AV.skin[o.skin],h=AV.hairCol[o.hairCol],bg=AV.bg[o.bg],top=AV.top[o.top];
-  const ink='#071B33',cover=o.hair==='scarf'||o.hair==='turban',wrap=AV.wrap[o.wrap||0];
+  const ink='#071B33',cover=o.hair==='scarf'||o.hair==='turban',fabric=cover||o.hair==='kufi',wrap=AV.wrap[o.wrap||0];
   let back='',front='';
   switch(o.hair){
     case 'afro':back='<circle cx="60" cy="44" r="36" fill="'+h+'"/>';break;
@@ -4525,8 +4538,7 @@ function avatarSvg(o){
     case 'bun':back='<circle cx="60" cy="18" r="10" fill="'+h+'"/>';front='<path d="M34 46c1-18 12-26 26-26s25 8 26 26c-8-6-16-9-26-9S42 40 34 46z" fill="'+h+'"/>';break;
     case 'short':front='<path d="M35 45c0-17 11-25 25-25s25 8 25 25c-5-5-9-8-13-9-6 4-16 5-25 3-5 1-9 3-12 6z" fill="'+h+'"/>';break;
     case 'side':front='<path d="M35 46c0-18 11-26 25-26 15 0 25 9 25 24-9-7-22-10-34-8-6 1-11 5-16 10z" fill="'+h+'"/><path d="M48 26c8 1 16 5 22 12" stroke="'+ink+'" stroke-opacity=".18" stroke-width="2" fill="none"/>';break;
-    case 'fade':front='<defs><linearGradient id="fd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+h+'" stop-opacity=".55"/><stop offset="1" stop-color="'+h+'" stop-opacity="0"/></linearGradient></defs><path d="M35 42c1-6 3-10 6-13l1 22c-3-2-6-5-7-9zM85 42c-1-6-3-10-6-13l-1 22c3-2 6-5 7-9z" fill="url(#fd)"/><path d="M40 40c1-15 10-21 20-21s19 6 20 21c-5-4-12-6-20-6s-15 2-20 6z" fill="'+h+'"/>';break;
-    case 'mullet':back='<path d="M36 56c-1 15 0 26 5 33 4-2 11-3 19-3s15 1 19 3c5-7 6-18 5-33z" fill="'+h+'"/>';front='<path d="M35 45c0-17 11-25 25-25s25 8 25 25c-5-5-9-8-13-9-6 4-16 5-25 3-5 1-9 3-12 6z" fill="'+h+'"/>';break;
+    case 'kufi':front='<path d="M36 40c1-15 11-23 24-23s23 8 24 23c-6-3-14-5-24-5s-18 2-24 5z" fill="'+wrap+'"/><path d="M37 38c7-3 15-4 23-4s16 1 23 4" stroke="'+ink+'" stroke-opacity=".18" stroke-width="2" fill="none"/><g fill="'+ink+'" fill-opacity=".14"><circle cx="48" cy="27" r="1.6"/><circle cx="60" cy="23" r="1.6"/><circle cx="72" cy="27" r="1.6"/><circle cx="54" cy="31" r="1.6"/><circle cx="66" cy="31" r="1.6"/></g><path d="M41 44c2-4 5-6 8-7M79 44c-2-4-5-6-8-7" stroke="'+h+'" stroke-width="3" fill="none" stroke-linecap="round"/>';break;
     case 'buzz':front='<path d="M36 44c1-15 11-22 24-22s23 7 24 22c-7-4-15-6-24-6s-17 2-24 6z" fill="'+h+'" opacity=".55"/>';break;
     case 'curly':front='<g fill="'+h+'"><circle cx="40" cy="36" r="8"/><circle cx="50" cy="28" r="9"/><circle cx="62" cy="25" r="9"/><circle cx="74" cy="29" r="9"/><circle cx="82" cy="38" r="8"/><circle cx="36" cy="46" r="6"/><circle cx="85" cy="47" r="6"/></g>';break;
     case 'scarf':back='<path d="M27 60c0-27 14-42 33-42s33 15 33 42v18c0 12-12 22-33 24-21-2-33-12-33-24z" fill="'+wrap+'"/><path d="M30 92c8-6 18-8 30-8s22 2 30 8l-4 28H34z" fill="'+wrap+'"/>';front='<path d="M34 52c1-18 12-28 26-28s25 10 26 28c-5-7-14-12-26-12s-21 5-26 12z" fill="'+wrap+'"/><path d="M37 62c3 15 11 22 23 23-13 2-22-6-25-16z M83 62c-3 15-11 22-23 23 13 2 22-6 25-16z" fill="'+wrap+'"/><path d="M38 44c7-6 14-9 22-9" stroke="#fff" stroke-opacity=".25" stroke-width="2" fill="none" stroke-linecap="round"/>';break;
@@ -4542,7 +4554,7 @@ function avatarSvg(o){
   const freckles=o.freckles?'<g fill="#7A4A2C" fill-opacity=".45"><circle cx="45" cy="60" r="1.2"/><circle cx="48.5" cy="62" r="1.2"/><circle cx="44" cy="63.5" r="1.1"/><circle cx="75" cy="60" r="1.2"/><circle cx="71.5" cy="62" r="1.2"/><circle cx="76" cy="63.5" r="1.1"/></g>':'';
   const earrings=o.earrings&&!cover?'<circle cx="35" cy="61" r="2.6" fill="#E9C46A" stroke="'+ink+'" stroke-width="1"/><circle cx="85" cy="61" r="2.6" fill="#E9C46A" stroke="'+ink+'" stroke-width="1"/>':'';
   const glasses=o.glasses?'<g fill="none" stroke="'+ink+'" stroke-width="2.4"><circle cx="51" cy="52" r="7.5"/><circle cx="69" cy="52" r="7.5"/><path d="M58.5 52h3M43.5 51l-6-2M76.5 51l6-2"/></g>':'';
-  const hw=cover?'none':(o.head||(o.band?'band':'none'));
+  const hw=fabric?'none':(o.head||(o.band?'band':'none'));
   const visor=hw==='visor'?'<path d="M34 41c8-4 17-6 26-6s18 2 26 6v6c-8-4-17-6-26-6s-18 2-26 6z" fill="#FFFFFF" stroke="'+ink+'" stroke-width="1.5"/><path d="M34 44c12 2 40 2 52 0 6 1 10 4 11 6-20-3-54-3-74 0 1-2 5-5 11-6z" fill="'+top+'" stroke="'+ink+'" stroke-width="1.5"/>':'';
   const cap=hw==='cap'?'<path d="M33 45c0-17 12-27 27-27s27 10 27 27z" fill="'+top+'" stroke="'+ink+'" stroke-width="1.5"/><path d="M33 45h54c7 0 13 3 15 7-22-4-50-4-69-7z" fill="'+top+'" stroke="'+ink+'" stroke-width="1.5"/><circle cx="60" cy="19" r="2.5" fill="'+ink+'"/>':'';
   const band=hw==='band'?'<path d="M35 40c8-4 16-6 25-6s17 2 25 6v7c-8-4-16-6-25-6s-17 2-25 6z" fill="#DFFF32" stroke="'+ink+'" stroke-width="1.5"/>':'';
@@ -4556,7 +4568,7 @@ function svgToPhoto(svg){
 }
 let avDraft=null,avTarget='profile';
 function openAvatar(target){
-  avTarget=target;avDraft=Object.assign({},AV_DEF,PROF.avatar||{});if(avDraft.band&&avDraft.head==='none')avDraft.head='band';delete avDraft.band;renderAvatar();
+  avTarget=target;avDraft=Object.assign({},AV_DEF,PROF.avatar||{});if(avDraft.band&&avDraft.head==='none')avDraft.head='band';if(!AV.hair.some(x=>x[0]===avDraft.hair))avDraft.hair='short';delete avDraft.band;renderAvatar();
   if(target==='profile')hideSheet();showSheet('avatarSheet');
 }
 function renderAvatar(){
@@ -4565,9 +4577,9 @@ function renderAvatar(){
   const sw=(key,list)=>'<div class="swatches">'+list.map((c,i)=>'<button class="swatch" style="background:'+c+'" data-k="'+key+'" data-v="'+i+'" aria-pressed="'+(o[key]===i)+'" aria-label="'+key+' option '+(i+1)+'"></button>').join('')+'</div>';
   const chips=(key,list)=>'<div class="avchips">'+list.map(([v,l])=>'<button data-k="'+key+'" data-s="'+v+'" aria-pressed="'+(o[key]===v)+'">'+l+'</button>').join('')+'</div>';
   $('avOptions').innerHTML='<p class="lbl">Skin tone</p>'+sw('skin',AV.skin)+'<p class="lbl">Hair</p>'+chips('hair',AV.hair)+
-    (o.hair==='scarf'||o.hair==='turban'?'<p class="lbl">'+(o.hair==='scarf'?'Headscarf':'Turban')+' colour</p>'+sw('wrap',AV.wrap)+'<p class="lbl">Brow and beard colour</p>'+sw('hairCol',AV.hairCol):o.hair==='bald'?'':'<p class="lbl">Hair colour</p>'+sw('hairCol',AV.hairCol))+
+    (['scarf','turban','kufi'].includes(o.hair)?'<p class="lbl">'+({scarf:'Headscarf',turban:'Turban',kufi:'Kufi'})[o.hair]+' colour</p>'+sw('wrap',AV.wrap)+'<p class="lbl">Hair, brow and beard colour</p>'+sw('hairCol',AV.hairCol):o.hair==='bald'?'':'<p class="lbl">Hair colour</p>'+sw('hairCol',AV.hairCol))+
     '<p class="lbl">Facial hair</p>'+chips('face',AV.face)+
-    (o.hair==='scarf'||o.hair==='turban'?'':'<p class="lbl">Headwear</p>'+chips('head',AV.head))+
+    (['scarf','turban','kufi'].includes(o.hair)?'':'<p class="lbl">Headwear</p>'+chips('head',AV.head))+
     '<p class="lbl">Extras</p><div class="avchips"><button data-t="glasses" aria-pressed="'+!!o.glasses+'">Glasses</button><button data-t="freckles" aria-pressed="'+!!o.freckles+'">Freckles</button><button data-t="earrings" aria-pressed="'+!!o.earrings+'">Earrings</button></div>'+
     '<p class="lbl">Top</p>'+sw('top',AV.top)+'<p class="lbl">Background</p>'+sw('bg',AV.bg);
   $('avOptions').querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{const k=b.dataset.k;o[k]=b.dataset.s!==undefined?b.dataset.s:+b.dataset.v;renderAvatar()});
@@ -4594,6 +4606,8 @@ function fillCountries(){
   sel.innerHTML='<option value="">Prefer not to say</option><optgroup label="UK nations">'+HOME_NATIONS.map(h=>'<option value="'+h[0]+'">'+h[2]+' '+h[1]+'</option>').join('')+'</optgroup><optgroup label="Countries">'+list.map(([c,n])=>'<option value="'+c+'">'+flagOf(c)+' '+esc(n)+'</option>').join('')+'</optgroup>';
 }
 const flagFor=key=>{if(PROF.name&&key===pkey(PROF.name))return flagOf(PROF.country);const f=friendOf(key);return f?flagOf(f.country):''};
+
+
 
 /* ================= go ================= */
 window.__dbg={replay,labels,ruleText,pressureText};
