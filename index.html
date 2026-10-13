@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="3.7">
+<meta name="app-version" content="3.8">
 <title>Deucebags</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="favicon-64.png">
@@ -1170,7 +1170,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
   <input type="file" id="restoreFile" accept="application/json,.json" class="hide">
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v3.7<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v3.8<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -3357,7 +3357,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='3.7';
+const APP_VERSION='3.8';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -4508,10 +4508,11 @@ const AV={
   bg:['#7FC8F8','#DFFF32','#183B60','#EAF7FF','#FFB3C7','#B9F0D0'],
   top:['#071B33','#DFFF32','#FFFFFF','#7FC8F8','#E8505B','#2E9D6A'],
   wrap:['#183B60','#2E9D6A','#E8505B','#6E4AA0','#C9A227','#F2EDE4'],
-  hair:[['short','Short'],['side','Side part'],['buzz','Buzz cut'],['curly','Curly'],['afro','Afro'],['medium','Medium'],['long','Long'],['bun','Bun'],['ponytail','Ponytail'],['bald','No hair'],['scarf','Headscarf'],['turban','Turban']],
-  face:[['none','None'],['stubble','Stubble'],['beard','Beard'],['moustache','Moustache']]
+  hair:[['short','Short'],['fade','Skin fade'],['side','Side part'],['buzz','Buzz cut'],['mullet','Mullet'],['curly','Curly'],['afro','Afro'],['medium','Medium'],['long','Long'],['bun','Bun'],['ponytail','Ponytail'],['bald','No hair'],['scarf','Headscarf'],['turban','Turban']],
+  face:[['none','None'],['stubble','Stubble'],['beard','Beard'],['moustache','Moustache']],
+  head:[['none','None'],['band','Sweatband'],['visor','Visor'],['cap','Cap']]
 };
-const AV_DEF={skin:2,hair:'short',hairCol:1,face:'none',glasses:false,band:false,bg:0,top:0,wrap:0};
+const AV_DEF={skin:2,hair:'short',hairCol:1,face:'none',glasses:false,freckles:false,earrings:false,head:'none',bg:0,top:0,wrap:0};
 function avatarSvg(o){
   const s=AV.skin[o.skin],h=AV.hairCol[o.hairCol],bg=AV.bg[o.bg],top=AV.top[o.top];
   const ink='#071B33',cover=o.hair==='scarf'||o.hair==='turban',wrap=AV.wrap[o.wrap||0];
@@ -4524,6 +4525,8 @@ function avatarSvg(o){
     case 'bun':back='<circle cx="60" cy="18" r="10" fill="'+h+'"/>';front='<path d="M34 46c1-18 12-26 26-26s25 8 26 26c-8-6-16-9-26-9S42 40 34 46z" fill="'+h+'"/>';break;
     case 'short':front='<path d="M35 45c0-17 11-25 25-25s25 8 25 25c-5-5-9-8-13-9-6 4-16 5-25 3-5 1-9 3-12 6z" fill="'+h+'"/>';break;
     case 'side':front='<path d="M35 46c0-18 11-26 25-26 15 0 25 9 25 24-9-7-22-10-34-8-6 1-11 5-16 10z" fill="'+h+'"/><path d="M48 26c8 1 16 5 22 12" stroke="'+ink+'" stroke-opacity=".18" stroke-width="2" fill="none"/>';break;
+    case 'fade':front='<defs><linearGradient id="fd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+h+'" stop-opacity=".55"/><stop offset="1" stop-color="'+h+'" stop-opacity="0"/></linearGradient></defs><path d="M35 42c1-6 3-10 6-13l1 22c-3-2-6-5-7-9zM85 42c-1-6-3-10-6-13l-1 22c3-2 6-5 7-9z" fill="url(#fd)"/><path d="M40 40c1-15 10-21 20-21s19 6 20 21c-5-4-12-6-20-6s-15 2-20 6z" fill="'+h+'"/>';break;
+    case 'mullet':back='<path d="M36 56c-1 15 0 26 5 33 4-2 11-3 19-3s15 1 19 3c5-7 6-18 5-33z" fill="'+h+'"/>';front='<path d="M35 45c0-17 11-25 25-25s25 8 25 25c-5-5-9-8-13-9-6 4-16 5-25 3-5 1-9 3-12 6z" fill="'+h+'"/>';break;
     case 'buzz':front='<path d="M36 44c1-15 11-22 24-22s23 7 24 22c-7-4-15-6-24-6s-17 2-24 6z" fill="'+h+'" opacity=".55"/>';break;
     case 'curly':front='<g fill="'+h+'"><circle cx="40" cy="36" r="8"/><circle cx="50" cy="28" r="9"/><circle cx="62" cy="25" r="9"/><circle cx="74" cy="29" r="9"/><circle cx="82" cy="38" r="8"/><circle cx="36" cy="46" r="6"/><circle cx="85" cy="47" r="6"/></g>';break;
     case 'scarf':back='<path d="M27 60c0-27 14-42 33-42s33 15 33 42v18c0 12-12 22-33 24-21-2-33-12-33-24z" fill="'+wrap+'"/><path d="M30 92c8-6 18-8 30-8s22 2 30 8l-4 28H34z" fill="'+wrap+'"/>';front='<path d="M34 52c1-18 12-28 26-28s25 10 26 28c-5-7-14-12-26-12s-21 5-26 12z" fill="'+wrap+'"/><path d="M37 62c3 15 11 22 23 23-13 2-22-6-25-16z M83 62c-3 15-11 22-23 23 13 2 22-6 25-16z" fill="'+wrap+'"/><path d="M38 44c7-6 14-9 22-9" stroke="#fff" stroke-opacity=".25" stroke-width="2" fill="none" stroke-linecap="round"/>';break;
@@ -4536,19 +4539,24 @@ function avatarSvg(o){
   const eyes='<circle cx="51" cy="52" r="3" fill="'+ink+'"/><circle cx="69" cy="52" r="3" fill="'+ink+'"/>';
   const brows=cover?'':'<path d="M46 45c3-2 7-2 9 0M65 45c3-2 7-2 9 0" stroke="'+(o.hair==='bald'?ink:h)+'" stroke-opacity="'+(o.hair==='bald'?'.35':'1')+'" stroke-width="2.6" fill="none" stroke-linecap="round"/>';
   const smile=o.face==='beard'?'':'<path d="M53 66c4 4 10 4 14 0" stroke="'+ink+'" stroke-width="2.6" fill="none" stroke-linecap="round"/>';
+  const freckles=o.freckles?'<g fill="#7A4A2C" fill-opacity=".45"><circle cx="45" cy="60" r="1.2"/><circle cx="48.5" cy="62" r="1.2"/><circle cx="44" cy="63.5" r="1.1"/><circle cx="75" cy="60" r="1.2"/><circle cx="71.5" cy="62" r="1.2"/><circle cx="76" cy="63.5" r="1.1"/></g>':'';
+  const earrings=o.earrings&&!cover?'<circle cx="35" cy="61" r="2.6" fill="#E9C46A" stroke="'+ink+'" stroke-width="1"/><circle cx="85" cy="61" r="2.6" fill="#E9C46A" stroke="'+ink+'" stroke-width="1"/>':'';
   const glasses=o.glasses?'<g fill="none" stroke="'+ink+'" stroke-width="2.4"><circle cx="51" cy="52" r="7.5"/><circle cx="69" cy="52" r="7.5"/><path d="M58.5 52h3M43.5 51l-6-2M76.5 51l6-2"/></g>':'';
-  const band=o.band&&!cover?'<path d="M35 40c8-4 16-6 25-6s17 2 25 6v7c-8-4-16-6-25-6s-17 2-25 6z" fill="#DFFF32" stroke="'+ink+'" stroke-width="1.5"/>':'';
+  const hw=cover?'none':(o.head||(o.band?'band':'none'));
+  const visor=hw==='visor'?'<path d="M34 41c8-4 17-6 26-6s18 2 26 6v6c-8-4-17-6-26-6s-18 2-26 6z" fill="#FFFFFF" stroke="'+ink+'" stroke-width="1.5"/><path d="M34 44c12 2 40 2 52 0 6 1 10 4 11 6-20-3-54-3-74 0 1-2 5-5 11-6z" fill="'+top+'" stroke="'+ink+'" stroke-width="1.5"/>':'';
+  const cap=hw==='cap'?'<path d="M33 45c0-17 12-27 27-27s27 10 27 27z" fill="'+top+'" stroke="'+ink+'" stroke-width="1.5"/><path d="M33 45h54c7 0 13 3 15 7-22-4-50-4-69-7z" fill="'+top+'" stroke="'+ink+'" stroke-width="1.5"/><circle cx="60" cy="19" r="2.5" fill="'+ink+'"/>':'';
+  const band=hw==='band'?'<path d="M35 40c8-4 16-6 25-6s17 2 25 6v7c-8-4-16-6-25-6s-17 2-25 6z" fill="#DFFF32" stroke="'+ink+'" stroke-width="1.5"/>':'';
   return'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><defs><clipPath id="c"><circle cx="60" cy="60" r="60"/></clipPath></defs><g clip-path="url(#c)"><rect width="120" height="120" fill="'+bg+'"/>'+back+
     '<path d="M18 120c3-22 20-32 42-32s39 10 42 32z" fill="'+top+'"/><path d="M52 80h16v10c-3 4-13 4-16 0z" fill="'+s+'"/>'+
     (cover?'':'<circle cx="35" cy="55" r="5" fill="'+s+'"/><circle cx="85" cy="55" r="5" fill="'+s+'"/>')+
-    '<ellipse cx="60" cy="54" rx="25" ry="28" fill="'+s+'"/>'+face+eyes+brows+smile+glasses+front+band+'</g></svg>';
+    '<ellipse cx="60" cy="54" rx="25" ry="28" fill="'+s+'"/>'+face+freckles+eyes+brows+smile+glasses+earrings+(hw==='cap'?'':front)+band+visor+cap+'</g></svg>';
 }
 function svgToPhoto(svg){
   return new Promise(res=>{const i=new Image();i.onload=()=>{const c=document.createElement('canvas');c.width=c.height=360;const x=c.getContext('2d');x.drawImage(i,0,0,360,360);res(c.toDataURL('image/jpeg',.9))};i.onerror=()=>res('');i.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)});
 }
 let avDraft=null,avTarget='profile';
 function openAvatar(target){
-  avTarget=target;avDraft=Object.assign({},AV_DEF,PROF.avatar||{});renderAvatar();
+  avTarget=target;avDraft=Object.assign({},AV_DEF,PROF.avatar||{});if(avDraft.band&&avDraft.head==='none')avDraft.head='band';delete avDraft.band;renderAvatar();
   if(target==='profile')hideSheet();showSheet('avatarSheet');
 }
 function renderAvatar(){
@@ -4559,12 +4567,13 @@ function renderAvatar(){
   $('avOptions').innerHTML='<p class="lbl">Skin tone</p>'+sw('skin',AV.skin)+'<p class="lbl">Hair</p>'+chips('hair',AV.hair)+
     (o.hair==='scarf'||o.hair==='turban'?'<p class="lbl">'+(o.hair==='scarf'?'Headscarf':'Turban')+' colour</p>'+sw('wrap',AV.wrap)+'<p class="lbl">Brow and beard colour</p>'+sw('hairCol',AV.hairCol):o.hair==='bald'?'':'<p class="lbl">Hair colour</p>'+sw('hairCol',AV.hairCol))+
     '<p class="lbl">Facial hair</p>'+chips('face',AV.face)+
-    '<p class="lbl">Extras</p><div class="avchips"><button data-t="glasses" aria-pressed="'+o.glasses+'">Glasses</button><button data-t="band" aria-pressed="'+o.band+'">Sweatband</button></div>'+
+    (o.hair==='scarf'||o.hair==='turban'?'':'<p class="lbl">Headwear</p>'+chips('head',AV.head))+
+    '<p class="lbl">Extras</p><div class="avchips"><button data-t="glasses" aria-pressed="'+!!o.glasses+'">Glasses</button><button data-t="freckles" aria-pressed="'+!!o.freckles+'">Freckles</button><button data-t="earrings" aria-pressed="'+!!o.earrings+'">Earrings</button></div>'+
     '<p class="lbl">Top</p>'+sw('top',AV.top)+'<p class="lbl">Background</p>'+sw('bg',AV.bg);
   $('avOptions').querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{const k=b.dataset.k;o[k]=b.dataset.s!==undefined?b.dataset.s:+b.dataset.v;renderAvatar()});
   $('avOptions').querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{o[b.dataset.t]=!o[b.dataset.t];renderAvatar()});
 }
-$('avRandom').onclick=()=>{const r=n=>Math.floor(Math.random()*n);avDraft={skin:r(6),hair:AV.hair[r(AV.hair.length)][0],hairCol:r(6),face:AV.face[r(4)][0],glasses:Math.random()<.25,band:Math.random()<.3,bg:r(6),top:r(6),wrap:r(6)};renderAvatar()};
+$('avRandom').onclick=()=>{const r=n=>Math.floor(Math.random()*n);avDraft={skin:r(6),hair:AV.hair[r(AV.hair.length)][0],hairCol:r(6),face:AV.face[r(4)][0],glasses:Math.random()<.25,freckles:Math.random()<.2,earrings:Math.random()<.25,head:Math.random()<.5?'none':AV.head[1+r(3)][0],bg:r(6),top:r(6),wrap:r(6)};renderAvatar()};
 $('avUse').onclick=async()=>{
   const img=await svgToPhoto(avatarSvg(avDraft));if(!img){toast('Couldn\'t make that avatar. Try again.');return}
   if(avTarget==='welcome'){obPhoto=img;PROF.avatar=Object.assign({},avDraft);obSyncPhoto();$('avatarSheet').classList.remove('on');$('scrim').classList.remove('on');openSheet=null}
