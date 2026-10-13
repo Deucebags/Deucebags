@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="33">
+<meta name="app-version" content="3.7">
 <title>Deucebags</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="favicon-64.png">
@@ -133,6 +133,23 @@ button{cursor:pointer;font-family:var(--heading)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---- additions ---- */
+.builtby{font-family:var(--heading);font-weight:600;font-size:12.5px;letter-spacing:.2px;color:var(--muted);opacity:.85;margin:6px 0 0}
+.obstep .builtby{font-size:12px;opacity:.65;margin-top:10px}
+#avatarSheet{z-index:21}
+.avtop{display:flex;align-items:center;gap:16px;margin-bottom:12px}
+.avprev{width:120px;height:120px;flex:none;border-radius:50%;box-shadow:0 0 0 4px var(--navy);overflow:hidden;animation:pop .35s cubic-bezier(.3,1.5,.5,1)}
+.avprev svg{width:100%;height:100%;display:block}
+.avopts .lbl{display:block;font-family:var(--heading);font-weight:600;font-size:15px;color:var(--navy);margin:14px 0 8px}
+.swatches{display:flex;flex-wrap:wrap;gap:10px}
+.swatch{width:40px;height:40px;border-radius:50%;border:3px solid var(--white);box-shadow:0 0 0 2px var(--line);padding:0}
+.swatch[aria-pressed="true"]{box-shadow:0 0 0 3px var(--navy)}
+.avchips{display:flex;flex-wrap:wrap;gap:6px}
+.avchips button{border:2px solid var(--line);background:var(--white);border-radius:999px;padding:8px 13px;font-weight:600;font-size:14px;color:var(--navy)}
+.avchips button[aria-pressed="true"]{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.obpbtns{display:grid;gap:8px}
+.selectin{width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px;background:var(--field);font:inherit;font-size:16px;color:var(--navy)}
+.flag-e{font-size:.8em}
+.bio{white-space:pre-line;overflow-wrap:anywhere}
 .inprog{flex-wrap:wrap}
 .inbtns{flex-wrap:wrap}
 .inprog .inbtns .secondary{padding:9px 11px;font-size:14px}
@@ -966,11 +983,12 @@ button{transition:transform .12s ease}
 
 <section class="sheet" id="profSheet" aria-label="Edit your profile">
   <h3>Your profile</h3>
-  <div class="phedit"><div id="pePhoto"></div><div class="btns"><button class="secondary" id="peChange">Change photo</button><button class="linkbtn" id="peRemove">Remove photo</button></div></div>
+  <div class="phedit"><div id="pePhoto"></div><div class="btns"><button class="secondary" id="peChange">Upload a photo</button><button class="secondary" id="peAvatar">Make an avatar</button><button class="linkbtn" id="peRemove">Remove picture</button></div></div>
   <input type="file" id="peFile" accept="image/*" class="hide">
   <div class="field"><label for="peName">Name you play under</label><input type="text" id="peName" list="playerNames" maxlength="20" autocomplete="off" placeholder="For example, Raza"><p class="help">Use the same name you add to matches so your stats link up.</p></div>
   <div class="field"><label for="peUser">Username</label><input type="text" id="peUser" maxlength="24" autocomplete="off" placeholder="@yourname"></div>
-  <div class="field"><label for="peBio">Bio</label><textarea id="peBio" maxlength="160" placeholder="A line about you and your game"></textarea><p class="help" id="peBioCount"></p></div>
+  <div class="field"><label for="peCountry">Flag (optional)</label><select id="peCountry" class="selectin"><option value="">Prefer not to say</option></select><p class="help">Shows next to your name. Pick a country or UK nation, or leave it blank.</p></div>
+  <div class="field"><label for="peBio">Bio</label><textarea id="peBio" maxlength="160" rows="3" enterkeyhint="enter" placeholder="A line or two about you and your game"></textarea><p class="help" id="peBioCount"></p></div>
   <div class="field"><span class="lbl">Side you play</span><div class="seg three" id="peSide"><button data-v="Left">Left</button><button data-v="Right">Right</button><button data-v="Either">Either</button></div></div>
   <div class="field"><span class="lbl">Playing hand</span><div class="seg" id="peHand"><button data-v="Right-handed">Right-handed</button><button data-v="Left-handed">Left-handed</button></div></div>
   <div class="field"><span class="lbl">Level</span><div class="optgrid" id="peLevel"></div></div>
@@ -1026,7 +1044,7 @@ button{transition:transform .12s ease}
 <p>The app is hosted on GitHub Pages and loads its fonts from Google Fonts and its QR code tool from Cloudflare. Like any website, those services can see your device's IP address when the app loads. They don't receive any of your scores, videos or profile.</p>
 <h4>Questions</h4>
 <p>Ask the person who shared Deucebags with you. You can delete everything at any time by clearing the app's data.</p>
-<p class="pv-date">Last updated October 2026.</p>
+<p class="pv-date">Deucebags is made by Raza Rebuilt. Last updated October 2026.</p>
 </div>
   <div class="btns"><button class="secondary" id="privacyClose">Close</button></div>
 </section>
@@ -1113,6 +1131,13 @@ button{transition:transform .12s ease}
   <div class="btns"><button class="secondary" id="rulesClose">Got it</button></div>
 </section>
 
+<section class="sheet" id="avatarSheet" aria-label="Make an avatar">
+  <h3>Make your avatar</h3>
+  <div class="avtop"><div class="avprev" id="avPreview"></div><button class="secondary" id="avRandom">Surprise me</button></div>
+  <div id="avOptions" class="avopts"></div>
+  <div class="btns"><button class="primary" id="avUse">Use this avatar</button><button class="secondary" id="avCancel">Cancel</button></div>
+</section>
+
 <section class="sheet" id="recapSheet" aria-label="Your week in padel">
   <h3 id="recapTitle">Your week in padel</h3>
   <div class="seg three" id="recapSeg" style="margin-bottom:14px"><button data-v="7">Week</button><button data-v="30">Month</button><button data-v="365">Year</button></div>
@@ -1145,7 +1170,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
   <input type="file" id="restoreFile" accept="application/json,.json" class="hide">
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags version 33</p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v3.7<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -1253,11 +1278,12 @@ button{transition:transform .12s ease}
       <h2>Score it. Film it. Keep the bragging rights.</h2>
       <p>Keep score, film your matches and track every result, rating and achievement. It all stays on your phone.</p>
       <div class="btns"><button class="primary" id="obStart">Get started</button><button class="linkbtn" id="obSkip">Skip</button></div>
+      <p class="builtby">Made by Raza Rebuilt</p>
     </div>
     <div class="obstep">
       <h2>What should we call you?</h2>
       <p>Use the name your friends know you by. It's how we link up your stats and achievements.</p>
-      <div class="obphoto"><div id="obPhoto"></div><button class="secondary" id="obPhotoBtn">Add a photo</button></div>
+      <div class="obphoto"><div id="obPhoto"></div><div class="obpbtns"><button class="secondary" id="obPhotoBtn">Add a photo</button><button class="secondary" id="obAvatarBtn">Make an avatar</button></div></div>
       <input type="file" id="obFile" accept="image/*" class="hide">
       <input type="text" class="obinput" id="obName" list="playerNames" maxlength="20" autocomplete="off" placeholder="Your name" aria-label="Your name">
       <div class="btns"><button class="primary" id="obNext">Continue</button><button class="linkbtn" id="obSkip2">Skip for now</button></div>
@@ -2434,7 +2460,7 @@ function renderLeague(){
   $('leagueBody').innerHTML='<p class="help" style="margin:0 2px 10px">Everyone starts on 1,000. Win and your rating goes up, lose and it goes down. Beating a higher-rated pair earns you more. A rotation set counts for half. <button class="linkbtn inl" id="rateHelp">How ratings work</button></p>'+
   '<label class="livetoggle"><input type="checkbox" id="liveOnly"'+(store.get('db-live-only')===true?' checked':'')+'> Only count matches scored live (ignore results added by hand)</label>'+
   '<div class="tablewrap"><table class="grid"><thead><tr><th>#</th><th>Player</th><th>Rating</th><th>Played</th><th>Won</th><th>Lost</th><th>Win rate</th><th>Form</th><th>Last match</th></tr></thead><tbody>'+
-  L.map((p,i)=>'<tr data-p="'+esc(p.key)+'"><td class="rank r'+(i+1)+'">'+(i+1)+'</td><td><b>'+esc(p.name)+'</b></td><td class="num"><b>'+Math.round(p.rating)+'</b></td><td class="num">'+p.p+'</td><td class="num">'+p.w+'</td><td class="num">'+p.l+'</td><td class="num">'+Math.round(p.w/Math.max(1,p.p)*100)+'%</td><td>'+formDots(p.form)+'</td><td class="num '+(p.delta>=0?'up':'down')+'">'+(p.delta>=0?'+':'')+Math.round(p.delta)+'</td></tr>').join('')+
+  L.map((p,i)=>'<tr data-p="'+esc(p.key)+'"><td class="rank r'+(i+1)+'">'+(i+1)+'</td><td><b>'+esc(p.name)+'</b>'+(flagFor(p.key)?' '+flagFor(p.key):'')+'</td><td class="num"><b>'+Math.round(p.rating)+'</b></td><td class="num">'+p.p+'</td><td class="num">'+p.w+'</td><td class="num">'+p.l+'</td><td class="num">'+Math.round(p.w/Math.max(1,p.p)*100)+'%</td><td>'+formDots(p.form)+'</td><td class="num '+(p.delta>=0?'up':'down')+'">'+(p.delta>=0?'+':'')+Math.round(p.delta)+'</td></tr>').join('')+
   '</tbody></table></div>';
   $('leagueBody').querySelectorAll('tbody tr').forEach(tr=>tr.onclick=()=>openPlayer(tr.dataset.p));
   $('rateHelp').onclick=openRatingHelp;
@@ -2443,7 +2469,7 @@ function renderLeague(){
 function renderPlayers(){
   const L=computeLeague(RES.group);
   if(!L.length){$('playersBody').innerHTML='<p class="empty">Players show up here once you add names to a match. Partners can change every game. Everyone keeps their own record.</p>';return}
-  $('playersBody').innerHTML='<div class="pgrid">'+L.map((p,i)=>'<button class="pcard" data-p="'+esc(p.key)+'" style="--i:'+i+'">'+(p.key===pkey(PROF.name||'\u0000')&&PROF.photo?'<img class="pav" src="'+PROF.photo+'" alt="">':friendOf(p.key)&&friendOf(p.key).photo?'<img class="pav" src="'+friendOf(p.key).photo+'" alt="">':'<span class="pav">'+esc(initials(p.name))+'</span>')+'<span class="pname">'+esc(p.name)+'</span><span class="pmeta">'+Math.round(p.rating)+' rating, '+p.w+'–'+p.l+(Object.keys(p.badges||{}).length?', ★ '+Object.keys(p.badges).length:'')+(p.key===meKey()?' (you)':'')+'</span>'+formDots(p.form)+'</button>').join('')+'</div>';
+  $('playersBody').innerHTML='<div class="pgrid">'+L.map((p,i)=>'<button class="pcard" data-p="'+esc(p.key)+'" style="--i:'+i+'">'+(p.key===pkey(PROF.name||'\u0000')&&PROF.photo?'<img class="pav" src="'+PROF.photo+'" alt="">':friendOf(p.key)&&friendOf(p.key).photo?'<img class="pav" src="'+friendOf(p.key).photo+'" alt="">':'<span class="pav">'+esc(initials(p.name))+'</span>')+'<span class="pname">'+esc(p.name)+(flagFor(p.key)?' '+flagFor(p.key):'')+'</span><span class="pmeta">'+Math.round(p.rating)+' rating, '+p.w+'–'+p.l+(Object.keys(p.badges||{}).length?', ★ '+Object.keys(p.badges).length:'')+(p.key===meKey()?' (you)':'')+'</span>'+formDots(p.form)+'</button>').join('')+'</div>';
   $('playersBody').querySelectorAll('.pcard').forEach(b=>b.onclick=()=>openPlayer(b.dataset.p));
 }
 const initials=n=>n.split(/\s+|&/).filter(Boolean).slice(0,2).map(s=>s[0].toUpperCase()).join('');
@@ -2462,7 +2488,7 @@ function openPlayer(key){
   const victim=Object.values(p.opps).filter(o=>o.w>0).sort((a,b)=>b.w-a.w)[0];
   const card=(v,l,n)=>'<div class="card" style="--i:'+n+'"><b>'+v+'</b><span>'+l+'</span></div>';
   const line=(label,val)=>val?'<tr><td>'+label+'</td><td>'+val+'</td></tr>':'';
-  $('playerTitle').textContent=p.name;
+  $('playerTitle').textContent=p.name+(flagFor(key)?' '+flagFor(key):'');
   const recent=p.matches.slice(-5).reverse().map(id=>{const h=history.find(x=>x.id===id);if(!h)return'';const r=rowOf(h);
     const side=members(r.cfg,0).some(n=>pkey(n)===key)?0:1;const won=r.winner===side;
     return'<li><button class="linkrow" data-id="'+r.id+'"><span class="res '+(won?'w':'l')+'">'+(won?'W':'L')+'</span><span>'+esc(side===0?r.b:r.a)+'</span><span class="sc">'+esc(side===0?r.score:r.score.replace(/(\d+)–(\d+)/g,'$2–$1'))+'</span></button></li>'}).join('');
@@ -3271,7 +3297,7 @@ function renderProfile(){
   const card=(v,l,n)=>'<div class="card" style="--i:'+n+'"><b>'+v+'</b><span>'+l+'</span></div>';
   const partner=Object.values(p.partners||{}).sort((a,b)=>(b.w/b.p)-(a.w/a.p)||b.p-a.p)[0];
   const nemesis=Object.values(p.opps||{}).filter(o=>o.l>0).sort((a,b)=>b.l-a.l)[0];
-  box.innerHTML='<div class="profhero">'+avatar('pav big',PROF.name,PROF.photo)+'<div class="phinfo"><h3>'+esc(PROF.name)+'</h3>'+(PROF.username?'<span class="handle">@'+esc(PROF.username)+'</span>':'')+'</div><button class="mini" id="profEdit">Edit</button></div>'+
+  box.innerHTML='<div class="profhero">'+avatar('pav big',PROF.name,PROF.photo)+'<div class="phinfo"><h3>'+esc(PROF.name)+(PROF.country?' <span class="flag-e" title="'+esc(countryName(PROF.country))+'">'+flagOf(PROF.country)+'</span>':'')+'</h3>'+(PROF.username?'<span class="handle">@'+esc(PROF.username)+'</span>':'')+'</div><button class="mini" id="profEdit">Edit</button></div>'+
     (PROF.bio?'<p class="bio">'+esc(PROF.bio)+'</p>':'')+
     (chips.length?'<div class="pchips">'+chips.map(c=>'<span>'+esc(c)+'</span>').join('')+'</div>':'')+
     (socials?'<div class="socials">'+socials+'</div>':'')+
@@ -3291,6 +3317,7 @@ function openProfEdit(){
   $('peName').value=PROF.name;$('peUser').value=PROF.username;$('peBio').value=PROF.bio;$('peClub').value=PROF.club;$('peRacket').value=PROF.racket;$('peSince').value=PROF.since;
   SOCIALS.forEach(([k])=>$('pe_'+k).value=PROF[k]);
   ['peSide','peHand','peLevel','peShot'].forEach(id=>setSeg(id,PROF[{peSide:'side',peHand:'hand',peLevel:'level',peShot:'shot'}[id]]));
+  fillCountries();$('peCountry').value=PROF.country||'';pendingAvatar=null;
   peSyncPhoto();peCount();fillNameList();showSheet('profSheet');
 }
 function peSyncPhoto(){$('pePhoto').innerHTML=avatar('pav big',$('peName').value||PROF.name,draftPhoto);$('peRemove').classList.toggle('hide',!draftPhoto)}
@@ -3301,6 +3328,7 @@ $('peLevel').innerHTML=LEVELS.map(l=>'<button data-v="'+esc(l)+'">'+esc(l)+'</bu
 $('peShot').innerHTML=SHOTS.map(l=>'<button data-v="'+esc(l)+'">'+esc(l)+'</button>').join('');
 document.querySelectorAll('#peLevel button,#peShot button').forEach(b=>b.onclick=()=>{const g=b.parentElement;const on=b.getAttribute('aria-pressed')==='true';g.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));if(!on)b.setAttribute('aria-pressed','true')});
 $('peChange').onclick=()=>$('peFile').click();
+$('peAvatar').onclick=()=>openAvatar('profile');
 $('peRemove').onclick=()=>{draftPhoto='';peSyncPhoto()};
 $('peFile').onchange=async e=>{
   const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
@@ -3309,16 +3337,16 @@ $('peFile').onchange=async e=>{
   if(!ok){URL.revokeObjectURL(url);toast('That photo couldn\'t be opened. Try a JPG or PNG.');return}
   const s=Math.min(img.naturalWidth,img.naturalHeight),c=document.createElement('canvas');c.width=c.height=360;
   c.getContext('2d').drawImage(img,(img.naturalWidth-s)/2,(img.naturalHeight-s)/2,s,s,0,0,360,360);
-  draftPhoto=c.toDataURL('image/jpeg',.85);URL.revokeObjectURL(url);peSyncPhoto();
+  draftPhoto=c.toDataURL('image/jpeg',.85);pendingAvatar=null;URL.revokeObjectURL(url);peSyncPhoto();
 };
 const segVal=id=>{const b=document.querySelector('#'+id+' button[aria-pressed="true"]');return b?b.dataset.v:''};
 $('peSave').onclick=()=>{
   const name=tidyName($('peName').value),oldId=PROF.id;
   if(!name){toast('Add the name you play under first.');$('peName').focus();return}
   if(FRIENDS.some(f=>f.key===pkey(name))){toast('One of your friends already goes by '+name+'. Pick something that tells you apart.');return}
-  PROF={photo:draftPhoto,name,username:cleanHandle($('peUser').value),bio:$('peBio').value.trim().slice(0,160),
+  PROF={photo:draftPhoto,name,username:cleanHandle($('peUser').value),bio:$('peBio').value.replace(/\r/g,'').replace(/\n{3,}/g,'\n\n').trim().slice(0,160),
     side:segVal('peSide'),hand:segVal('peHand'),level:segVal('peLevel'),club:$('peClub').value.trim(),racket:$('peRacket').value.trim(),
-    since:($('peSince').value||'').replace(/\D/g,'').slice(0,4),shot:segVal('peShot')};
+    since:($('peSince').value||'').replace(/\D/g,'').slice(0,4),shot:segVal('peShot'),country:$('peCountry').value,avatar:pendingAvatar||PROF.avatar||null};
   SOCIALS.forEach(([k])=>PROF[k]=cleanHandle($('pe_'+k).value));
   PROF.id=PROF.id||oldId||newId();
   try{saveProf()}catch(e){}
@@ -3329,7 +3357,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='33';
+const APP_VERSION='3.7';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -3351,7 +3379,7 @@ async function checkUpdates(){
     const m=(await r.text()).match(/name="app-version" content="([^"]+)"/);
     const latest=m?m[1]:APP_VERSION;
     if(latest===APP_VERSION){toast('You\'re on the latest version.');return}
-    if(!(await ask('Update ready','Version '+latest+' is ready. Your scores, results, profile and videos stay exactly as they are.','Update now',false)))return;
+    if(!(await ask('Update ready','v'+latest+' is ready. Your scores, results, profile and videos stay exactly as they are.','Update now',false)))return;
     if(rec){toast('Stop recording first, then update.');return}
     if(ED.busy){toast('Wait for your clip to finish, then update.');return}
     const reg=await navigator.serviceWorker.getRegistration();if(reg)await reg.update();
@@ -3399,12 +3427,12 @@ function smallPhoto(src,size){
 }
 async function myCard(withPhoto){
   if(!PROF.id){PROF.id=newId();saveProf()}
-  const c={v:1,i:PROF.id,n:PROF.name,u:PROF.username,b:PROF.bio,s:PROF.side,h:PROF.hand,l:PROF.level,c:PROF.club,r:PROF.racket,y:PROF.since,f:PROF.shot,ig:PROF.ig,tt:PROF.tiktok,x:PROF.x,yt:PROF.yt};
+  const c={v:1,i:PROF.id,n:PROF.name,u:PROF.username,b:PROF.bio,s:PROF.side,h:PROF.hand,l:PROF.level,c:PROF.club,r:PROF.racket,y:PROF.since,f:PROF.shot,co:PROF.country,ig:PROF.ig,tt:PROF.tiktok,x:PROF.x,yt:PROF.yt};
   Object.keys(c).forEach(k=>{if(!c[k])delete c[k]});
   if(withPhoto&&PROF.photo)c.p=await smallPhoto(PROF.photo,96);
   return c;
 }
-const cardToFriend=c=>({id:c.i||'',key:pkey(c.n),name:c.n,username:c.u||'',bio:c.b||'',side:c.s||'',hand:c.h||'',level:c.l||'',club:c.c||'',racket:c.r||'',since:c.y||'',shot:c.f||'',ig:c.ig||'',tiktok:c.tt||'',x:c.x||'',yt:c.yt||'',photo:c.p||''});
+const cardToFriend=c=>({id:c.i||'',key:pkey(c.n),name:c.n,username:c.u||'',bio:c.b||'',side:c.s||'',hand:c.h||'',level:c.l||'',club:c.c||'',racket:c.r||'',since:c.y||'',shot:c.f||'',country:c.co||'',ig:c.ig||'',tiktok:c.tt||'',x:c.x||'',yt:c.yt||'',photo:c.p||''});
 
 /* --- share my friend code --- */
 let qrLib=null,friendLink='';
@@ -3569,7 +3597,7 @@ function friendHeader(f){
   const chips=[];if(f.side)chips.push(f.side==='Either'?'Plays either side':'Plays on the '+f.side.toLowerCase());if(f.hand)chips.push(f.hand);if(f.level)chips.push(f.level);
   if(f.club)chips.push('Home club: '+f.club);if(f.racket)chips.push('Racket: '+f.racket);if(f.since)chips.push('Playing since '+f.since);if(f.shot)chips.push('Favourite shot: '+f.shot);
   const soc=SOCIALS.filter(([k])=>f[k]).map(([k,l,u])=>'<a class="soc" href="'+u(f[k])+'" target="_blank" rel="noopener">'+SOC_ICON[k]+'<span>'+l+'</span></a>').join('');
-  return'<div class="inprof">'+avatar('pav big',f.name,f.photo)+'<div><b>'+esc(f.name)+'</b>'+(f.username?'<span>@'+esc(f.username)+'</span>':'')+'<span class="frtag">Friend</span></div></div>'+
+  return'<div class="inprof">'+avatar('pav big',f.name,f.photo)+'<div><b>'+esc(f.name)+(f.country?' '+flagOf(f.country):'')+'</b>'+(f.username?'<span>@'+esc(f.username)+'</span>':'')+'<span class="frtag">Friend</span></div></div>'+
     (f.bio?'<p class="bio">'+esc(f.bio)+'</p>':'')+(chips.length?'<div class="pchips">'+chips.map(c=>'<span>'+esc(c)+'</span>').join('')+'</div>':'')+(soc?'<div class="socials">'+soc+'</div>':'')+'<div style="height:14px"></div>';
 }
 function openFriend(key){
@@ -3598,6 +3626,7 @@ function openWelcome(){
 function obSyncPhoto(){$('obPhoto').innerHTML=avatar('pav big',$('obName').value||'?',obPhoto);$('obPhotoBtn').textContent=obPhoto?'Change photo':'Add a photo'}
 $('obName').oninput=obSyncPhoto;
 $('obPhotoBtn').onclick=()=>$('obFile').click();
+$('obAvatarBtn').onclick=()=>openAvatar('welcome');
 $('obFile').onchange=async e=>{
   const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
   const url=URL.createObjectURL(f),img=new Image();
@@ -4471,6 +4500,92 @@ function progressHtml(key){
 }
 
 $('rulesClose').onclick=()=>hideSheet();
+
+/* ================= avatar maker ================= */
+const AV={
+  skin:['#F6D5C1','#EBBB98','#D49B6E','#B07650','#875233','#5A3825'],
+  hairCol:['#1E1A18','#3B2A20','#6B4A2E','#93432A','#D7AE5F','#A3A8AE'],
+  bg:['#7FC8F8','#DFFF32','#183B60','#EAF7FF','#FFB3C7','#B9F0D0'],
+  top:['#071B33','#DFFF32','#FFFFFF','#7FC8F8','#E8505B','#2E9D6A'],
+  wrap:['#183B60','#2E9D6A','#E8505B','#6E4AA0','#C9A227','#F2EDE4'],
+  hair:[['short','Short'],['side','Side part'],['buzz','Buzz cut'],['curly','Curly'],['afro','Afro'],['medium','Medium'],['long','Long'],['bun','Bun'],['ponytail','Ponytail'],['bald','No hair'],['scarf','Headscarf'],['turban','Turban']],
+  face:[['none','None'],['stubble','Stubble'],['beard','Beard'],['moustache','Moustache']]
+};
+const AV_DEF={skin:2,hair:'short',hairCol:1,face:'none',glasses:false,band:false,bg:0,top:0,wrap:0};
+function avatarSvg(o){
+  const s=AV.skin[o.skin],h=AV.hairCol[o.hairCol],bg=AV.bg[o.bg],top=AV.top[o.top];
+  const ink='#071B33',cover=o.hair==='scarf'||o.hair==='turban',wrap=AV.wrap[o.wrap||0];
+  let back='',front='';
+  switch(o.hair){
+    case 'afro':back='<circle cx="60" cy="44" r="36" fill="'+h+'"/>';break;
+    case 'long':back='<path d="M30 50c0-22 13-34 30-34s30 12 30 34v44H30z" fill="'+h+'"/>';front='<path d="M34 46c2-17 12-25 26-25s24 8 26 25c-7-6-15-10-26-10S41 40 34 46z" fill="'+h+'"/>';break;
+    case 'medium':back='<path d="M32 50c0-21 12-32 28-32s28 11 28 32v20H32z" fill="'+h+'"/>';front='<path d="M34 46c2-17 12-25 26-25s24 8 26 25c-8-5-16-8-26-8S42 41 34 46z" fill="'+h+'"/>';break;
+    case 'ponytail':back='<path d="M80 34c12 4 16 18 10 34-3-10-8-16-14-19z" fill="'+h+'"/>';front='<path d="M34 46c1-18 12-26 26-26s25 8 26 26c-8-6-16-9-26-9S42 40 34 46z" fill="'+h+'"/>';break;
+    case 'bun':back='<circle cx="60" cy="18" r="10" fill="'+h+'"/>';front='<path d="M34 46c1-18 12-26 26-26s25 8 26 26c-8-6-16-9-26-9S42 40 34 46z" fill="'+h+'"/>';break;
+    case 'short':front='<path d="M35 45c0-17 11-25 25-25s25 8 25 25c-5-5-9-8-13-9-6 4-16 5-25 3-5 1-9 3-12 6z" fill="'+h+'"/>';break;
+    case 'side':front='<path d="M35 46c0-18 11-26 25-26 15 0 25 9 25 24-9-7-22-10-34-8-6 1-11 5-16 10z" fill="'+h+'"/><path d="M48 26c8 1 16 5 22 12" stroke="'+ink+'" stroke-opacity=".18" stroke-width="2" fill="none"/>';break;
+    case 'buzz':front='<path d="M36 44c1-15 11-22 24-22s23 7 24 22c-7-4-15-6-24-6s-17 2-24 6z" fill="'+h+'" opacity=".55"/>';break;
+    case 'curly':front='<g fill="'+h+'"><circle cx="40" cy="36" r="8"/><circle cx="50" cy="28" r="9"/><circle cx="62" cy="25" r="9"/><circle cx="74" cy="29" r="9"/><circle cx="82" cy="38" r="8"/><circle cx="36" cy="46" r="6"/><circle cx="85" cy="47" r="6"/></g>';break;
+    case 'scarf':back='<path d="M27 60c0-27 14-42 33-42s33 15 33 42v18c0 12-12 22-33 24-21-2-33-12-33-24z" fill="'+wrap+'"/><path d="M30 92c8-6 18-8 30-8s22 2 30 8l-4 28H34z" fill="'+wrap+'"/>';front='<path d="M34 52c1-18 12-28 26-28s25 10 26 28c-5-7-14-12-26-12s-21 5-26 12z" fill="'+wrap+'"/><path d="M37 62c3 15 11 22 23 23-13 2-22-6-25-16z M83 62c-3 15-11 22-23 23 13 2 22-6 25-16z" fill="'+wrap+'"/><path d="M38 44c7-6 14-9 22-9" stroke="#fff" stroke-opacity=".25" stroke-width="2" fill="none" stroke-linecap="round"/>';break;
+    case 'turban':front='<path d="M32 46c0-19 12-30 28-30s28 11 28 30c-7-4-16-6-28-6s-21 2-28 6z" fill="'+wrap+'"/><path d="M60 18l-6 22 6-6 6 6z" fill="'+ink+'" fill-opacity=".14"/><path d="M36 38c8-10 20-14 34-8M40 30c10-6 22-6 32 2" stroke="'+ink+'" stroke-opacity=".2" stroke-width="2.5" fill="none" stroke-linecap="round"/>';break;
+  }
+  let face='';
+  if(o.face==='stubble')face='<path d="M40 60c2 14 10 22 20 22s18-8 20-22c-4 6-10 9-20 9s-16-3-20-9z" fill="'+h+'" opacity=".28"/>';
+  if(o.face==='beard')face='<path d="M37 56c1 18 10 30 23 30s22-12 23-30c-4 7-9 11-14 11-3-2-6-3-9-3s-6 1-9 3c-5 0-10-4-14-11z" fill="'+h+'"/><path d="M53 70c4 2 10 2 14 0" stroke="#fff" stroke-opacity=".5" stroke-width="2" fill="none" stroke-linecap="round"/>';
+  if(o.face==='moustache')face='<path d="M48 66c4-4 8-4 12-1 4-3 8-3 12 1-4 3-8 3-12 1-4 2-8 2-12-1z" fill="'+h+'"/>';
+  const eyes='<circle cx="51" cy="52" r="3" fill="'+ink+'"/><circle cx="69" cy="52" r="3" fill="'+ink+'"/>';
+  const brows=cover?'':'<path d="M46 45c3-2 7-2 9 0M65 45c3-2 7-2 9 0" stroke="'+(o.hair==='bald'?ink:h)+'" stroke-opacity="'+(o.hair==='bald'?'.35':'1')+'" stroke-width="2.6" fill="none" stroke-linecap="round"/>';
+  const smile=o.face==='beard'?'':'<path d="M53 66c4 4 10 4 14 0" stroke="'+ink+'" stroke-width="2.6" fill="none" stroke-linecap="round"/>';
+  const glasses=o.glasses?'<g fill="none" stroke="'+ink+'" stroke-width="2.4"><circle cx="51" cy="52" r="7.5"/><circle cx="69" cy="52" r="7.5"/><path d="M58.5 52h3M43.5 51l-6-2M76.5 51l6-2"/></g>':'';
+  const band=o.band&&!cover?'<path d="M35 40c8-4 16-6 25-6s17 2 25 6v7c-8-4-16-6-25-6s-17 2-25 6z" fill="#DFFF32" stroke="'+ink+'" stroke-width="1.5"/>':'';
+  return'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><defs><clipPath id="c"><circle cx="60" cy="60" r="60"/></clipPath></defs><g clip-path="url(#c)"><rect width="120" height="120" fill="'+bg+'"/>'+back+
+    '<path d="M18 120c3-22 20-32 42-32s39 10 42 32z" fill="'+top+'"/><path d="M52 80h16v10c-3 4-13 4-16 0z" fill="'+s+'"/>'+
+    (cover?'':'<circle cx="35" cy="55" r="5" fill="'+s+'"/><circle cx="85" cy="55" r="5" fill="'+s+'"/>')+
+    '<ellipse cx="60" cy="54" rx="25" ry="28" fill="'+s+'"/>'+face+eyes+brows+smile+glasses+front+band+'</g></svg>';
+}
+function svgToPhoto(svg){
+  return new Promise(res=>{const i=new Image();i.onload=()=>{const c=document.createElement('canvas');c.width=c.height=360;const x=c.getContext('2d');x.drawImage(i,0,0,360,360);res(c.toDataURL('image/jpeg',.9))};i.onerror=()=>res('');i.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)});
+}
+let avDraft=null,avTarget='profile';
+function openAvatar(target){
+  avTarget=target;avDraft=Object.assign({},AV_DEF,PROF.avatar||{});renderAvatar();
+  if(target==='profile')hideSheet();showSheet('avatarSheet');
+}
+function renderAvatar(){
+  const o=avDraft;
+  $('avPreview').innerHTML=avatarSvg(o);
+  const sw=(key,list)=>'<div class="swatches">'+list.map((c,i)=>'<button class="swatch" style="background:'+c+'" data-k="'+key+'" data-v="'+i+'" aria-pressed="'+(o[key]===i)+'" aria-label="'+key+' option '+(i+1)+'"></button>').join('')+'</div>';
+  const chips=(key,list)=>'<div class="avchips">'+list.map(([v,l])=>'<button data-k="'+key+'" data-s="'+v+'" aria-pressed="'+(o[key]===v)+'">'+l+'</button>').join('')+'</div>';
+  $('avOptions').innerHTML='<p class="lbl">Skin tone</p>'+sw('skin',AV.skin)+'<p class="lbl">Hair</p>'+chips('hair',AV.hair)+
+    (o.hair==='scarf'||o.hair==='turban'?'<p class="lbl">'+(o.hair==='scarf'?'Headscarf':'Turban')+' colour</p>'+sw('wrap',AV.wrap)+'<p class="lbl">Brow and beard colour</p>'+sw('hairCol',AV.hairCol):o.hair==='bald'?'':'<p class="lbl">Hair colour</p>'+sw('hairCol',AV.hairCol))+
+    '<p class="lbl">Facial hair</p>'+chips('face',AV.face)+
+    '<p class="lbl">Extras</p><div class="avchips"><button data-t="glasses" aria-pressed="'+o.glasses+'">Glasses</button><button data-t="band" aria-pressed="'+o.band+'">Sweatband</button></div>'+
+    '<p class="lbl">Top</p>'+sw('top',AV.top)+'<p class="lbl">Background</p>'+sw('bg',AV.bg);
+  $('avOptions').querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{const k=b.dataset.k;o[k]=b.dataset.s!==undefined?b.dataset.s:+b.dataset.v;renderAvatar()});
+  $('avOptions').querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{o[b.dataset.t]=!o[b.dataset.t];renderAvatar()});
+}
+$('avRandom').onclick=()=>{const r=n=>Math.floor(Math.random()*n);avDraft={skin:r(6),hair:AV.hair[r(AV.hair.length)][0],hairCol:r(6),face:AV.face[r(4)][0],glasses:Math.random()<.25,band:Math.random()<.3,bg:r(6),top:r(6),wrap:r(6)};renderAvatar()};
+$('avUse').onclick=async()=>{
+  const img=await svgToPhoto(avatarSvg(avDraft));if(!img){toast('Couldn\'t make that avatar. Try again.');return}
+  if(avTarget==='welcome'){obPhoto=img;PROF.avatar=Object.assign({},avDraft);obSyncPhoto();$('avatarSheet').classList.remove('on');$('scrim').classList.remove('on');openSheet=null}
+  else{draftPhoto=img;pendingAvatar=Object.assign({},avDraft);peSyncPhoto();showSheet('profSheet')}
+};
+$('avCancel').onclick=()=>{if(avTarget==='welcome'){$('avatarSheet').classList.remove('on');$('scrim').classList.remove('on');openSheet=null}else showSheet('profSheet')};
+let pendingAvatar=null;
+
+/* ================= country flags ================= */
+const COUNTRY_CODES='AF AL DZ AD AO AG AR AM AU AT AZ BS BH BD BB BY BE BZ BJ BT BO BA BW BR BN BG BF BI CV KH CM CA CF TD CL CN CO KM CG CD CR CI HR CU CY CZ DK DJ DM DO EC EG SV GQ ER EE SZ ET FJ FI FR GA GM GE DE GH GR GD GT GN GW GY HT HN HK HU IS IN ID IR IQ IE IL IT JM JP JO KZ KE KI XK KW KG LA LV LB LS LR LY LI LT LU MO MG MW MY MV ML MT MH MR MU MX FM MD MC MN ME MA MZ MM NA NR NP NL NZ NI NE NG KP MK NO OM PK PW PS PA PG PY PE PH PL PT PR QA RO RU RW KN LC VC WS SM ST SA SN RS SC SL SG SK SI SB SO ZA KR SS ES LK SD SR SE CH SY TW TJ TZ TH TL TG TO TT TN TR TM TV UG UA AE GB US UY UZ VU VA VE VN YE ZM ZW'.split(' ');
+const HOME_NATIONS=[['gb-eng','England','\u{1F3F4}\u{E0067}\u{E0062}\u{E0065}\u{E006E}\u{E0067}\u{E007F}'],['gb-sct','Scotland','\u{1F3F4}\u{E0067}\u{E0062}\u{E0073}\u{E0063}\u{E0074}\u{E007F}'],['gb-wls','Wales','\u{1F3F4}\u{E0067}\u{E0062}\u{E0077}\u{E006C}\u{E0073}\u{E007F}'],['gb-nir','Northern Ireland','\u{1F1EC}\u{1F1E7}']];
+const flagOf=code=>{if(!code)return'';const hn=HOME_NATIONS.find(h=>h[0]===code);if(hn)return hn[2];if(code.length!==2)return'';return String.fromCodePoint(...code.toUpperCase().split('').map(c=>0x1F1E6+c.charCodeAt(0)-65))};
+let regionNames=null;try{regionNames=new Intl.DisplayNames(['en-GB'],{type:'region'})}catch(e){}
+const countryName=code=>{const hn=HOME_NATIONS.find(h=>h[0]===code);if(hn)return hn[1];try{return regionNames?regionNames.of(code):code}catch(e){return code}};
+function fillCountries(){
+  const sel=$('peCountry');if(sel.options.length>1)return;
+  const list=COUNTRY_CODES.map(c=>[c,countryName(c)]).sort((a,b)=>a[1].localeCompare(b[1]));
+  sel.innerHTML='<option value="">Prefer not to say</option><optgroup label="UK nations">'+HOME_NATIONS.map(h=>'<option value="'+h[0]+'">'+h[2]+' '+h[1]+'</option>').join('')+'</optgroup><optgroup label="Countries">'+list.map(([c,n])=>'<option value="'+c+'">'+flagOf(c)+' '+esc(n)+'</option>').join('')+'</optgroup>';
+}
+const flagFor=key=>{if(PROF.name&&key===pkey(PROF.name))return flagOf(PROF.country);const f=friendOf(key);return f?flagOf(f.country):''};
+
 /* ================= go ================= */
 window.__dbg={replay,labels,ruleText,pressureText};
 render();
