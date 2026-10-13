@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="4.1">
+<meta name="app-version" content="4.2">
 <title>Deucebags</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="favicon-64.png">
@@ -133,6 +133,24 @@ button{cursor:pointer;font-family:var(--heading)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---- additions ---- */
+.gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--white);border:2px solid var(--navy);border-radius:14px;padding:13px;font-weight:700;font-size:16px;color:var(--navy)}
+.ordiv{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:13.5px;font-weight:700}
+.ordiv::before,.ordiv::after{content:"";flex:1;height:1.5px;background:var(--line)}
+.field input[type=email],.field input[type=password]{width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px;background:var(--field);font-size:17px}
+.acrow{background:var(--navy);color:var(--white);border-radius:16px;padding:14px;display:grid;gap:3px;margin-bottom:10px}
+.acrow b{font-family:var(--display);font-weight:400;font-size:24px;color:var(--lime)}
+.acrow span{font-size:14px;opacity:.85}
+.acmini{display:flex;align-items:center;gap:10px;background:var(--white);border:2px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:12px}
+.acmini>div{flex:1;display:grid;min-width:0}
+.acmini b{font-family:var(--heading);font-weight:600;font-size:15px;color:var(--navy)}
+.acmini span{font-size:13px;color:var(--muted)}
+.acmini .mini{flex:none}
+.dot{width:12px;height:12px;border-radius:50%;background:#C9CED6;flex:none;box-shadow:0 0 0 2px var(--white),0 0 0 3.5px var(--line)}
+.dot.on{background:#2E9D6A}
+.unwrap{display:flex;align-items:center;border:2px solid var(--line);border-radius:12px;background:var(--field);padding-left:12px}
+.unwrap span{font-weight:800;color:var(--muted);font-size:17px}
+.unwrap input{flex:1;border:0!important;background:transparent!important;padding:12px 10px 12px 4px!important;font-size:17px;outline:none}
+.help.good{color:#1E7A3C;font-weight:700}.help.bad{color:#B3261E;font-weight:700}
 #setup.singles #pA2,#setup.singles #pB2,#setup.singles #inA,#setup.singles #inB{display:none}
 #setup.singles .teambox .pair{grid-template-columns:1fr}
 
@@ -1039,13 +1057,15 @@ button{transition:transform .12s ease}
 
 <section class="sheet" id="privacySheet" aria-label="Privacy">
   <h3>Privacy</h3>
-  <div class="privacy"><p class="pv-lead">Deucebags doesn't have accounts, servers, ads or tracking. Here's exactly what it stores and where.</p>
+  <div class="privacy"><p class="pv-lead">Deucebags has no ads or tracking, and accounts are optional. Here's exactly what it stores and where.</p>
 <h4>What stays on your phone</h4>
 <p>Your scores, results, players, league, achievements, profile and friends list are saved inside the app on your phone. Nothing is uploaded to us or anyone else. Deleting the app or clearing your browser's data removes it.</p>
 <h4>Videos and photos</h4>
 <p>The camera and microphone are only used while you're filming or scanning a friend code. Videos and clips stay in the app until you save or delete them. When you save, a copy goes to your phone's own storage. Your profile photo is saved on your phone only.</p>
 <h4>What you choose to share</h4>
 <p>Friend codes and match results travel inside the links you send. Anyone with one of those links can see what's in it: your name, photo, bio and socials for a friend code, or the match score for a result. Nothing is shared unless you send it.</p>
+<h4>If you sign in</h4>
+<p>Signing in is optional. If you do, your results, profile and friends list are also saved to your Deucebags account on Google Firebase, stored in London, so they sync between your devices. Only you can see your account's data. Your email is used to sign you in and is never shown to anyone. You can delete your account and everything in it at any time from Account and sync.</p>
 <h4>Other services the app uses</h4>
 <p>The app is hosted on GitHub Pages and loads its fonts from Google Fonts and its QR code tool from Cloudflare. Like any website, those services can see your device's IP address when the app loads. They don't receive any of your scores, videos or profile.</p>
 <h4>Questions</h4>
@@ -1144,6 +1164,19 @@ button{transition:transform .12s ease}
   <div class="btns"><button class="primary" id="avUse">Use this avatar</button><button class="secondary" id="avCancel">Cancel</button></div>
 </section>
 
+<section class="sheet" id="accountSheet" aria-label="Your account">
+  <h3 id="acTitle">Sign in</h3>
+  <div id="acBody"></div>
+  <div class="btns"><button class="secondary" id="acClose">Close</button></div>
+</section>
+
+<section class="sheet" id="usernameSheet" aria-label="Choose a username">
+  <h3>Choose a username</h3>
+  <p class="help" style="margin:-4px 2px 12px">It's how friends find you. Every username is unique, so nobody else can take yours.</p>
+  <div class="field"><div class="unwrap"><span>@</span><input type="text" id="unInput" maxlength="20" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="yourname"></div><p class="help" id="unMsg"></p></div>
+  <div class="btns"><button class="primary" id="unSave">Save username</button><button class="secondary" id="unSkip">Later</button></div>
+</section>
+
 <section class="sheet" id="recapSheet" aria-label="Your week in padel">
   <h3 id="recapTitle">Your week in padel</h3>
   <div class="seg three" id="recapSeg" style="margin-bottom:14px"><button data-v="7">Week</button><button data-v="30">Month</button><button data-v="365">Year</button></div>
@@ -1159,7 +1192,7 @@ button{transition:transform .12s ease}
   </div>
   <p class="help hide" id="dataNoVideos" style="margin:0 2px 14px">No unsaved videos taking up space.</p>
   <div class="where">
-    <div><b>Scores, results, players and the league</b><span>Kept in the app on this phone. Nothing gets uploaded. <span id="dataCount"></span></span></div>
+    <div><b>Scores, results, players and the league</b><span>Kept in the app on this phone. If you sign in, they're also saved to your account so they sync between devices. <span id="dataCount"></span></span></div>
     <div><b>Videos, clips, match cards and spreadsheets</b><span id="dataSaveTxt">Save puts a copy in Downloads, in your Files app. Share sends them straight to WhatsApp, Instagram or Google Drive.</span></div>
     <div><b>Using Chrome and the Android app?</b><span>Each keeps its own results. Stick to one, and move your data across with a backup.</span></div>
     <div><b>Keep a backup</b><span>Clearing Chrome's data or switching phones wipes your results. A backup brings everything back.</span></div>
@@ -1169,6 +1202,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="dataRestore">Restore from a backup</button>
     <button class="secondary" id="dataCsv">Export results to a spreadsheet</button>
     <button class="secondary" id="dataEdit">Make a clip from a video</button>
+    <button class="secondary" id="dataAccount">Account and sync</button>
     <button class="secondary" id="dataRules">Padel rules</button>
     <button class="secondary" id="dataWelcome">Show the welcome again</button>
     <button class="secondary" id="dataTour">Take the tour</button>
@@ -1176,7 +1210,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
   <input type="file" id="restoreFile" accept="application/json,.json" class="hide">
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v4.1<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v4.2<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -1284,6 +1318,7 @@ button{transition:transform .12s ease}
       <h2>Score it. Film it. Keep the bragging rights.</h2>
       <p>Keep score, film your matches and track every result, rating and achievement. It all stays on your phone.</p>
       <div class="btns"><button class="primary" id="obStart">Get started</button><button class="linkbtn" id="obSkip">Skip</button></div>
+      <button class="linkbtn" id="obSignIn">Already have an account? Sign in</button>
       <p class="builtby">Made by Raza Rebuilt</p>
     </div>
     <div class="obstep">
@@ -1347,7 +1382,7 @@ if(!M)M=newMatch(DEF);
 M.cfg=Object.assign({},DEF,M.cfg);
 let history=store.get('db-history')||[];
 const saveM=()=>store.set('db-match',M);
-let saveHT=null;const saveH=()=>{if(typeof bumpHV==='function')bumpHV();clearTimeout(saveHT);saveHT=setTimeout(()=>persistHistory(),120)};
+let saveHT=null;const saveH=(noSync)=>{if(typeof bumpHV==='function')bumpHV();clearTimeout(saveHT);saveHT=setTimeout(()=>persistHistory(),120);if(noSync!==true&&typeof queueSync==='function')queueSync()};
 const nmC=(cfg,i)=>i===0?(cfg.a||'Us'):(cfg.b||'Them');
 const nm=i=>nmC(M.cfg,i);
 
@@ -3279,7 +3314,8 @@ $('edCancel').addEventListener('click',()=>{reelCancel=true});
 /* ================= your profile ================= */
 const PROF_DEF={photo:'',name:'',username:'',bio:'',side:'',hand:'',level:'',club:'',racket:'',since:'',shot:'',ig:'',tiktok:'',x:'',yt:''};
 let PROF=Object.assign({},PROF_DEF,store.get('db-profile')||{});
-const saveProf=()=>store.set('db-profile',PROF);
+const saveProfRaw=()=>store.set('db-profile',PROF);
+const saveProf=()=>{saveProfRaw();if(typeof profChanged==='function')profChanged()};
 const LEVELS=['New to padel','Beginner','Improver','Intermediate','Advanced','Competitive'];
 const SHOTS=['Bandeja','Víbora','Smash','Por tres','Lob','Volley','Chiquita','Bajada'];
 const SOCIALS=[['ig','Instagram',h=>'https://instagram.com/'+encodeURIComponent(h)],['tiktok','TikTok',h=>'https://www.tiktok.com/@'+encodeURIComponent(h)],['x','X',h=>'https://x.com/'+encodeURIComponent(h)],['yt','YouTube',h=>'https://www.youtube.com/@'+encodeURIComponent(h)]];
@@ -3294,8 +3330,8 @@ function avatar(cls,name,photo){return photo?'<img class="'+cls+'" src="'+photo+
 function renderProfile(){
   const box=$('profileBody');
   if(!PROF.name){
-    box.innerHTML='<div class="profempty"><span class="pav big ini">?</span><h3>Make it yours</h3><p>Add your photo, bio, padel details and socials. Your stats and achievements live here too.</p><button class="primary" id="profStart">Set up your profile</button></div>';
-    $('profStart').onclick=openProfEdit;return;
+    box.innerHTML='<div id="profAccount"></div><div class="profempty"><span class="pav big ini">?</span><h3>Make it yours</h3><p>Add your photo, bio, padel details and socials. Your stats and achievements live here too.</p><button class="primary" id="profStart">Set up your profile</button></div>';
+    $('profStart').onclick=openProfEdit;syncAccountBits();return;
   }
   const L=computeLeague(),key=pkey(PROF.name),i=L.findIndex(x=>x.key===key);
   const p=i>=0?L[i]:Object.assign(emptyPlayer(),{name:PROF.name,form:[],partners:{},opps:{}});
@@ -3308,7 +3344,7 @@ function renderProfile(){
   const card=(v,l,n)=>'<div class="card" style="--i:'+n+'"><b>'+v+'</b><span>'+l+'</span></div>';
   const partner=Object.values(p.partners||{}).sort((a,b)=>(b.w/b.p)-(a.w/a.p)||b.p-a.p)[0];
   const nemesis=Object.values(p.opps||{}).filter(o=>o.l>0).sort((a,b)=>b.l-a.l)[0];
-  box.innerHTML='<div class="profhero">'+avatar('pav big',PROF.name,PROF.photo)+'<div class="phinfo"><h3>'+esc(PROF.name)+(PROF.country?' <span class="flag-e" title="'+esc(countryName(PROF.country))+'">'+flagOf(PROF.country)+'</span>':'')+'</h3>'+(PROF.username?'<span class="handle">@'+esc(PROF.username)+'</span>':'')+'</div><button class="mini" id="profEdit">Edit</button></div>'+
+  box.innerHTML='<div id="profAccount"></div><div class="profhero">'+avatar('pav big',PROF.name,PROF.photo)+'<div class="phinfo"><h3>'+esc(PROF.name)+(PROF.country?' <span class="flag-e" title="'+esc(countryName(PROF.country))+'">'+flagOf(PROF.country)+'</span>':'')+'</h3>'+(PROF.username?'<span class="handle">@'+esc(PROF.username)+'</span>':'')+'</div><button class="mini" id="profEdit">Edit</button></div>'+
     (PROF.bio?'<p class="bio">'+esc(PROF.bio)+'</p>':'')+
     (chips.length?'<div class="pchips">'+chips.map(c=>'<span>'+esc(c)+'</span>').join('')+'</div>':'')+
     (socials?'<div class="socials">'+socials+'</div>':'')+
@@ -3319,7 +3355,7 @@ function renderProfile(){
       (nemesis?'<tr><td>Toughest opponent</td><td>'+esc(nemesis.name)+'</td></tr>':'')+'</tbody></table>'
       :'<p class="help" style="margin:14px 2px">Play a match as '+esc(PROF.name)+' and your stats show up here.</p>')+
     (i>=0?progressHtml(key):'')+badgesHtml(p);
-  $('profEdit').onclick=openProfEdit;bindFriends();
+  $('profEdit').onclick=openProfEdit;bindFriends();syncAccountBits();
 }
 let draftPhoto='';
 function setSeg(id,val){document.querySelectorAll('#'+id+' button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===val)))}
@@ -3368,7 +3404,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='4.1';
+const APP_VERSION='4.2';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -3416,7 +3452,8 @@ syncAvatar();
 
 /* ================= friends (no server: everything travels in links) ================= */
 let FRIENDS=store.get('db-friends')||[];
-const saveFriends=()=>store.set('db-friends',FRIENDS);
+const saveFriendsRaw=()=>store.set('db-friends',FRIENDS);
+const saveFriends=()=>{saveFriendsRaw();if(typeof profChanged==='function')profChanged()};
 const friendOf=key=>FRIENDS.find(f=>f.key===key);
 const appUrl=()=>location.href.split('#')[0].split('?')[0];
 const b64u={
@@ -3647,6 +3684,7 @@ $('obFile').onchange=async e=>{
   c.getContext('2d').drawImage(img,(img.naturalWidth-s)/2,(img.naturalHeight-s)/2,s,s,0,0,360,360);
   obPhoto=c.toDataURL('image/jpeg',.85);URL.revokeObjectURL(url);obSyncPhoto();
 };
+$('obSignIn').onclick=()=>{store.set('db-onboarded',1);$('obView').classList.remove('on');setTimeout(openAccount,200)};
 $('obStart').onclick=()=>{obStep(1);setTimeout(()=>$('obName').focus(),300)};
 $('obSkip').onclick=()=>finishWelcome(false);
 $('obSkip2').onclick=()=>obStep(2);
@@ -3711,6 +3749,7 @@ $('tourSkip').onclick=endTour;
 window.addEventListener('resize',()=>{if($('tourView').classList.contains('on'))setTimeout(showTourStep,120)});
 document.addEventListener('keydown',e=>{if(!$('tourView').classList.contains('on'))return;if(e.key==='Escape')endTour();if(e.key==='ArrowRight')$('tourNext').click();if(e.key==='ArrowLeft')$('tourBack').click()});
 $('dataRules').onclick=openRules;
+$('dataAccount').onclick=()=>{hideSheet();openAccount()};
 $('dataWelcome').onclick=()=>{hideSheet();$('resultsView').classList.remove('on');setTimeout(openWelcome,250)};
 $('dataTour').onclick=()=>{hideSheet();$('resultsView').classList.remove('on');setTimeout(startTour,200)};
 
@@ -4513,6 +4552,7 @@ function progressHtml(key){
 }
 
 $('rulesClose').onclick=()=>hideSheet();
+$('acClose').onclick=()=>hideSheet();
 
 /* ================= avatar maker ================= */
 const AV={
@@ -4608,6 +4648,226 @@ function fillCountries(){
 const flagFor=key=>{if(PROF.name&&key===pkey(PROF.name))return flagOf(PROF.country);const f=friendOf(key);return f?flagOf(f.country):''};
 
 
+
+
+/* ================= accounts and sync (Firebase, free plan) ================= */
+const FB_CFG={apiKey:"AIzaSyCad_rShRwk9r4OX7xhUR7x6mkmCw6Rx0Y",authDomain:"deucebags-b11a0.firebaseapp.com",projectId:"deucebags-b11a0",storageBucket:"deucebags-b11a0.firebasestorage.app",messagingSenderId:"95359388809",appId:"1:95359388809:web:20474be952aaa97c164a58"};
+const FB={ready:false,loading:null,auth:null,db:null,user:null,syncing:false,last:store.get('db-last-sync')||0,doc:null};
+const FB_BASE='https://cdn.jsdelivr.net/npm/firebase@10.14.1/';
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s)})}
+function fbInit(){
+  if(FB.ready)return Promise.resolve(true);
+  if(FB.loading)return FB.loading;
+  FB.loading=(async()=>{
+    try{
+      if(!window.firebase||!firebase.initializeApp)await loadScript(FB_BASE+'firebase-app-compat.js');
+      if(!firebase.auth)await loadScript(FB_BASE+'firebase-auth-compat.js');
+      if(!firebase.firestore)await loadScript(FB_BASE+'firebase-firestore-compat.js');
+      firebase.apps&&firebase.apps.length?firebase.app():firebase.initializeApp(FB_CFG);
+      FB.auth=firebase.auth();FB.db=firebase.firestore();
+      try{await FB.db.enablePersistence({synchronizeTabs:true})}catch(e){}
+      FB.auth.onAuthStateChanged(u=>{FB.user=u||null;onAuthChange()});
+      FB.ready=true;return true;
+    }catch(e){FB.loading=null;return false}
+  })();
+  return FB.loading;
+}
+// start quietly in the background so a returning user is signed straight back in
+if(store.get('db-signed-in'))setTimeout(fbInit,800);
+
+/* --- what's synced: each match as a JSON string (Firestore can't store nested lists) --- */
+function strHash(s){let h=0;for(let i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))|0}return String(h)}
+function entryJson(h){const c=Object.assign({},h);delete c.aw2;return JSON.stringify(c)}
+const syncedMap=()=>store.get('db-synced')||{};
+async function syncNow(quiet){
+  if(!FB.user||FB.syncing)return;
+  if(!navigator.onLine){if(!quiet)toast('You\'re offline. Your results will sync when you\'re back online.');return}
+  FB.syncing=true;setSyncLabel('Syncing…');
+  try{
+    const uid=FB.user.uid,col=FB.db.collection('users').doc(uid).collection('matches');
+    const snap=await col.get(),remote={};snap.forEach(d=>{remote[d.id]=d.data()});
+    const synced=syncedMap();
+    let pulled=0,removed=0;const writes=[],keep=[];
+    // everything on this phone
+    history.forEach(h=>{
+      const j=entryJson(h),hh=strHash(j),r=remote[h.id],s=synced[h.id];
+      if(!r){
+        if(s&&s===hh){removed++;delete synced[h.id];return} // deleted on another device, untouched here
+        writes.push(['set',h.id,j,hh]);keep.push(h);return; // new here, or changed here
+      }
+      if(r.h===hh){synced[h.id]=hh;keep.push(h);return}
+      if(s===hh){try{keep.push(JSON.parse(r.j));synced[h.id]=r.h;pulled++}catch(e){keep.push(h)}return} // changed on another device only
+      writes.push(['set',h.id,j,hh]);keep.push(h); // changed here (this phone wins a tie)
+    });
+    // everything on the server that this phone doesn't have
+    const have=new Set(history.map(h=>h.id));
+    Object.entries(remote).forEach(([id,r])=>{
+      if(have.has(id))return;
+      if(synced[id]){writes.push(['del',id]);return} // deleted on this phone since the last sync
+      try{keep.push(JSON.parse(r.j));synced[id]=r.h;pulled++}catch(e){}
+    });
+    history=keep;
+    for(let i=0;i<writes.length;i+=400){
+      const b=FB.db.batch();
+      writes.slice(i,i+400).forEach(w=>{if(w[0]==='del'){b.delete(col.doc(w[1]));delete synced[w[1]]}else{b.set(col.doc(w[1]),{j:w[2],h:w[3],u:Date.now()});synced[w[1]]=w[3]}});
+      await b.commit();
+    }
+    store.set('db-synced',synced);
+    if(pulled||removed){history.sort((a,b)=>((b.date||b.start||0)-(a.date||a.start||0)));saveH(true);render();if($('resultsView').classList.contains('on'))setTab(tab)}
+    await syncProfile();
+    FB.last=Date.now();store.set('db-last-sync',FB.last);setSyncLabel();
+    if(!quiet)toast(pulled?'Synced. '+pulled+(pulled===1?' match':' matches')+' added from your account.':'All synced.');
+  }catch(e){setSyncLabel('Couldn\'t sync. It\'ll try again soon.');if(!quiet)toast(fbError(e))}
+  finally{FB.syncing=false}
+}
+let syncT=null;
+function queueSync(){if(!FB.user)return;clearTimeout(syncT);syncT=setTimeout(()=>syncNow(true),3000)}
+window.addEventListener('online',()=>queueSync());
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&FB.user&&Date.now()-FB.last>60000)syncNow(true)});
+
+/* --- profile and friends travel with the account --- */
+async function syncProfile(){
+  if(!FB.user)return;
+  const ref=FB.db.collection('users').doc(FB.user.uid),snap=await ref.get(),r=snap.exists?snap.data():null;
+  const localU=store.get('db-prof-u')||0;
+  if(r&&r.u>localU){
+    try{const p=JSON.parse(r.profile||'{}');PROF=Object.assign({},PROF_DEF,PROF,p);saveProfRaw();syncAvatar()}catch(e){}
+    try{const fr=JSON.parse(r.friends||'[]');fr.forEach(f=>{if(f&&f.key&&!friendOf(f.key))FRIENDS.push(f)});saveFriendsRaw()}catch(e){}
+    store.set('db-prof-u',r.u);
+  }else if(!r||localU>(r.u||0)){
+    const u=localU||Date.now();
+    await ref.set({username:PROF.username||'',usernameLower:(PROF.username||'').toLowerCase(),profile:JSON.stringify(PROF),friends:JSON.stringify(FRIENDS),u},{merge:true});
+    store.set('db-prof-u',u);
+  }
+  if(r&&r.username&&PROF.username!==r.username){PROF.username=r.username;saveProfRaw()}
+  FB.doc=r;
+}
+function profChanged(){store.set('db-prof-u',Date.now());queueSync()}
+
+/* --- sign in, create account, reset password --- */
+function fbError(e){
+  const c=(e&&e.code)||'';
+  return({'auth/invalid-email':'That email address doesn\'t look right.','auth/user-not-found':'There\'s no account with that email. Try creating one.','auth/wrong-password':'That password isn\'t right.','auth/invalid-credential':'That email or password isn\'t right.','auth/email-already-in-use':'There\'s already an account with that email. Try signing in.','auth/weak-password':'Use at least 6 characters for your password.','auth/too-many-requests':'Too many tries. Wait a few minutes and try again.','auth/network-request-failed':'No connection. Check your signal and try again.','auth/popup-closed-by-user':'Sign-in was cancelled.','auth/popup-blocked':'Your browser blocked the sign-in window. Try again.','auth/requires-recent-login':'For your security, sign out and back in, then try again.','permission-denied':'Your account couldn\'t be reached. Try signing out and back in.'})[c]||'Something went wrong. Try again in a moment.';
+}
+let authMode='in';
+async function openAccount(){
+  showSheet('accountSheet');renderAccount();
+  if(!(await fbInit())){$('acBody').innerHTML='<p class="flag">Accounts need an internet connection the first time. Check your signal and try again.</p>';return}
+  renderAccount();
+}
+function setSyncLabel(t){const el=$('acSync');if(el)el.textContent=t||('Synced '+(FB.last?timeAgo(FB.last):'not yet'));const p=$('profSync');if(p)p.textContent=t||('Synced '+(FB.last?timeAgo(FB.last):'not yet'))}
+function timeAgo(ts){const s=Math.round((Date.now()-ts)/1000);if(s<60)return'just now';const m=Math.round(s/60);if(m<60)return m+' min ago';const h=Math.round(m/60);if(h<24)return h+(h===1?' hour ago':' hours ago');return new Date(ts).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}
+function renderAccount(){
+  const b=$('acBody');
+  if(FB.user){
+    $('acTitle').textContent='Your account';
+    b.innerHTML='<div class="acrow"><b>'+esc(PROF.username?'@'+PROF.username:'No username yet')+'</b><span>'+esc(FB.user.email||'Signed in with Google')+'</span></div>'+
+      '<p class="help" id="acSync"></p>'+
+      '<div class="btns"><button class="primary" id="acSyncBtn">Sync now</button><button class="secondary" id="acUser">'+(PROF.username?'Change username':'Choose a username')+'</button><button class="secondary" id="acOut">Sign out</button><button class="danger" id="acDelete">Delete my account</button></div>'+
+      '<p class="help">Your results, profile and friends are saved to your account and kept in sync on every device you sign in on. Videos stay on your phone.</p>';
+    setSyncLabel();
+    $('acSyncBtn').onclick=()=>syncNow(false);$('acUser').onclick=openUsername;$('acOut').onclick=signOutNow;$('acDelete').onclick=deleteAccount;
+    return;
+  }
+  $('acTitle').textContent=authMode==='up'?'Create your account':'Sign in';
+  const inApp=!!window.DeucebagsNative;
+  b.innerHTML='<p class="help" style="margin:-4px 2px 12px">Keep your results safe and use Deucebags on any phone. Scoring still works without an account.</p>'+
+    (inApp?'':'<button class="gbtn" id="acGoogle"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.3-2.1 3.5-5.2 3.5-8.7z"/><path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-2.9l-3.9-3c-1.1.7-2.5 1.2-4.1 1.2-3.1 0-5.8-2.1-6.7-5H1.3v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.3 14.3a7.2 7.2 0 0 1 0-4.6V6.6h-4a12 12 0 0 0 0 10.8z"/><path fill="#EA4335" d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4A11.5 11.5 0 0 0 12 0 12 12 0 0 0 1.3 6.6l4 3.1C6.2 6.9 8.9 4.8 12 4.8z"/></svg>Continue with Google</button><div class="ordiv"><span>or with email</span></div>')+
+    '<div class="field"><label for="acEmail">Email</label><input type="email" id="acEmail" autocomplete="email" inputmode="email" placeholder="you@example.com"></div>'+
+    '<div class="field"><label for="acPass">Password</label><input type="password" id="acPass" autocomplete="'+(authMode==='up'?'new-password':'current-password')+'" placeholder="'+(authMode==='up'?'At least 6 characters':'Your password')+'"></div>'+
+    '<div class="btns"><button class="primary" id="acGo">'+(authMode==='up'?'Create account':'Sign in')+'</button></div>'+
+    (authMode==='in'?'<button class="linkbtn" id="acForgot">Forgotten your password?</button>':'')+
+    '<p class="help" style="margin-top:12px">'+(authMode==='up'?'Already have an account? ':'New here? ')+'<button class="linkbtn inl" id="acSwap">'+(authMode==='up'?'Sign in':'Create an account')+'</button></p>'+
+    (inApp?'<p class="help">Google sign-in isn\'t available inside the Android app. Use email, or sign in with Google in Chrome.</p>':'');
+  if($('acGoogle'))$('acGoogle').onclick=googleSignIn;
+  $('acGo').onclick=emailAuth;$('acSwap').onclick=()=>{authMode=authMode==='up'?'in':'up';renderAccount()};
+  if($('acForgot'))$('acForgot').onclick=forgotPassword;
+}
+async function googleSignIn(){
+  if(!(await fbInit()))return toast('No connection. Check your signal and try again.');
+  try{const p=new firebase.auth.GoogleAuthProvider();await FB.auth.signInWithPopup(p)}catch(e){toast(fbError(e))}
+}
+async function emailAuth(){
+  const email=$('acEmail').value.trim(),pass=$('acPass').value;
+  if(!email||!pass){toast('Add your email and a password.');return}
+  $('acGo').disabled=true;
+  try{authMode==='up'?await FB.auth.createUserWithEmailAndPassword(email,pass):await FB.auth.signInWithEmailAndPassword(email,pass)}
+  catch(e){toast(fbError(e))}finally{if($('acGo'))$('acGo').disabled=false}
+}
+async function forgotPassword(){
+  const email=$('acEmail').value.trim();if(!email){toast('Type your email first, then tap this again.');return}
+  try{await FB.auth.sendPasswordResetEmail(email);toast('Check your inbox for a link to reset your password.')}catch(e){toast(fbError(e))}
+}
+async function signOutNow(){
+  if(!(await ask('Sign out?','Your results stay on this phone. Sign back in any time to sync again.','Sign out',false)))return;
+  try{await FB.auth.signOut()}catch(e){}
+}
+async function onAuthChange(){
+  store.set('db-signed-in',!!FB.user);
+  syncAccountBits();
+  if(openSheet&&openSheet.id==='accountSheet')renderAccount();
+  if(!FB.user)return;
+  await syncNow(true);
+  if(openSheet&&openSheet.id==='accountSheet'){renderAccount();toast('Signed in. Your results are synced.')}
+  if(!PROF.username&&!(FB.doc&&FB.doc.username))setTimeout(openUsername,600);
+}
+function syncAccountBits(){
+  const el=$('profAccount');if(!el)return;
+  el.innerHTML=FB.user?'<div class="acmini"><span class="dot on"></span><div><b>Synced to your account</b><span id="profSync"></span></div><button class="mini" id="profAcBtn">Account</button></div>'
+    :'<div class="acmini"><span class="dot"></span><div><b>Not backed up</b><span>Sign in to keep your results safe on any phone.</span></div><button class="mini lime" id="profAcBtn">Sign in</button></div>';
+  setSyncLabel();$('profAcBtn').onclick=openAccount;
+}
+
+/* --- usernames: unique across everyone --- */
+const USER_RE=/^[a-z0-9_.]{3,20}$/;
+let unameT=null;
+function openUsername(){
+  if(!FB.user){openAccount();return}
+  $('unInput').value=PROF.username||'';$('unMsg').textContent='3 to 20 letters, numbers, dots or underscores.';$('unMsg').className='help';
+  showSheet('usernameSheet');setTimeout(()=>$('unInput').focus(),300);
+}
+$('unInput').oninput=()=>{
+  const v=$('unInput').value.trim().replace(/^@/,'').toLowerCase();$('unInput').value=v;
+  clearTimeout(unameT);
+  if(!USER_RE.test(v)){$('unMsg').textContent='3 to 20 letters, numbers, dots or underscores.';$('unMsg').className='help';return}
+  $('unMsg').textContent='Checking…';$('unMsg').className='help';
+  unameT=setTimeout(async()=>{
+    try{const d=await FB.db.collection('usernames').doc(v).get();
+      if(d.exists&&d.data().uid!==FB.user.uid){$('unMsg').textContent='@'+v+' is taken. Try another.';$('unMsg').className='help bad'}
+      else{$('unMsg').textContent='@'+v+' is yours if you want it.';$('unMsg').className='help good'}}
+    catch(e){$('unMsg').textContent='Couldn\'t check right now.';$('unMsg').className='help'}
+  },450);
+};
+$('unSave').onclick=async()=>{
+  const v=$('unInput').value.trim().toLowerCase();if(!USER_RE.test(v)){toast('Use 3 to 20 letters, numbers, dots or underscores.');return}
+  const old=(PROF.username||'').toLowerCase(),uid=FB.user.uid;
+  if(v===old){hideSheet();return}
+  try{
+    await FB.db.runTransaction(async tx=>{
+      const ref=FB.db.collection('usernames').doc(v),d=await tx.get(ref);
+      if(d.exists&&d.data().uid!==uid)throw{code:'taken'};
+      if(!d.exists)tx.set(ref,{uid});
+      if(old&&old!==v)tx.delete(FB.db.collection('usernames').doc(old));
+      tx.set(FB.db.collection('users').doc(uid),{username:v,usernameLower:v},{merge:true});
+    });
+    PROF.username=v;saveProf();hideSheet();toast('You\'re @'+v+'.');if(tab==='profile')renderProfile();syncNow(true);
+  }catch(e){toast(e&&e.code==='taken'?'@'+v+' was just taken. Try another.':fbError(e))}
+};
+$('unSkip').onclick=()=>hideSheet();
+
+/* --- delete everything --- */
+async function deleteAccount(){
+  if(!(await ask('Delete your account?','This deletes your account and everything synced to it, for good. Results on this phone stay unless you clear them yourself.','Delete account',true)))return;
+  try{
+    const uid=FB.user.uid,col=FB.db.collection('users').doc(uid).collection('matches'),snap=await col.get();
+    const ids=[];snap.forEach(d=>ids.push(d.id));
+    for(let i=0;i<ids.length;i+=400){const b=FB.db.batch();ids.slice(i,i+400).forEach(id=>b.delete(col.doc(id)));await b.commit()}
+    if(PROF.username){try{await FB.db.collection('usernames').doc(PROF.username.toLowerCase()).delete()}catch(e){}}
+    await FB.db.collection('users').doc(uid).delete();
+    await FB.user.delete();
+    store.set('db-synced',{});store.set('db-prof-u',0);hideSheet();toast('Your account has been deleted.');
+  }catch(e){toast(fbError(e))}
+}
 
 /* ================= go ================= */
 window.__dbg={replay,labels,ruleText,pressureText};
