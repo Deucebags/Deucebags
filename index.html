@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="4.2">
+<meta name="app-version" content="4.5">
 <title>Deucebags</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="favicon-64.png">
@@ -133,6 +133,51 @@ button{cursor:pointer;font-family:var(--heading)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---- additions ---- */
+.lvcard p.lvhead{color:var(--sky)!important}
+.lvcard p.lvstatus{color:var(--lime)!important}
+.inrow{display:grid;grid-template-columns:1fr auto;gap:8px}
+.inrow input{width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px;background:var(--field);font-size:16px}
+.grmanage{flex:none;border:2px dashed var(--navy)!important;background:transparent!important;color:var(--navy)!important}
+.groupbar button.shared::after{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#2E9D6A;margin-left:6px;vertical-align:middle}
+.grrow{display:flex;align-items:center;gap:8px;background:var(--white);border:2px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px}
+.grrow>div{flex:1;display:grid;min-width:0}
+.grrow b{font-family:var(--heading);font-weight:600;color:var(--navy)}
+.grrow span{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.livebanner{display:flex;align-items:center;gap:10px;background:var(--navy);color:var(--white);border-radius:14px;padding:10px 12px;margin:-4px 0 12px;cursor:pointer}
+.livebanner>div{flex:1;display:grid;min-width:0}
+.livebanner b{font-family:var(--heading);font-weight:600;font-size:14px;color:var(--lime)}
+.livebanner span{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.livebanner em{font-style:normal;font-weight:700;font-size:13px;background:var(--deep);border-radius:999px;padding:2px 8px}
+.livedot{width:11px;height:11px;border-radius:50%;background:#E8505B;flex:none;animation:livepulse 1.4s ease-in-out infinite}
+.livedot.off{background:#8A93A0;animation:none}
+@keyframes livepulse{50%{box-shadow:0 0 0 6px rgba(232,80,91,.25)}}
+.lvcard{background:var(--navy);border-radius:18px;padding:14px;margin-bottom:12px;color:var(--white)}
+.lvhead{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-family:var(--heading);font-weight:600;font-size:14px;color:var(--sky)}
+.lvteam{display:grid;grid-template-columns:1fr 34px 34px 54px;align-items:center;gap:6px;padding:8px 6px;border-top:1px solid rgba(255,255,255,.12)}
+.lvteam b{font-family:var(--heading);font-weight:600;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lvteam.srv b::after{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--lime);margin-left:8px;vertical-align:middle}
+.lvsets,.lvgames{font-family:var(--display);font-size:22px;text-align:center;color:var(--sky)}
+.lvgames{color:var(--white)}
+.lvpts{font-family:var(--display);font-size:28px;text-align:center;color:var(--lime)}
+.lvstatus{margin:8px 0 0;font-weight:700;font-size:14px;color:var(--lime)}
+#peUser:disabled{opacity:.7}
+.avbtn{position:relative;overflow:visible}
+.avbtn img,.avbtn span,.avbtn svg{border-radius:50%}
+.avbtn img{overflow:hidden}
+.avbtn.badge::after{content:attr(data-n);position:absolute;top:-5px;right:-6px;min-width:18px;height:18px;border-radius:9px;background:#E8505B;color:#fff;font-family:var(--heading);font-weight:700;font-size:11px;display:grid;place-items:center;padding:0 4px;box-shadow:0 0 0 2px var(--bg)}
+.frsearch{display:grid;grid-template-columns:1fr auto;gap:8px;margin:4px 0 8px}
+.frfound{display:flex;align-items:center;gap:10px;background:var(--white);border:2px solid var(--navy);border-radius:14px;padding:8px 10px;margin-bottom:10px}
+.frfound .pav{width:42px;height:42px;font-size:17px}
+.frfound>div{flex:1;display:grid;min-width:0}
+.frfound b{font-family:var(--heading);font-weight:600;color:var(--navy)}
+.frfound span{font-size:13px;color:var(--muted)}
+.tag{background:var(--ice);border:2px solid var(--navy);border-radius:999px;padding:4px 10px;font-size:12.5px;font-weight:700;color:var(--navy)}
+.reqs{display:grid;gap:8px;margin-bottom:10px}
+.req{display:flex;align-items:center;gap:8px;background:var(--lime);border:2px solid var(--navy);border-radius:14px;padding:10px 12px}
+.req>div{flex:1;display:grid;min-width:0}
+.req b{font-family:var(--heading);font-weight:600;color:var(--navy)}
+.req span{font-size:13px;color:var(--navy);opacity:.8}
+.ondb{display:inline-block;width:9px;height:9px;border-radius:50%;background:#2E9D6A;vertical-align:middle;margin-left:2px}
 .gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--white);border:2px solid var(--navy);border-radius:14px;padding:13px;font-weight:700;font-size:16px;color:var(--navy)}
 .ordiv{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:13.5px;font-weight:700}
 .ordiv::before,.ordiv::after{content:"";flex:1;height:1.5px;background:var(--line)}
@@ -842,6 +887,7 @@ button{transition:transform .12s ease}
   <div class="inner">
     <div class="vhead"><img class="vlogo homelogo" alt="Deucebags, back to scoring" role="button" tabindex="0"><h2>Results</h2><button class="ghost" id="dataBtn">Your data</button><button class="ghost" id="resultsBack">Back</button></div>
     <div class="seg tabs" id="segTab"><button data-v="matches">Matches</button><button data-v="rivals">Rivals</button><button data-v="league">League</button><button data-v="profile">Profile</button></div>
+    <div class="livebanner hide" id="liveBanner" role="button" tabindex="0"></div>
     <div class="groupbar hide" id="groupBar"></div>
     <div id="tab-rivals" class="hide"><div id="rivalsBody"></div></div>
     <div id="tab-profile" class="hide"><div id="profileBody"></div></div>
@@ -1010,7 +1056,7 @@ button{transition:transform .12s ease}
   <div class="phedit"><div id="pePhoto"></div><div class="btns"><button class="secondary" id="peChange">Upload a photo</button><button class="secondary" id="peAvatar">Make an avatar</button><button class="linkbtn" id="peRemove">Remove picture</button></div></div>
   <input type="file" id="peFile" accept="image/*" class="hide">
   <div class="field"><label for="peName">Name you play under</label><input type="text" id="peName" list="playerNames" maxlength="20" autocomplete="off" placeholder="For example, Raza"><p class="help">Use the same name you add to matches so your stats link up.</p></div>
-  <div class="field"><label for="peUser">Username</label><input type="text" id="peUser" maxlength="24" autocomplete="off" placeholder="@yourname"></div>
+  <div class="field"><label for="peUser">Username</label><input type="text" id="peUser" maxlength="24" autocomplete="off" placeholder="@yourname"><p class="help" id="peUserHelp">Sign in to claim a username nobody else can use.</p><button class="linkbtn hide" id="peUserChange">Change username</button></div>
   <div class="field"><label for="peCountry">Flag (optional)</label><select id="peCountry" class="selectin"><option value="">Prefer not to say</option></select><p class="help">Shows next to your name. Pick a country or UK nation, or leave it blank.</p></div>
   <div class="field"><label for="peBio">Bio</label><textarea id="peBio" maxlength="160" rows="3" enterkeyhint="enter" placeholder="A line or two about you and your game"></textarea><p class="help" id="peBioCount"></p></div>
   <div class="field"><span class="lbl">Side you play</span><div class="seg three" id="peSide"><button data-v="Left">Left</button><button data-v="Right">Right</button><button data-v="Either">Either</button></div></div>
@@ -1065,7 +1111,7 @@ button{transition:transform .12s ease}
 <h4>What you choose to share</h4>
 <p>Friend codes and match results travel inside the links you send. Anyone with one of those links can see what's in it: your name, photo, bio and socials for a friend code, or the match score for a result. Nothing is shared unless you send it.</p>
 <h4>If you sign in</h4>
-<p>Signing in is optional. If you do, your results, profile and friends list are also saved to your Deucebags account on Google Firebase, stored in London, so they sync between your devices. Only you can see your account's data. Your email is used to sign you in and is never shown to anyone. You can delete your account and everything in it at any time from Account and sync.</p>
+<p>Signing in is optional. If you do, your results, profile and friends list are also saved to your Deucebags account on Google Firebase, stored in London, so they sync between your devices. Your results stay private to you, apart from matches you play with friends you've connected with, which are sent to them. Your profile card (name, username, photo, bio and padel details) can be seen by other Deucebags users who search for your username. If you join a shared group, matches tagged with that group, and live scores while you're scoring one, are shared with its members. Your email is used to sign you in and is never shown to anyone. You can delete your account and everything in it at any time from Account and sync.</p>
 <h4>Other services the app uses</h4>
 <p>The app is hosted on GitHub Pages and loads its fonts from Google Fonts and its QR code tool from Cloudflare. Like any website, those services can see your device's IP address when the app loads. They don't receive any of your scores, videos or profile.</p>
 <h4>Questions</h4>
@@ -1177,6 +1223,21 @@ button{transition:transform .12s ease}
   <div class="btns"><button class="primary" id="unSave">Save username</button><button class="secondary" id="unSkip">Later</button></div>
 </section>
 
+<section class="sheet" id="groupsSheet" aria-label="Shared groups">
+  <h3>Shared groups</h3>
+  <p class="help" style="margin:-4px 2px 12px">Everyone in a group shares one league, sees each other's matches and can watch live scores. Pick the group in setup when you start a match.</p>
+  <div id="grList"></div>
+  <div class="field"><label for="grName">New group</label><div class="inrow"><input type="text" id="grName" maxlength="24" placeholder="For example, Sunday crew"><button class="primary" id="grCreate">Create</button></div></div>
+  <label class="livetoggle"><input type="checkbox" id="grLive"> Share live scores with my groups while I'm scoring</label>
+  <div class="btns"><button class="secondary" id="grClose">Done</button></div>
+</section>
+
+<section class="sheet" id="liveSheet" aria-label="Live scores">
+  <h3>Live scores</h3>
+  <div id="liveBody"></div>
+  <div class="btns"><button class="secondary" id="liveClose">Close</button></div>
+</section>
+
 <section class="sheet" id="recapSheet" aria-label="Your week in padel">
   <h3 id="recapTitle">Your week in padel</h3>
   <div class="seg three" id="recapSeg" style="margin-bottom:14px"><button data-v="7">Week</button><button data-v="30">Month</button><button data-v="365">Year</button></div>
@@ -1210,7 +1271,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
   <input type="file" id="restoreFile" accept="application/json,.json" class="hide">
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v4.2<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v4.5<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -1516,6 +1577,7 @@ function recordHistory(){
     const entry={id:M.id,cfg:M.cfg,pts:M.pts.slice(),start:M.start,end:M.end,tags:Object.assign({},M.tags||{})};
     if(M.session)entry.session=M.session.id;
     if(i>=0)history[i]=entry;else history.unshift(entry);
+    setTimeout(()=>autoSend(entry),300);
   }else{
     M.end=null;
     if(i>=0)history.splice(i,1);
@@ -1622,6 +1684,7 @@ function render(){
   updateSession();
   if(typeof syncCamUi==='function'&&camOpen)syncCamUi();
   if(typeof pushNative==='function'){if(changeEndsNow&&nativeEvent==='point')nativeEvent='changeEnds';pushNative()}
+  if(typeof liveTick==='function')liveTick();
 }
 function tickClock(){
   if(!M.start){$('clock').textContent='';return}
@@ -1752,6 +1815,7 @@ function takeDraft(){
   draft.a=teamNameFrom(draft.an,draft.pa[0],draft.pa[1],'Us');draft.b=teamNameFrom(draft.bn,draft.pb[0],draft.pb[1],'Them');
   draft.overlay=$('inOverlay').checked;
   draft.group=$('inGroup').value.trim();store.set('db-lastGroup',draft.group);
+  {const sg=typeof sharedGroup==='function'?sharedGroup(draft.group):null;draft.gid=sg?sg.id:'';if(sg)draft.group=sg.name}
   return Object.assign({},draft);
 }
 $('startBtn').onclick=async()=>{
@@ -2336,6 +2400,8 @@ function openRow(id){
 $('rowSave').onclick=()=>{const h=history.find(x=>x.id===rowId);if(h){h.notes=$('rowNotes').value.trim();saveH();renderResults();hideSheet();toast('Notes saved.')}};
 $('rowDelete').onclick=async()=>{
   if(!(await ask('Delete this match?','It comes off your results, the league and player records.','Delete match',true)))return;
+  const delH=history.find(x=>x.id===rowId);
+  if(delH&&delH.cfg&&delH.cfg.gid&&FB.user){const ref=FB.db.collection('groups').doc(delH.cfg.gid).collection('matches').doc(rowId);ref.get().then(d=>d.exists&&d.data().from===FB.user.uid?ref.set({d:true,from:FB.user.uid,u:Date.now()}):null).catch(()=>{})}
   history=history.filter(x=>x.id!==rowId);saveH();
   if(rowId===M.id){M=newMatch(M.cfg);S=replay(M.cfg,M.pts);saveM();render()}
   hideSheet();renderResults();toast('Match deleted.');
@@ -2398,7 +2464,7 @@ $('arSave').onclick=async()=>{
   if(!editId&&findDuplicate(entry)&&!(await ask('Already got this one?','There\'s already a match with these players, on this day, with this score.','Add anyway',false,'Don\'t add'))){hideSheet();return}
   const i=history.findIndex(x=>x.id===entry.id);
   if(i>=0)history[i]=entry;else history.unshift(entry);
-  saveH();hideSheet();renderResults();toast(editId?'Result updated.':'Result added.');
+  saveH();hideSheet();renderResults();toast(editId?'Result updated.':'Result added.');setTimeout(()=>autoSend(entry),300);
 };
 
 /* export */
@@ -2695,7 +2761,7 @@ function setTab(t){
   tab=t;segSet('segTab',t);
   if(t==='players')t='league';tab=t;segSet('segTab',t);
   ['matches','rivals','league','profile'].forEach(k=>$('tab-'+k).classList.toggle('hide',k!==t));
-  renderGroupBar();$('groupBar').classList.toggle('hide',t==='profile'||!allGroups().length);
+  renderGroupBar();$('groupBar').classList.toggle('hide',t==='profile'||(!allGroups().length&&!(typeof FB!=='undefined'&&FB.user)));renderLiveBanner();
   if(t==='league'){renderLeague();renderPlayers()}if(t==='rivals')renderRivals();if(t==='matches')renderResults();if(t==='profile')renderProfile();
 }
 document.querySelectorAll('#segTab button').forEach(b=>b.onclick=()=>setTab(b.dataset.v));
@@ -3365,6 +3431,8 @@ function openProfEdit(){
   SOCIALS.forEach(([k])=>$('pe_'+k).value=PROF[k]);
   ['peSide','peHand','peLevel','peShot'].forEach(id=>setSeg(id,PROF[{peSide:'side',peHand:'hand',peLevel:'level',peShot:'shot'}[id]]));
   fillCountries();$('peCountry').value=PROF.country||'';pendingAvatar=null;
+  const signedIn=!!(typeof FB!=='undefined'&&FB.user);$('peUser').disabled=signedIn;$('peUserChange').classList.toggle('hide',!signedIn);
+  $('peUserHelp').textContent=signedIn?(PROF.username?'Your username is unique to you.':'You haven\'t picked a username yet.'):'Sign in to claim a username nobody else can use.';
   peSyncPhoto();peCount();fillNameList();showSheet('profSheet');
 }
 function peSyncPhoto(){$('pePhoto').innerHTML=avatar('pav big',$('peName').value||PROF.name,draftPhoto);$('peRemove').classList.toggle('hide',!draftPhoto)}
@@ -3376,6 +3444,7 @@ $('peShot').innerHTML=SHOTS.map(l=>'<button data-v="'+esc(l)+'">'+esc(l)+'</butt
 document.querySelectorAll('#peLevel button,#peShot button').forEach(b=>b.onclick=()=>{const g=b.parentElement;const on=b.getAttribute('aria-pressed')==='true';g.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));if(!on)b.setAttribute('aria-pressed','true')});
 $('peChange').onclick=()=>$('peFile').click();
 $('peAvatar').onclick=()=>openAvatar('profile');
+$('peUserChange').onclick=()=>{hideSheet();openUsername()};
 $('peRemove').onclick=()=>{draftPhoto='';peSyncPhoto()};
 $('peFile').onchange=async e=>{
   const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
@@ -3391,7 +3460,7 @@ $('peSave').onclick=()=>{
   const name=tidyName($('peName').value),oldId=PROF.id;
   if(!name){toast('Add the name you play under first.');$('peName').focus();return}
   if(FRIENDS.some(f=>f.key===pkey(name))){toast('One of your friends already goes by '+name+'. Pick something that tells you apart.');return}
-  PROF={photo:draftPhoto,name,username:cleanHandle($('peUser').value),bio:$('peBio').value.replace(/\r/g,'').replace(/\n{3,}/g,'\n\n').trim().slice(0,160),
+  PROF={photo:draftPhoto,name,username:(typeof FB!=='undefined'&&FB.user)?(PROF.username||''):cleanHandle($('peUser').value),bio:$('peBio').value.replace(/\r/g,'').replace(/\n{3,}/g,'\n\n').trim().slice(0,160),
     side:segVal('peSide'),hand:segVal('peHand'),level:segVal('peLevel'),club:$('peClub').value.trim(),racket:$('peRacket').value.trim(),
     since:($('peSince').value||'').replace(/\D/g,'').slice(0,4),shot:segVal('peShot'),country:$('peCountry').value,avatar:pendingAvatar||PROF.avatar||null};
   SOCIALS.forEach(([k])=>PROF[k]=cleanHandle($('pe_'+k).value));
@@ -3404,7 +3473,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='4.2';
+const APP_VERSION='4.5';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -3536,6 +3605,7 @@ $('scanClose').onclick=closeScanner;
 /* --- incoming links: a friend code or a match result --- */
 let incoming=null;
 async function handleLink(hash){
+  const gm=(hash||'').match(/#group=([A-Za-z0-9]{12,40})/);if(gm){await fbInit();setTimeout(()=>openJoin(gm[1]),FB.user?0:1500);return true}
   const m=(hash||'').match(/#(friend|match|session)=([A-Za-z0-9_\-]+)/);if(!m)return false;
   let data;try{data=await unpackData(m[2])}catch(e){toast('That link looks incomplete. Ask your friend to send it again.');return true}
   if(m[1]==='session'&&data&&Array.isArray(data.items)){await handleSession(data);return true}
@@ -3597,6 +3667,8 @@ $('inYes').onclick=()=>{
         f.name=alt;f.key=k}
       FRIENDS.push(f);saveFriends();hideSheet();toast(f.name+' added as a friend.');
     }
+  }else if(incoming.type==='group'){
+    joinGroup();return;
   }else if(incoming.type==='session'){
     const n=incoming.items.length;incoming.items.forEach(e=>history.push(e));history.sort((a,b)=>((b.date||b.start||0)-(a.date||a.start||0)));saveH();hideSheet();toast(n+(n===1?' round':' rounds')+' added to your results.');
   }else{
@@ -3613,7 +3685,7 @@ $('inSame').onclick=()=>{
   saveFriends();hideSheet();toast('Linked to '+f.name+'.');incoming=null;if($('resultsView').classList.contains('on'))setTab(tab);
 };
 async function checkHash(){
-  if(/#(friend|match|session)=/.test(location.hash)){const h=location.hash;try{window.history.replaceState(null,'',appUrl())}catch(e){}await handleLink(h)}
+  if(/#(friend|match|session|group)=/.test(location.hash)){const h=location.hash;try{window.history.replaceState(null,'',appUrl())}catch(e){}await handleLink(h)}
 }
 window.addEventListener('hashchange',checkHash);
 setTimeout(checkHash,500);
@@ -3633,12 +3705,12 @@ async function sendResult(h){
 function friendsHtml(){
   const list=FRIENDS.slice().sort((a,b)=>a.name.localeCompare(b.name));
   return'<p class="sh">Friends <span class="muted">'+list.length+'</span></p>'+
-    (list.length?'<div class="frlist">'+list.map(f=>'<button class="fr" data-k="'+esc(f.key)+'">'+avatar('pav',f.name,f.photo)+'<span><b>'+esc(f.name)+'</b>'+(f.username?'<em>@'+esc(f.username)+'</em>':'')+'</span></button>').join('')+'</div>'
-      :'<p class="help" style="margin:0 2px 10px">Swap friend codes with the people you play with. Their photos and socials show up on their profiles.</p>')+
-    '<div class="btns two" style="margin-bottom:6px"><button class="primary" id="frShare">Share my friend code</button><button class="secondary" id="frScan">Scan a code</button></div>';
+    (list.length?'<div class="frlist">'+list.map(f=>'<button class="fr" data-k="'+esc(f.key)+'">'+avatar('pav',f.name,f.photo)+'<span><b>'+esc(f.name)+(f.uid?' <i class="ondb" title="On Deucebags"></i>':'')+'</b>'+(f.username?'<em>@'+esc(f.username)+'</em>':'')+'</span></button>').join('')+'</div>'
+      :'<p class="help" style="margin:0 2px 10px">'+(FB.user?'Find friends by their username below. Matches you play together are sent to them automatically.':'Swap friend codes with the people you play with. Their photos and socials show up on their profiles.')+'</p>')+
+    socialHtml()+'<div class="btns two" style="margin-bottom:6px"><button class="'+(FB.user?'secondary':'primary')+'" id="frShare">Share my friend code</button><button class="secondary" id="frScan">Scan a code</button></div>';
 }
 function bindFriends(){
-  $('frShare').onclick=openFriendCode;$('frScan').onclick=openScanner;
+  $('frShare').onclick=openFriendCode;$('frScan').onclick=openScanner;bindSocial();
   document.querySelectorAll('.fr').forEach(b=>b.onclick=()=>openFriend(b.dataset.k));
 }
 function friendHeader(f){
@@ -3659,6 +3731,7 @@ function openFriend(key){
 async function removeFriend(key){
   const f=friendOf(key);if(!f)return;
   if(!(await ask('Remove '+f.name+'?','They\'ll come off your friends list. Your matches together stay in your results.','Remove friend',true)))return;
+  if(f.uid&&FB.user){const l=SOC.links.find(x=>x.id===linkId(myUid(),f.uid));if(l)dropLink(l)}
   FRIENDS=FRIENDS.filter(x=>x.key!==key);saveFriends();hideSheet();if(tab==='profile')renderProfile();toast(f.name+' removed.');
 }
 
@@ -3778,6 +3851,7 @@ function endMatch(counts){
   if(M.session)entry.session=M.session.id;
   const before=entry.counts?badgeSnapshot():null;
   const i=history.findIndex(h=>h.id===id);if(i>=0)history[i]=entry;else history.unshift(entry);saveH();
+  if(entry.counts)setTimeout(()=>autoSend(entry),300);
   if(before)announceBadges(newBadgesBetween(before,badgeSnapshot()));
   M=newMatch(Object.assign({},M.cfg));S=replay(M.cfg,M.pts);prevL=null;prevGames='';saveM();render();hideSheet();
   toast(entry.counts?'Match saved. It counts in the league.':'Match saved as unfinished. It won\'t count in the league.');
@@ -3946,16 +4020,19 @@ document.addEventListener('pointerdown',()=>{if(soundOn())audioCtx()},{once:true
 
 /* ================= groups ================= */
 const groupOf=cfg=>((cfg&&cfg.group)||'').trim();
-function allGroups(){const m={};history.forEach(h=>{const g=groupOf(h.cfg);if(g)m[g.toLowerCase()]=g});return Object.values(m).sort((a,b)=>a.localeCompare(b))}
+function allGroups(){const m={};if(typeof GRP!=='undefined')GRP.list.forEach(g=>{m[g.name.toLowerCase()]=g.name});history.forEach(h=>{const g=groupOf(h.cfg);if(g&&!m[g.toLowerCase()])m[g.toLowerCase()]=g});return Object.values(m).sort((a,b)=>a.localeCompare(b))}
 const inGroup=r=>!RES.group||groupOf(r.cfg).toLowerCase()===RES.group.toLowerCase();
 function groupRows(){return allRows().filter(inGroup)}
 function renderGroupBar(){
   const gs=allGroups(),bar=$('groupBar');
-  if(!gs.length){bar.classList.add('hide');RES.group='';return}
+  const signed=typeof FB!=='undefined'&&FB.user;
+  if(!gs.length&&!signed){bar.classList.add('hide');RES.group='';return}
   if(RES.group&&!gs.some(g=>g.toLowerCase()===RES.group.toLowerCase()))RES.group='';
   bar.classList.remove('hide');
   bar.innerHTML=['',...gs].map(g=>'<button data-g="'+esc(g)+'" aria-pressed="'+((RES.group||'')===g)+'">'+(g?esc(g):'Everyone')+'</button>').join('');
-  bar.querySelectorAll('button').forEach(b=>b.onclick=()=>{RES.group=b.dataset.g;renderGroupBar();setTab(tab)});
+  if(signed)bar.insertAdjacentHTML('beforeend','<button class="grmanage" id="grManage">+ Shared groups</button>');
+  bar.querySelectorAll('button[data-g]').forEach(b=>{const shared=typeof sharedGroup==='function'&&sharedGroup(b.dataset.g);if(shared)b.classList.add('shared');b.onclick=()=>{RES.group=b.dataset.g;renderGroupBar();setTab(tab)}});
+  if($('grManage'))$('grManage').onclick=openGroups;
 }
 function fillGroupList(){$('groupNames').innerHTML=allGroups().map(g=>'<option value="'+esc(g)+'">').join('')}
 
@@ -4028,7 +4105,7 @@ function doSwap(p){
   if(S.done===null){
     // save the set just played as its own result, so it credits those exact pairs
     const entry={id:M.id,cfg:Object.assign({},M.cfg,{bestOf:1,decider:'set'}),pts:M.pts.slice(),start:M.start,end:Date.now(),session:session.id};
-    const before=badgeSnapshot();const i=history.findIndex(h=>h.id===M.id);if(i>=0)history[i]=entry;else history.unshift(entry);saveH();
+    const before=badgeSnapshot();const i=history.findIndex(h=>h.id===M.id);if(i>=0)history[i]=entry;else history.unshift(entry);saveH();setTimeout(()=>autoSend(entry),300);
     announceBadges(newBadgesBetween(before,badgeSnapshot()));backupNudge();
   }
   const cfg=Object.assign({},M.cfg,{pa:p[0].slice(),pb:p[1].slice(),an:'',bn:'',bestOf:1,decider:'set'});
@@ -4553,6 +4630,8 @@ function progressHtml(key){
 
 $('rulesClose').onclick=()=>hideSheet();
 $('acClose').onclick=()=>hideSheet();
+$('grCreate').onclick=createGroup;$('grClose').onclick=()=>hideSheet();$('liveClose').onclick=()=>hideSheet();
+$('grLive').onchange=e=>store.set('db-live-share',e.target.checked);
 
 /* ================= avatar maker ================= */
 const AV={
@@ -4685,38 +4764,37 @@ async function syncNow(quiet){
   FB.syncing=true;setSyncLabel('Syncing…');
   try{
     const uid=FB.user.uid,col=FB.db.collection('users').doc(uid).collection('matches');
-    const snap=await col.get(),remote={};snap.forEach(d=>{remote[d.id]=d.data()});
-    const synced=syncedMap();
-    let pulled=0,removed=0;const writes=[],keep=[];
-    // everything on this phone
-    history.forEach(h=>{
-      const j=entryJson(h),hh=strHash(j),r=remote[h.id],s=synced[h.id];
-      if(!r){
-        if(s&&s===hh){removed++;delete synced[h.id];return} // deleted on another device, untouched here
-        writes.push(['set',h.id,j,hh]);keep.push(h);return; // new here, or changed here
-      }
-      if(r.h===hh){synced[h.id]=hh;keep.push(h);return}
-      if(s===hh){try{keep.push(JSON.parse(r.j));synced[h.id]=r.h;pulled++}catch(e){keep.push(h)}return} // changed on another device only
-      writes.push(['set',h.id,j,hh]);keep.push(h); // changed here (this phone wins a tie)
-    });
-    // everything on the server that this phone doesn't have
-    const have=new Set(history.map(h=>h.id));
+    const pullKey='db-pull-'+uid,since=store.get(pullKey)||0,started=Date.now();
+    // only what changed since the last sync (with a 10-minute overlap in case phone clocks differ)
+    const snap=since?await col.where('u','>',since-600000).get():await col.get();
+    const remote={};snap.forEach(d=>{remote[d.id]=d.data()});
+    const synced=syncedMap();let pulled=0,removed=0;
+    const byId={};history.forEach((h,i)=>byId[h.id]=i);
+    const drop=new Set();
     Object.entries(remote).forEach(([id,r])=>{
-      if(have.has(id))return;
-      if(synced[id]){writes.push(['del',id]);return} // deleted on this phone since the last sync
-      try{keep.push(JSON.parse(r.j));synced[id]=r.h;pulled++}catch(e){}
+      const i=byId[id],local=i===undefined?null:history[i],lh=local?strHash(entryJson(local)):null;
+      if(r.d){if(local&&lh===synced[id]){drop.add(id);removed++}delete synced[id];return} // deleted on another device
+      if(r.h===lh){synced[id]=r.h;return}
+      if(!local){if(synced[id])return; // deleted on this phone since the last sync: marked deleted below
+        try{history.push(JSON.parse(r.j));synced[id]=r.h;pulled++}catch(e){}return}
+      if(lh===synced[id]){try{history[i]=JSON.parse(r.j);synced[id]=r.h;pulled++}catch(e){}} // changed elsewhere only
     });
-    history=keep;
+    if(drop.size)history=history.filter(h=>!drop.has(h.id));
+    // push anything new or changed here, and mark deletions
+    const writes=[],have=new Set(history.map(h=>h.id));
+    history.forEach(h=>{const j=entryJson(h),hh=strHash(j);if(synced[h.id]!==hh&&!(remote[h.id]&&remote[h.id].h===hh))writes.push(['set',h.id,j,hh])});
+    Object.keys(synced).forEach(id=>{if(!have.has(id))writes.push(['del',id])});
     for(let i=0;i<writes.length;i+=400){
-      const b=FB.db.batch();
-      writes.slice(i,i+400).forEach(w=>{if(w[0]==='del'){b.delete(col.doc(w[1]));delete synced[w[1]]}else{b.set(col.doc(w[1]),{j:w[2],h:w[3],u:Date.now()});synced[w[1]]=w[3]}});
+      const b=FB.db.batch(),now=Date.now();
+      writes.slice(i,i+400).forEach(w=>{if(w[0]==='del'){b.set(col.doc(w[1]),{d:true,u:now});delete synced[w[1]]}else{b.set(col.doc(w[1]),{j:w[2],h:w[3],u:now});synced[w[1]]=w[3]}});
       await b.commit();
     }
-    store.set('db-synced',synced);
+    store.set('db-synced',synced);store.set(pullKey,started);
+    if(typeof syncGroups==='function')pulled+=await syncGroups();
     if(pulled||removed){history.sort((a,b)=>((b.date||b.start||0)-(a.date||a.start||0)));saveH(true);render();if($('resultsView').classList.contains('on'))setTab(tab)}
     await syncProfile();
     FB.last=Date.now();store.set('db-last-sync',FB.last);setSyncLabel();
-    if(!quiet)toast(pulled?'Synced. '+pulled+(pulled===1?' match':' matches')+' added from your account.':'All synced.');
+    if(!quiet)toast(pulled?'Synced. '+pulled+(pulled===1?' match':' matches')+' added.':'All synced.');
   }catch(e){setSyncLabel('Couldn\'t sync. It\'ll try again soon.');if(!quiet)toast(fbError(e))}
   finally{FB.syncing=false}
 }
@@ -4738,6 +4816,7 @@ async function syncProfile(){
     const u=localU||Date.now();
     await ref.set({username:PROF.username||'',usernameLower:(PROF.username||'').toLowerCase(),profile:JSON.stringify(PROF),friends:JSON.stringify(FRIENDS),u},{merge:true});
     store.set('db-prof-u',u);
+    publishProfile().catch(()=>{});
   }
   if(r&&r.username&&PROF.username!==r.username){PROF.username=r.username;saveProfRaw()}
   FB.doc=r;
@@ -4763,10 +4842,11 @@ function renderAccount(){
     $('acTitle').textContent='Your account';
     b.innerHTML='<div class="acrow"><b>'+esc(PROF.username?'@'+PROF.username:'No username yet')+'</b><span>'+esc(FB.user.email||'Signed in with Google')+'</span></div>'+
       '<p class="help" id="acSync"></p>'+
-      '<div class="btns"><button class="primary" id="acSyncBtn">Sync now</button><button class="secondary" id="acUser">'+(PROF.username?'Change username':'Choose a username')+'</button><button class="secondary" id="acOut">Sign out</button><button class="danger" id="acDelete">Delete my account</button></div>'+
-      '<p class="help">Your results, profile and friends are saved to your account and kept in sync on every device you sign in on. Videos stay on your phone.</p>';
+      '<div class="btns"><button class="primary" id="acSyncBtn">Sync now</button><button class="secondary" id="acUser">'+(PROF.username?'Change username':'Choose a username')+'</button><button class="secondary" id="acGroups">Shared groups</button><button class="secondary" id="acOut">Sign out</button><button class="danger" id="acDelete">Delete my account</button></div>'+
+      '<label class="livetoggle" style="margin:12px 2px"><input type="checkbox" id="acAuto"'+(autoSendOn()?' checked':'')+'> Send results to friends automatically</label>'+
+      '<p class="help">Your results, profile and friends are saved to your account and kept in sync on every device you sign in on. Friends you\'ve connected with get matches you play together straight away. Videos stay on your phone.</p>';
     setSyncLabel();
-    $('acSyncBtn').onclick=()=>syncNow(false);$('acUser').onclick=openUsername;$('acOut').onclick=signOutNow;$('acDelete').onclick=deleteAccount;
+    $('acSyncBtn').onclick=()=>syncNow(false);$('acAuto').onchange=e=>store.set('db-autosend',e.target.checked);$('acUser').onclick=openUsername;$('acGroups').onclick=openGroups;$('acOut').onclick=signOutNow;$('acDelete').onclick=deleteAccount;
     return;
   }
   $('acTitle').textContent=authMode==='up'?'Create your account':'Sign in';
@@ -4806,8 +4886,8 @@ async function onAuthChange(){
   store.set('db-signed-in',!!FB.user);
   syncAccountBits();
   if(openSheet&&openSheet.id==='accountSheet')renderAccount();
-  if(!FB.user)return;
-  await syncNow(true);
+  if(!FB.user){stopSocial();return}
+  await syncNow(true);startSocial();
   if(openSheet&&openSheet.id==='accountSheet'){renderAccount();toast('Signed in. Your results are synced.')}
   if(!PROF.username&&!(FB.doc&&FB.doc.username))setTimeout(openUsername,600);
 }
@@ -4867,6 +4947,311 @@ async function deleteAccount(){
     await FB.user.delete();
     store.set('db-synced',{});store.set('db-prof-u',0);hideSheet();toast('Your account has been deleted.');
   }catch(e){toast(fbError(e))}
+}
+
+
+/* ================= stage two: friends by username and results that send themselves ================= */
+const SOC={links:[],unsubLinks:null,unsubInbox:null,found:null};
+const linkId=(a,b)=>a<b?a+'_'+b:b+'_'+a;
+const autoSendOn=()=>store.get('db-autosend')!==false;
+const friendByUid=uid=>uid?FRIENDS.find(f=>f.uid===uid):null;
+const myUid=()=>FB.user?FB.user.uid:null;
+
+/* --- your public card, so friends can find you --- */
+async function publishProfile(){
+  if(!FB.user)return;
+  const photo=PROF.photo?await smallPhoto(PROF.photo,96):'';
+  const pub={username:PROF.username||'',name:PROF.name||'',photo,bio:PROF.bio||'',country:PROF.country||'',side:PROF.side||'',hand:PROF.hand||'',level:PROF.level||'',club:PROF.club||'',racket:PROF.racket||'',since:PROF.since||'',shot:PROF.shot||'',ig:PROF.ig||'',tiktok:PROF.tiktok||'',x:PROF.x||'',yt:PROF.yt||'',u:Date.now()};
+  await FB.db.collection('profiles').doc(FB.user.uid).set(pub);
+}
+const pubToFriend=(uid,p)=>({uid,id:uid,key:pkey(p.name||p.username),name:p.name||p.username,username:p.username||'',bio:p.bio||'',country:p.country||'',side:p.side||'',hand:p.hand||'',level:p.level||'',club:p.club||'',racket:p.racket||'',since:p.since||'',shot:p.shot||'',ig:p.ig||'',tiktok:p.tiktok||'',x:p.x||'',yt:p.yt||'',photo:p.photo||''});
+
+/* --- live listeners while signed in --- */
+function startSocial(){
+  stopSocial();if(!FB.user)return;
+  const me=FB.user.uid;
+  SOC.unsubLinks=FB.db.collection('links').where('users','array-contains',me).onSnapshot(snap=>{
+    const list=[];snap.forEach(d=>list.push(Object.assign({id:d.id},d.data())));
+    const before=new Set(SOC.links.filter(l=>l.status==='accepted').map(l=>l.id));
+    SOC.links=list;
+    list.filter(l=>l.status==='accepted'&&!before.has(l.id)).forEach(l=>linkFriend(l.users.find(u=>u!==me)));
+    syncRequestBadge();if(tab==='profile'&&$('resultsView').classList.contains('on'))renderProfile();
+  },()=>{});
+  SOC.unsubInbox=FB.db.collection('inbox').doc(me).collection('items').onSnapshot(snap=>{
+    const items=[];snap.forEach(d=>items.push(Object.assign({_id:d.id},d.data())));
+    if(items.length)receiveResults(items);
+  },()=>{});
+  publishProfile().catch(()=>{});startGroups();
+}
+function stopSocial(){if(SOC.unsubLinks)SOC.unsubLinks();if(SOC.unsubInbox)SOC.unsubInbox();SOC.unsubLinks=SOC.unsubInbox=null;SOC.links=[];syncRequestBadge();if(typeof stopGroups==='function')stopGroups()}
+function syncRequestBadge(){
+  const n=SOC.links.filter(l=>l.status==='pending'&&l.from!==myUid()).length;
+  $('avBtn').classList.toggle('badge',n>0);$('avBtn').setAttribute('data-n',n||'');
+}
+
+/* --- find someone by username --- */
+async function findByUsername(){
+  const v=$('frFind').value.trim().replace(/^@/,'').toLowerCase();
+  if(!USER_RE.test(v)){toast('Usernames are 3 to 20 letters, numbers, dots or underscores.');return}
+  $('frResult').innerHTML='<p class="help">Looking…</p>';
+  try{
+    const u=await FB.db.collection('usernames').doc(v).get();
+    if(!u.exists){$('frResult').innerHTML='<p class="help">Nobody\'s using @'+esc(v)+' yet. Check the spelling, or send them your friend code instead.</p>';return}
+    const uid=u.data().uid;
+    if(uid===myUid()){$('frResult').innerHTML='<p class="help">That\'s you.</p>';return}
+    const p=await FB.db.collection('profiles').doc(uid).get(),pd=p.exists?p.data():{username:v,name:v};
+    SOC.found={uid,p:pd};
+    const link=SOC.links.find(l=>l.id===linkId(myUid(),uid));
+    const state=!link?'none':link.status==='accepted'?'friends':link.from===myUid()?'sent':'incoming';
+    $('frResult').innerHTML='<div class="frfound">'+avatar('pav',pd.name||v,pd.photo)+'<div><b>'+esc(pd.name||v)+(pd.country?' '+flagOf(pd.country):'')+'</b><span>@'+esc(pd.username||v)+(pd.club?', '+esc(pd.club):'')+'</span></div>'+
+      ({none:'<button class="mini lime" id="frReq">Add</button>',sent:'<span class="tag">Request sent</span>',friends:'<span class="tag">Friends</span>',incoming:'<button class="mini lime" id="frAcc">Accept</button>'})[state]+'</div>';
+    if($('frReq'))$('frReq').onclick=()=>sendRequest(uid,pd);
+    if($('frAcc'))$('frAcc').onclick=()=>acceptRequest(link);
+  }catch(e){$('frResult').innerHTML='<p class="help">Couldn\'t search right now. Check your signal and try again.</p>'}
+}
+async function sendRequest(uid,pd){
+  const me=myUid();
+  try{
+    await FB.db.collection('links').doc(linkId(me,uid)).set({users:[me,uid],from:me,status:'pending',createdAt:Date.now(),fromName:PROF.name||'',fromUsername:PROF.username||'',toName:pd.name||'',toUsername:pd.username||''});
+    toast('Request sent to @'+(pd.username||'')+'.');$('frResult').innerHTML='';$('frFind').value='';
+  }catch(e){toast(fbError(e))}
+}
+async function acceptRequest(link){
+  try{await FB.db.collection('links').doc(link.id).update({status:'accepted',acceptedAt:Date.now()});toast('You\'re now friends with '+(link.fromName||'@'+link.fromUsername)+'.')}catch(e){toast(fbError(e))}
+}
+async function dropLink(link,msg){
+  try{await FB.db.collection('links').doc(link.id).delete();if(msg)toast(msg)}catch(e){toast(fbError(e))}
+}
+// a new connection: make sure they're in your friends list, matched to the right player
+async function linkFriend(uid){
+  if(!uid||friendByUid(uid))return;
+  let pd=null;try{const p=await FB.db.collection('profiles').doc(uid).get();pd=p.exists?p.data():null}catch(e){}
+  if(!pd)return;
+  const f=pubToFriend(uid,pd),same=friendOf(f.key);
+  if(same&&!same.uid){Object.assign(same,f,{name:same.name,key:same.key});saveFriends();return}
+  const played=!same&&knownNames().some(n=>pkey(n)===f.key);
+  if(same||(PROF.name&&f.key===pkey(PROF.name))){f.name=uniqueName(f.name);f.key=pkey(f.name)}
+  else if(played){
+    const yes=await ask('Is this the '+f.name+' you\'ve played with?','Linking them means your past matches together count for both of you.','Yes, same person',false,'No, someone else');
+    if(!yes){f.name=uniqueName(f.name);f.key=pkey(f.name)}
+  }
+  FRIENDS.push(Object.assign({added:Date.now()},f));saveFriends();
+  if(tab==='profile')renderProfile();
+}
+
+/* --- results that send themselves --- */
+function uidsFor(cfg){
+  const out={};const me=myUid();
+  [0,1].forEach(s=>members(cfg,s).forEach(n=>{const k=pkey(n);if(PROF.name&&k===pkey(PROF.name)&&me)out[n]=me;else{const f=friendOf(k);if(f&&f.uid)out[n]=f.uid}}));
+  return out;
+}
+async function autoSend(h){
+  if(FB.user&&h)groupSend(h).catch(()=>{});
+  if(!FB.user||!autoSendOn()||!h)return;
+  const me=myUid(),uids=uidsFor(h.cfg),targets=[...new Set(Object.values(uids).filter(u=>u!==me))];
+  if(!targets.length)return;
+  const e=h.manual?{id:h.id,manual:true,date:h.date,sets:h.sets,cfg:h.cfg}:{id:h.id,cfg:h.cfg,pts:h.pts,start:h.start,end:h.end};
+  if(h.session)e.session=h.session;if(h.unfinished){e.unfinished=true;e.counts=h.counts;e.leader=h.leader}
+  e.uids=uids;
+  const j=JSON.stringify(e),hh=strHash(j),sent=store.get('db-sent')||{};
+  if(sent[h.id]===hh)return;
+  try{
+    const b=FB.db.batch();
+    targets.forEach(u=>b.set(FB.db.collection('inbox').doc(u).collection('items').doc(h.id),{from:me,fromName:PROF.name||'',j,createdAt:Date.now()}));
+    await b.commit();sent[h.id]=hh;store.set('db-sent',sent);
+    const names=targets.map(u=>(friendByUid(u)||{}).name).filter(Boolean);
+    if(names.length)toast('Sent to '+(names.length>1?names.slice(0,-1).join(', ')+' and '+names[names.length-1]:names[0])+'.');
+  }catch(e){}
+}
+function receiveResults(items){
+  const me=myUid();let added=0,updated=0;const from=new Set();
+  items.forEach(it=>{
+    let e;try{e=JSON.parse(it.j)}catch(err){return}
+    if(e.uids){const map={};Object.entries(e.uids).forEach(([n,u])=>{if(u===me&&PROF.name)map[pkey(n)]=PROF.name;else{const f=friendByUid(u);if(f)map[pkey(n)]=f.name}});
+      const c=Object.assign({},e.cfg),fix=l=>(l||[]).map(n=>map[pkey(n||'')]||n);c.pa=fix(c.pa);c.pb=fix(c.pb);
+      if(!c.an&&c.pa.filter(Boolean).length)c.a=joinNames(c.pa);if(!c.bn&&c.pb.filter(Boolean).length)c.b=joinNames(c.pb);e=Object.assign({},e,{cfg:c})}
+    delete e.uids;
+    const meK=meKey();if(meK&&members(e.cfg,1).some(n=>pkey(n)===meK)&&!members(e.cfg,0).some(n=>pkey(n)===meK))e=flipEntry(e);
+    const i=history.findIndex(h=>h.id===e.id);
+    if(i>=0){if(JSON.stringify(history[i].pts)!==JSON.stringify(e.pts)||JSON.stringify(history[i].sets)!==JSON.stringify(e.sets)){history[i]=e;updated++}}
+    else if(!findDuplicate(e)){history.push(e);added++}
+    if(it.fromName)from.add(it.fromName);
+    FB.db.collection('inbox').doc(me).collection('items').doc(it._id).delete().catch(()=>{});
+  });
+  if(added||updated){
+    history.sort((a,b)=>((b.date||b.start||0)-(a.date||a.start||0)));saveH();render();
+    if($('resultsView').classList.contains('on'))setTab(tab);
+    const who=[...from].join(' and ')||'A friend';
+    toast(who+' sent you '+(added+updated===1?'a result':(added+updated)+' results')+'. It\'s in your results.');
+  }
+}
+
+/* --- friends section on your profile, when signed in --- */
+function socialHtml(){
+  if(!FB.user)return'<p class="help" style="margin:4px 2px 10px">Sign in to add friends by username and have results sent to them automatically.</p>';
+  const me=myUid();
+  const incoming=SOC.links.filter(l=>l.status==='pending'&&l.from!==me),outgoing=SOC.links.filter(l=>l.status==='pending'&&l.from===me);
+  return(incoming.length?'<div class="reqs">'+incoming.map(l=>'<div class="req" data-id="'+l.id+'"><div><b>'+esc(l.fromName||'@'+l.fromUsername)+'</b><span>@'+esc(l.fromUsername||'')+' wants to be friends</span></div><button class="mini lime" data-a="acc">Accept</button><button class="mini" data-a="dec">Decline</button></div>').join('')+'</div>':'')+
+    '<div class="frsearch"><div class="unwrap"><span>@</span><input type="text" id="frFind" maxlength="21" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Find a friend by username"></div><button class="mini" id="frGo">Find</button></div><div id="frResult"></div>'+
+    (outgoing.length?'<p class="help" style="margin:8px 2px 6px">Waiting for: '+outgoing.map(l=>'<span class="pend">'+esc(l.toName||(l.toUsername?'@'+l.toUsername:'a friend'))+' <button class="linkbtn inl" data-cancel="'+l.id+'">cancel</button></span>').join(', ')+'</p>':'');
+}
+function bindSocial(){
+  if(!FB.user)return;
+  $('frFind').oninput=e=>{const v=e.target.value;if(v.startsWith('@'))e.target.value=v.replace(/^@+/,'')};
+  $('frGo').onclick=findByUsername;$('frFind').onkeydown=e=>{if(e.key==='Enter')findByUsername()};
+  document.querySelectorAll('.req').forEach(r=>{const l=SOC.links.find(x=>x.id===r.dataset.id);r.querySelector('[data-a="acc"]').onclick=()=>acceptRequest(l);r.querySelector('[data-a="dec"]').onclick=()=>dropLink(l,'Request declined.')});
+  document.querySelectorAll('[data-cancel]').forEach(b=>b.onclick=()=>{const l=SOC.links.find(x=>x.id===b.dataset.cancel);if(l)dropLink(l,'Request cancelled.')});
+}
+
+
+/* ================= stage three: shared groups and live scores ================= */
+const GRP={list:[],unsub:null,live:{},liveUnsubs:{},lastLive:0};
+const liveOn=()=>store.get('db-live-share')!==false;
+const sharedGroup=name=>{const n=(name||'').trim().toLowerCase();return n?GRP.list.find(g=>g.name.toLowerCase()===n):null};
+function newGid(){const c='abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';const a=new Uint32Array(20);crypto.getRandomValues(a);a.forEach(n=>s+=c[n%c.length]);return s}
+
+function startGroups(){
+  stopGroups();if(!FB.user)return;
+  GRP.unsub=FB.db.collection('groups').where('members','array-contains',FB.user.uid).onSnapshot(snap=>{
+    const list=[];snap.forEach(d=>list.push(Object.assign({id:d.id},d.data())));
+    GRP.list=list;watchLive();
+    if($('resultsView').classList.contains('on'))renderGroupBar();
+    if(openSheet&&openSheet.id==='groupsSheet')renderGroupsSheet();
+  },()=>{});
+}
+function stopGroups(){if(GRP.unsub)GRP.unsub();GRP.unsub=null;Object.values(GRP.liveUnsubs).forEach(u=>u());GRP.liveUnsubs={};GRP.live={};GRP.list=[];renderLiveBanner()}
+
+/* --- create, invite, join, leave --- */
+async function createGroup(){
+  const name=tidyName($('grName').value);if(!name){toast('Give your group a name first.');return}
+  if(GRP.list.some(g=>g.name.toLowerCase()===name.toLowerCase())){toast('You\'re already in a group with that name.');return}
+  const gid=newGid(),me=FB.user.uid;
+  try{
+    await FB.db.collection('groups').doc(gid).set({name,members:[me],admins:[me],names:{[me]:PROF.name||PROF.username||'Player'},createdBy:me,createdAt:Date.now()});
+    $('grName').value='';toast(name+' created. Invite people with its link.');
+    // matches already tagged with this group name join it
+    let n=0;history.forEach(h=>{if(groupOf(h.cfg).toLowerCase()===name.toLowerCase()&&!h.cfg.gid){h.cfg=Object.assign({},h.cfg,{gid});n++}});
+    if(n){saveH();setTimeout(()=>syncNow(true),500)}
+  }catch(e){toast(fbError(e))}
+}
+async function inviteGroup(g){
+  const url=appUrl()+'#group='+g.id,text='Join "'+g.name+'" on Deucebags, so we all share one league:';
+  if(navigator.share){try{await navigator.share({title:'Join '+g.name,text,url});return}catch(e){if(e&&e.name==='AbortError')return}}
+  try{await navigator.clipboard.writeText(text+' '+url);toast('Invite link copied. Paste it into your group chat.')}catch(e){toast('Couldn\'t share the link here.')}
+}
+let pendingJoin=null;
+async function openJoin(gid){
+  if(!FB.user){toast('Sign in first, then tap the invite link again.');setTimeout(openAccount,400);return}
+  try{
+    const d=await FB.db.collection('groups').doc(gid).get();
+    if(!d.exists){toast('That group doesn\'t exist any more.');return}
+    const g=Object.assign({id:gid},d.data());
+    if(g.members.includes(FB.user.uid)){toast('You\'re already in '+g.name+'.');return}
+    pendingJoin=g;
+    $('inTitle').textContent='Join '+g.name+'?';
+    $('inBody').innerHTML='<div class="inmatch"><b>'+esc(g.name)+'</b><span>'+g.members.length+(g.members.length===1?' member':' members')+': '+esc(Object.values(g.names||{}).slice(0,6).join(', '))+'</span></div><p class="help">You\'ll share one league with everyone in the group, see their matches, and can watch live scores.</p>';
+    $('inYes').textContent='Join group';$('inYes').classList.remove('hide');$('inSame').classList.add('hide');
+    incoming={type:'group'};showSheet('incomingSheet');
+  }catch(e){toast(fbError(e))}
+}
+async function joinGroup(){
+  const g=pendingJoin,me=FB.user.uid;if(!g)return;
+  try{
+    await FB.db.collection('groups').doc(g.id).update({members:g.members.concat([me]),names:Object.assign({},g.names||{},{[me]:PROF.name||PROF.username||'Player'})});
+    hideSheet();toast('You\'re in '+g.name+'.');pendingJoin=null;setTimeout(()=>syncNow(true),800);
+  }catch(e){toast(fbError(e))}
+}
+async function leaveGroup(g){
+  if(!(await ask('Leave '+g.name+'?','You\'ll stop seeing its shared league and live scores. Matches already on your phone stay.','Leave group',true)))return;
+  const me=FB.user.uid,names=Object.assign({},g.names||{});delete names[me];
+  try{
+    if(g.members.length===1)await FB.db.collection('groups').doc(g.id).delete();
+    else await FB.db.collection('groups').doc(g.id).update({members:g.members.filter(u=>u!==me),names});
+    toast('You\'ve left '+g.name+'.');
+  }catch(e){toast(fbError(e))}
+}
+function openGroups(){if(!FB.user){toast('Sign in to create or join shared groups.');openAccount();return}hideSheet();renderGroupsSheet();showSheet('groupsSheet')}
+function renderGroupsSheet(){
+  $('grList').innerHTML=GRP.list.length?GRP.list.map(g=>'<div class="grrow" data-g="'+g.id+'"><div><b>'+esc(g.name)+'</b><span>'+g.members.length+(g.members.length===1?' member':' members')+': '+esc(Object.values(g.names||{}).slice(0,5).join(', '))+(g.members.length>5?'…':'')+'</span></div><button class="mini lime" data-a="inv">Invite</button><button class="mini" data-a="leave">Leave</button></div>').join('')
+    :'<p class="help" style="margin:0 2px 12px">No shared groups yet. Create one for each set of friends you play with.</p>';
+  $('grList').querySelectorAll('.grrow').forEach(r=>{const g=GRP.list.find(x=>x.id===r.dataset.g);r.querySelector('[data-a="inv"]').onclick=()=>inviteGroup(g);r.querySelector('[data-a="leave"]').onclick=()=>leaveGroup(g)});
+  $('grLive').checked=liveOn();
+}
+
+/* --- matches shared with the group --- */
+async function groupSend(h){
+  if(!FB.user||!h||!h.cfg||!h.cfg.gid)return;
+  const g=GRP.list.find(x=>x.id===h.cfg.gid);if(!g)return;
+  const e=h.manual?{id:h.id,manual:true,date:h.date,sets:h.sets,cfg:h.cfg}:{id:h.id,cfg:h.cfg,pts:h.pts,start:h.start,end:h.end};
+  if(h.session)e.session=h.session;if(h.unfinished){e.unfinished=true;e.counts=h.counts;e.leader=h.leader}
+  e.uids=uidsFor(h.cfg);
+  const j=JSON.stringify(e),hh=strHash(j),key='db-gsent',sent=store.get(key)||{};
+  if(sent[g.id+'/'+h.id]===hh)return;
+  try{await FB.db.collection('groups').doc(g.id).collection('matches').doc(h.id).set({j,h:hh,from:FB.user.uid,u:Date.now()});sent[g.id+'/'+h.id]=hh;store.set(key,sent)}catch(e){}
+}
+async function syncGroups(){
+  if(!FB.user||!GRP.list.length)return 0;
+  let added=0;const me=FB.user.uid;
+  for(const g of GRP.list){
+    const key='db-gpull-'+g.id,since=store.get(key)||0,started=Date.now();
+    try{
+      const col=FB.db.collection('groups').doc(g.id).collection('matches');
+      const snap=since?await col.where('u','>',since-600000).get():await col.get();
+      snap.forEach(d=>{
+        const r=d.data();
+        if(r.d){if(r.from!==me){const i=history.findIndex(h=>h.id===d.id&&h.cfg&&h.cfg.gid===g.id);if(i>=0){history.splice(i,1);added++}}return}
+        if(r.from===me)return;
+        let e;try{e=JSON.parse(r.j)}catch(err){return}
+        if(e.uids){const map={};Object.entries(e.uids).forEach(([n,u])=>{if(u===me&&PROF.name)map[pkey(n)]=PROF.name;else{const f=friendByUid(u);if(f)map[pkey(n)]=f.name}});
+          const c=Object.assign({},e.cfg),fix=l=>(l||[]).map(n=>map[pkey(n||'')]||n);c.pa=fix(c.pa);c.pb=fix(c.pb);
+          if(!c.an&&c.pa.filter(Boolean).length)c.a=joinNames(c.pa);if(!c.bn&&c.pb.filter(Boolean).length)c.b=joinNames(c.pb);e=Object.assign({},e,{cfg:c})}
+        delete e.uids;e.cfg=Object.assign({},e.cfg,{group:g.name,gid:g.id});
+        const meK=meKey();if(meK&&members(e.cfg,1).some(n=>pkey(n)===meK)&&!members(e.cfg,0).some(n=>pkey(n)===meK))e=flipEntry(e);
+        const i=history.findIndex(h=>h.id===e.id);
+        if(i>=0){if(JSON.stringify(history[i].pts)!==JSON.stringify(e.pts)){history[i]=e;added++}}
+        else if(!findDuplicate(e)){history.push(e);added++}
+      });
+      store.set(key,started);
+    }catch(e){}
+  }
+  return added;
+}
+
+/* --- live scores --- */
+function liveTick(){
+  if(!FB.user||!liveOn()||!M.cfg||!M.cfg.gid||!M.pts.length)return;
+  const g=GRP.list.find(x=>x.id===M.cfg.gid);if(!g)return;
+  const now=Date.now();if(S.done===null&&now-GRP.lastLive<1200){clearTimeout(liveTick.t);liveTick.t=setTimeout(liveTick,1300);return}
+  GRP.lastLive=now;
+  const st=watchState();
+  FB.db.collection('groups').doc(g.id).collection('live').doc(FB.user.uid).set({state:JSON.stringify(st),by:PROF.name||'',ended:S.done!==null,u:now}).catch(()=>{});
+}
+function watchLive(){
+  const ids=new Set(GRP.list.map(g=>g.id));
+  Object.keys(GRP.liveUnsubs).forEach(id=>{if(!ids.has(id)){GRP.liveUnsubs[id]();delete GRP.liveUnsubs[id];delete GRP.live[id]}});
+  GRP.list.forEach(g=>{
+    if(GRP.liveUnsubs[g.id])return;
+    GRP.liveUnsubs[g.id]=FB.db.collection('groups').doc(g.id).collection('live').onSnapshot(snap=>{
+      const rows=[];snap.forEach(d=>{const r=d.data();if(d.id===FB.user.uid)return;if(Date.now()-r.u>45*60000)return;if(r.ended&&Date.now()-r.u>5*60000)return;try{rows.push({id:d.id,g:g.name,by:r.by,ended:r.ended,u:r.u,st:JSON.parse(r.state)})}catch(e){}});
+      GRP.live[g.id]=rows;renderLiveBanner();if(openSheet&&openSheet.id==='liveSheet')renderLiveSheet();
+    },()=>{});
+  });
+}
+function liveRows(){return Object.values(GRP.live).flat().sort((a,b)=>b.u-a.u)}
+function renderLiveBanner(){
+  const el=$('liveBanner'),rows=liveRows();
+  if(!el)return;
+  if(!rows.length){el.classList.add('hide');return}
+  const r=rows[0],st=r.st;
+  el.classList.remove('hide');
+  el.innerHTML='<span class="livedot'+(r.ended?' off':'')+'"></span><div><b>'+(r.ended?'Just finished':'Live now')+', '+esc(r.g)+'</b><span>'+esc(st.us.name)+' v '+esc(st.them.name)+': '+(r.ended?esc(st.winner+' won '+st.score):esc(st.score?st.score+', ':'')+esc(st.us.points+'–'+st.them.points))+'</span></div>'+(rows.length>1?'<em>+'+(rows.length-1)+'</em>':'');
+  el.onclick=()=>{renderLiveSheet();showSheet('liveSheet')};
+}
+function renderLiveSheet(){
+  const rows=liveRows();
+  $('liveBody').innerHTML=rows.length?rows.map(r=>{const st=r.st,side=t=>'<div class="lvteam'+(st[t].serving&&!r.ended?' srv':'')+'"><b>'+esc(st[t].name)+'</b><span class="lvsets">'+st[t].sets+'</span><span class="lvgames">'+st[t].games+'</span><span class="lvpts">'+(r.ended?'':esc(st[t].points))+'</span></div>';
+    return'<div class="lvcard"><p class="lvhead"><span class="livedot'+(r.ended?' off':'')+'"></span>'+esc(r.g)+(r.ended?', finished':', scored by '+esc(r.by||'a friend'))+'</p>'+side('them')+side('us')+(st.status&&!r.ended?'<p class="lvstatus">'+esc(st.status)+'</p>':'')+(r.ended?'<p class="lvstatus">'+esc(st.winner)+' won '+esc(st.score)+'</p>':'')+'</div>'}).join('')
+    :'<p class="empty">Nobody in your groups is scoring a match right now.</p>';
 }
 
 /* ================= go ================= */
