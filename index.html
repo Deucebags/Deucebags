@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="4.9">
+<meta name="app-version" content="5.0">
 <title>Deucebags</title>
 <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1179x2556.jpg">
 <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1290x2796.jpg">
@@ -141,6 +141,9 @@ button{cursor:pointer;font-family:var(--heading)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---- additions ---- */
+.hmhelp{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.hmhelp button{display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;border:2px dashed var(--navy);border-radius:14px;padding:12px 8px;font-family:var(--heading);font-weight:600;font-size:15px;color:var(--navy)}
+.hmhelp svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .hmlast .res{width:36px;height:36px;justify-self:start;display:grid;place-items:center;padding:0;font-size:15px}
 .hmlast>span.res{padding-right:0!important}
 .hmfoot{text-align:center;margin:22px 0 4px}
@@ -1338,7 +1341,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
   <input type="file" id="restoreFile" accept="application/json,.json" class="hide">
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v4.9<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v5.0<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -3547,7 +3550,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='4.9';
+const APP_VERSION='5.0';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -5448,6 +5451,7 @@ function renderHome(){
     h+='<p class="help hmempty">Your results, league and rivals build up here as you play. Start your first match above.</p>';
   }
   h+='<div class="hmgrid"><button data-go="matches"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Results</button><button data-go="rivals"><svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="3.5"/><circle cx="16" cy="9" r="3.5"/><path d="M2.5 20c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5M10.5 20c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/></svg>Rivals</button><button data-go="league"><svg viewBox="0 0 24 24"><path d="M4 20V13M9.3 20V9M14.6 20V5M20 20v-9"/></svg>League</button><button data-go="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="4"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/></svg>Profile</button></div>';
+  h+='<div class="hmhelp"><button id="hmRules"><svg viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5z"/><path d="M15 4v4h4M8.5 12h7M8.5 15.5h7"/></svg>Padel rules</button><button id="hmTour"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5 13.5 13.5 8.5 15.5 10.5 10.5z"/></svg>Take the tour</button></div>';
   h+='<p class="builtby hmfoot">Made by Raza Rebuilt</p>';
   box.innerHTML=h;
   if($('hmCarry'))$('hmCarry').onclick=()=>hideHome();
@@ -5456,6 +5460,8 @@ function renderHome(){
   if($('hmReq'))$('hmReq').onclick=()=>{openResults();setTab('profile')};
   if($('hmLast'))$('hmLast').onclick=()=>{openResults();setTab('matches');setTimeout(()=>openRow(last.id),150)};
   box.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{openResults();setTab(b.dataset.go)});
+  $('hmRules').onclick=()=>openRules();
+  $('hmTour').onclick=()=>startTour();
   syncHomeAvatar();
 }
 function syncHomeAvatar(){const b=$('hmAv');if(!b)return;b.innerHTML=$('avBtn').innerHTML;b.className=$('avBtn').className;b.id='hmAv'}
