@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="31">
+<meta name="app-version" content="33">
 <title>Deucebags</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="favicon-64.png">
@@ -133,6 +133,32 @@ button{cursor:pointer;font-family:var(--heading)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---- additions ---- */
+.inprog{flex-wrap:wrap}
+.inbtns{flex-wrap:wrap}
+.inprog .inbtns .secondary{padding:9px 11px;font-size:14px}
+.inprog #fixBtn{background:transparent;color:var(--white);border:2px solid rgba(255,255,255,.5)}
+.fixgrid{width:100%;border-collapse:collapse}
+.fixgrid th{font-family:var(--heading);font-weight:600;font-size:14px;color:var(--navy);padding:4px;text-align:center}
+.fixgrid td{padding:6px 4px;text-align:center;font-weight:700;color:var(--muted)}
+.fixgrid td:first-child{text-align:left}
+.stepper{display:inline-flex;align-items:center;gap:10px;background:var(--white);border:2px solid var(--line);border-radius:14px;padding:4px}
+.stepper button{width:40px;height:40px;border:0;border-radius:10px;background:var(--navy);color:var(--white);font-size:22px;font-weight:700}
+.stepper b{font-family:var(--display);font-weight:400;font-size:28px;min-width:32px;color:var(--navy)}
+.fixpts{display:grid;grid-template-columns:auto 1fr;gap:8px 10px;align-items:center}
+.fixpts>span{font-family:var(--heading);font-weight:600;font-size:14px;color:var(--navy);max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ptseg{grid-auto-flow:column}
+.ptseg button{padding:9px 2px}
+.ptseg button:disabled{opacity:.35}
+.quickpick{background:var(--white);border:2px solid var(--line);border-radius:16px;padding:12px;margin-bottom:12px}
+.qpchips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.qp{position:relative;display:inline-flex;align-items:center;gap:7px;border:2px solid var(--line);background:var(--ice);border-radius:999px;padding:4px 12px 4px 4px;font-weight:700;font-size:14px;color:var(--navy)}
+.qp .pav{width:30px;height:30px;font-size:13px}
+.qp.on{background:var(--lime);border-color:var(--navy)}
+.qp em{position:absolute;top:-9px;right:6px;font-style:normal;background:var(--navy);color:var(--lime);border-radius:999px;padding:0 7px;font-size:10.5px}
+.rules p{font-size:15px}
+.pchart{width:100%;height:auto;display:block;background:var(--white);border:2px solid var(--line);border-radius:12px;margin-bottom:16px;padding:6px}
+.scanview video{opacity:0;transition:opacity .2s;background:#000}
+.scanview video.live{opacity:1}
 .seg.quad{grid-auto-flow:row;grid-template-columns:1fr 1fr}
 .flag{background:#FFF4D6;border:2px solid #B7791F;border-radius:12px;padding:10px 12px;font-weight:700;font-size:14.5px;color:#5C3D0A;margin:0 0 10px}
 .linkbtn.inl{display:inline;padding:0;font-size:inherit;color:var(--navy)}
@@ -832,6 +858,7 @@ button{transition:transform .12s ease}
   <div class="btns">
     <button class="primary" id="rowCard">Share match card</button>
     <button class="primary hide" id="rowSession">Send the whole session</button>
+    <button class="secondary hide" id="rowSessionCard">Session card</button>
     <button class="secondary" id="rowSend">Send result to players</button>
     <button class="secondary" id="rowSave">Save notes</button>
     <button class="secondary" id="rowEdit">Edit score</button>
@@ -842,7 +869,8 @@ button{transition:transform .12s ease}
 
 <section class="sheet" id="setup" aria-label="Match setup">
   <h3>Set up the match</h3>
-  <div class="inprog" id="progressBox"><div><b>Match in progress</b><span id="progressScore"></span></div><div class="inbtns"><button class="secondary" id="endBtn">End now</button><button class="secondary" id="restartBtn">Restart</button></div></div>
+  <div class="inprog" id="progressBox"><div><b>Match in progress</b><span id="progressScore"></span></div><div class="inbtns"><button class="secondary" id="fixBtn">Fix score</button><button class="secondary" id="endBtn">End now</button><button class="secondary" id="restartBtn">Restart</button></div></div>
+  <div id="quickPick" class="quickpick hide"></div>
   <div class="teambox">
     <span class="lbl">Your team</span>
     <div class="pair"><input type="text" id="pA1" list="playerNames" maxlength="20" placeholder="You" autocomplete="off" aria-label="Your team, player 1"><input type="text" id="pA2" list="playerNames" maxlength="20" placeholder="Partner" autocomplete="off" aria-label="Your team, player 2"></div>
@@ -863,6 +891,7 @@ button{transition:transform .12s ease}
   <div class="field"><span class="lbl">At 40–40</span>
     <div class="seg three" id="segDeuce"><button data-v="adv">Advantage</button><button data-v="star">Star point</button><button data-v="golden">Golden point</button></div>
     <p class="help" id="deuceHelp"></p>
+    <button class="linkbtn" id="rulesLink">New to padel? The rules in two minutes</button>
   </div>
   <div class="field"><span class="lbl">Match length</span>
     <div class="seg three" id="segBest"><button data-v="1">One set</button><button data-v="3">Best of 3</button><button data-v="5">Best of 5</button></div>
@@ -1054,8 +1083,39 @@ button{transition:transform .12s ease}
   <div class="btns"><button class="secondary" id="watchNoOk">Got it</button></div>
 </section>
 
+<section class="sheet" id="fixSheet" aria-label="Fix the score">
+  <h3>Fix the score</h3>
+  <p class="help" style="margin:-4px 2px 12px">Missed a few points? Set the score as it really is and carry on from there.</p>
+  <div id="fixBody"></div>
+  <p class="help" style="margin:12px 2px">Point-by-point stats for this match will be approximate afterwards.</p>
+  <div class="btns"><button class="primary" id="fixSave">Save the score</button><button class="secondary" id="fixCancel">Cancel</button></div>
+</section>
+
+<section class="sheet" id="rulesSheet" aria-label="Padel rules">
+  <h3>Padel rules, the short version</h3>
+  <div class="privacy rules">
+    <h4>Scoring</h4>
+    <p>Points go 15, 30, 40, game. At 40–40 your group decides: advantage (win two points in a row), golden point (next point wins) or star point (two advantages, then a deciding point). Six games wins a set, but you need to be two clear. At 6–6 there's a tiebreak to 7, again two clear.</p>
+    <h4>Serving</h4>
+    <p>Bounce the ball behind the service line, then hit it at or below waist height with at least one foot on the ground. Serve diagonally into the opposite service box. It must bounce in the box before it touches any wall. You get two attempts.</p>
+    <p>If the serve clips the net and lands in the box, replay it. If it then hits the metal fence, it's a fault.</p>
+    <h4>Who serves</h4>
+    <p>Teams swap serve every game, and partners take turns, so all four players serve in rotation. At the start of each set, a pair can change which of them serves first.</p>
+    <h4>The walls</h4>
+    <p>The ball must bounce on the ground on the other side before touching any wall or fence. After that bounce, it can hit the walls and you can still play it before it bounces a second time.</p>
+    <p>You can hit the ball against your own back or side glass to get it over the net. If your shot hits their wall or fence before bouncing, it's your point lost.</p>
+    <h4>You lose the point if</h4>
+    <p>The ball bounces twice on your side, you hit it into your own fence so it can't come back, you touch the net, or the ball hits you or your partner.</p>
+    <h4>Changing ends</h4>
+    <p>Swap sides after the first game and then every two games (after games 1, 3, 5 and so on). In a tiebreak, swap every six points. Deucebags tells you when.</p>
+    <p class="pv-date">These are the basics most clubs play by. Local rules can vary, so agree them before you start.</p>
+  </div>
+  <div class="btns"><button class="secondary" id="rulesClose">Got it</button></div>
+</section>
+
 <section class="sheet" id="recapSheet" aria-label="Your week in padel">
-  <h3>Your week in padel</h3>
+  <h3 id="recapTitle">Your week in padel</h3>
+  <div class="seg three" id="recapSeg" style="margin-bottom:14px"><button data-v="7">Week</button><button data-v="30">Month</button><button data-v="365">Year</button></div>
   <div id="recapBody"></div>
   <div class="btns"><button class="primary" id="recapShare">Share recap card</button><button class="secondary" id="recapClose">Close</button></div>
 </section>
@@ -1070,6 +1130,7 @@ button{transition:transform .12s ease}
   <div class="where">
     <div><b>Scores, results, players and the league</b><span>Kept in the app on this phone. Nothing gets uploaded. <span id="dataCount"></span></span></div>
     <div><b>Videos, clips, match cards and spreadsheets</b><span id="dataSaveTxt">Save puts a copy in Downloads, in your Files app. Share sends them straight to WhatsApp, Instagram or Google Drive.</span></div>
+    <div><b>Using Chrome and the Android app?</b><span>Each keeps its own results. Stick to one, and move your data across with a backup.</span></div>
     <div><b>Keep a backup</b><span>Clearing Chrome's data or switching phones wipes your results. A backup brings everything back.</span></div>
   </div>
   <div class="btns">
@@ -1077,18 +1138,19 @@ button{transition:transform .12s ease}
     <button class="secondary" id="dataRestore">Restore from a backup</button>
     <button class="secondary" id="dataCsv">Export results to a spreadsheet</button>
     <button class="secondary" id="dataEdit">Make a clip from a video</button>
+    <button class="secondary" id="dataRules">Padel rules</button>
     <button class="secondary" id="dataWelcome">Show the welcome again</button>
     <button class="secondary" id="dataTour">Take the tour</button>
     <button class="secondary" id="privacyBtn">Privacy</button>
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
   <input type="file" id="restoreFile" accept="application/json,.json" class="hide">
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags version 31</p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags version 33</p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
   <canvas id="camCanvas"></canvas>
-  <video id="pv" muted playsinline autoplay></video>
+  <video id="pv" muted playsinline autoplay poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"></video>
   <div class="camtop">
     <button class="cambtn icon" id="camClose" aria-label="Close camera"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <button class="cambtn icon" id="camUndo" aria-label="Undo last point"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
@@ -1159,7 +1221,7 @@ button{transition:transform .12s ease}
       <button class="primary edmake" id="edMake">Make clip</button>
     </div>
   </div>
-  <video id="edVideo" playsinline class="edvid"></video>
+  <video id="edVideo" playsinline class="edvid" poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"></video>
 </section>
 
 <section class="sheet" id="edResult" aria-label="Your clip">
@@ -1179,7 +1241,7 @@ button{transition:transform .12s ease}
 
 <div class="edbusy" id="edBusy"><div class="edbox"><b id="edPct">Making your clip…</b><div class="bar"><i id="edBar"></i></div><p>Keep the app open while your clip plays through once.</p><button class="secondary" id="edCancel">Cancel</button></div></div>
 <section class="scanview" id="scanView" aria-label="Scan a friend code">
-  <video id="scanVid" muted playsinline autoplay></video>
+  <video id="scanVid" muted playsinline autoplay poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"></video>
   <div class="scanframe"></div>
   <p class="scantext">Point at a Deucebags friend code</p>
   <button class="secondary scanclose" id="scanClose">Cancel</button>
@@ -1253,7 +1315,7 @@ if(!M)M=newMatch(DEF);
 M.cfg=Object.assign({},DEF,M.cfg);
 let history=store.get('db-history')||[];
 const saveM=()=>store.set('db-match',M);
-let saveHT=null;const saveH=()=>{clearTimeout(saveHT);saveHT=setTimeout(()=>persistHistory(),120)};
+let saveHT=null;const saveH=()=>{if(typeof bumpHV==='function')bumpHV();clearTimeout(saveHT);saveHT=setTimeout(()=>persistHistory(),120)};
 const nmC=(cfg,i)=>i===0?(cfg.a||'Us'):(cfg.b||'Them');
 const nm=i=>nmC(M.cfg,i);
 
@@ -1585,6 +1647,7 @@ function syncSetup(){
   $('deuceHelp').textContent=HELP[draft.deuce];
   $('gamesHelp').textContent=draft.race?'First pair to '+draft.games+' games wins. No tiebreak, so it\'s quick. Great for swapping partners.':draft.games===6?'Win by two games, tiebreak at 6–6.':'Short sets. Win by two games, tiebreak at 4–4.';
   $('deciderField').classList.toggle('hide',draft.bestOf===1);
+  if(typeof renderQuickPick==='function'&&openSheet&&openSheet.id==='setup')setTimeout(renderQuickPick,0);
   $('firstA').textContent=teamNameFrom($('inA').value,$('pA1').value,$('pA2').value,'Us');
   $('firstB').textContent=teamNameFrom($('inB').value,$('pB1').value,$('pB2').value,'Them');
 }
@@ -1604,7 +1667,7 @@ function openSetup(){
   $('progressBox').style.display=inProgress?'':'none';
   $('progressScore').textContent=(setLine(S)||'0–0')+', '+labels(S,M.cfg).join('–');
   $('startBtn').textContent=inProgress?'Start new match':'Start match';
-  syncSetup();showSheet('setup');
+  syncSetup();showSheet('setup');renderQuickPick();
 }
 document.querySelectorAll('#segGames button').forEach(b=>b.onclick=()=>{const v=b.dataset.v;draft.race=v[0]==='r';draft.games=+(draft.race?v.slice(1):v);syncSetup()});
 [['segFirst','first',Number],['segDeuce','deuce',String],['segBest','bestOf',Number],['segDecider','decider',String]].forEach(([id,key,cast])=>{
@@ -2119,7 +2182,7 @@ function rowOf(h){
   return{id:h.id,h,cfg,date:date||0,a:cfg.a||'Us',b:cfg.b||'Them',sets,winner,sw,gw,pf,pa,dur,score,
     source:h.manual?'Added':h.unfinished?'Ended early':'Scored live',notes:h.notes||'',st,unfinished:!!h.unfinished};
 }
-function allRows(){return history.map(rowOf).filter(r=>r.sets.length)}
+function allRows(){if(memo.rows&&memo.hv===HV)return memo.rows;memo.hv=HV;return memo.rows=history.map(rowOf).filter(r=>r.sets.length)}
 function filteredRows(){
   const q=RES.q.trim().toLowerCase();
   const rows=allRows().filter(r=>{
@@ -2192,7 +2255,8 @@ function openRow(id){
   $('rowBody').innerHTML='<p class="setline">'+esc(r.score)+'</p>'+awardsHtml(r)+(r.st?statsTable(r.cfg,r.st,h.start,h.end)+(r.st.log.length>3?'<p class="sh">Momentum</p>'+momentumSvg(r.st,r.cfg):''):'');
   $('rowCard').onclick=()=>openCard(r);
   if(h.session){$('rowBody').insertAdjacentHTML('afterbegin',sessionHtml(h.session))}
-  $('rowSession').classList.toggle('hide',!h.session);$('rowSession').onclick=()=>sendSession(h.session);$('rowSend').style.display=r.winner===null?'none':'';$('rowSend').onclick=()=>sendResult(h);
+  $('rowSession').classList.toggle('hide',!h.session);$('rowSession').onclick=()=>sendSession(h.session);
+  $('rowSessionCard').classList.toggle('hide',!h.session);$('rowSessionCard').onclick=()=>openSessionCard(h.session);$('rowSend').style.display=r.winner===null?'none':'';$('rowSend').onclick=()=>sendResult(h);
   $('rowNotes').value=r.notes;
   $('rowEdit').style.display=h.manual?'':'none';
   showSheet('rowSheet');
@@ -2322,6 +2386,10 @@ function fillNameList(){const fr=FRIENDS.map(f=>f.name),seen=new Set(fr.map(pkey
 /* ================= league (Elo-style ratings) ================= */
 const START_RATING=1000,K=32;
 function computeLeague(group){
+  const mk='L|'+(group||'')+'|'+(store.get('db-live-only')===true);if(memo[mk]&&memo.lhv===HV)return memo[mk];
+  const out=computeLeagueRaw(group);if(memo.lhv!==HV){for(const k in memo)if(k.startsWith('L|'))delete memo[k];memo.lhv=HV}memo[mk]=out;return out;
+}
+function computeLeagueRaw(group){
   const liveOnly=store.get('db-live-only')===true;
   const rows=allRows().filter(r=>r.winner!==null&&(!group||groupOf(r.cfg).toLowerCase()===group.toLowerCase())&&!(liveOnly&&r.h.manual)).sort((a,b)=>a.date-b.date);
   const P={};
@@ -2370,7 +2438,7 @@ function renderLeague(){
   '</tbody></table></div>';
   $('leagueBody').querySelectorAll('tbody tr').forEach(tr=>tr.onclick=()=>openPlayer(tr.dataset.p));
   $('rateHelp').onclick=openRatingHelp;
-  $('liveOnly').onchange=e=>{store.set('db-live-only',e.target.checked);renderLeague();renderPlayers()};
+  $('liveOnly').onchange=e=>{store.set('db-live-only',e.target.checked);bumpHV();renderLeague();renderPlayers()};
 }
 function renderPlayers(){
   const L=computeLeague(RES.group);
@@ -2409,7 +2477,7 @@ function openPlayer(key){
     line('Favourite opponent',victim?esc(victim.name)+' (beat them '+victim.w+' times)':'')+
     line('Points won',p.pf+p.pa?Math.round(p.pf/(p.pf+p.pa)*100)+'% in matches scored live':'')+
     line('Form',formDots(p.form))+
-    '</tbody></table>'+badgesHtml(p)+(recent?'<p class="sh">Recent matches</p><ul class="recent">'+recent+'</ul>':'')+'<button class="secondary" id="rnBtn" style="width:100%;margin-bottom:8px">Rename or merge this player</button>'+(fr?'<button class="danger" id="frRemove">Remove friend</button>':'');
+    '</tbody></table>'+progressHtml(key)+badgesHtml(p)+(recent?'<p class="sh">Recent matches</p><ul class="recent">'+recent+'</ul>':'')+'<button class="secondary" id="rnBtn" style="width:100%;margin-bottom:8px">Rename or merge this player</button>'+(fr?'<button class="danger" id="frRemove">Remove friend</button>':'');
   $('rnBtn').onclick=()=>openRename(key,p.name);
   if(fr)$('frRemove').onclick=()=>removeFriend(key);
   $('playerBody').querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>openRow(b.dataset.id));
@@ -3108,19 +3176,20 @@ async function makeRecapCard(){
 }
 $('recapShare').onclick=async()=>{
   toast('Making your recap card…');
-  cardBlob=await makeRecapCard();const p=n=>String(n).padStart(2,'0'),dt=new Date();
-  cardName='deucebags-week-'+dt.getFullYear()+'-'+p(dt.getMonth()+1)+'-'+p(dt.getDate())+'.png';
+  cardBlob=await makeRecapCardP();const p=n=>String(n).padStart(2,'0'),dt=new Date();
+  cardName='deucebags-'+periodName(recapPeriod)+'-'+dt.getFullYear()+'-'+p(dt.getMonth()+1)+'-'+p(dt.getDate())+'.png';
   const img=$('cardImg');if(img.src)URL.revokeObjectURL(img.src);img.src=URL.createObjectURL(cardBlob);
   let f=null;try{f=new File([cardBlob],cardName,{type:'image/png'})}catch(e){}
   $('cardShare').style.display=navigator.canShare&&f&&navigator.canShare({files:[f]})?'':'none';
   $('cardTitle').textContent='Recap card';showSheet('cardSheet');
 };
 $('recapClose').onclick=()=>hideSheet();
-$('recapBtn').onclick=openRecap;
-function updateRecapBtn(){const n=weekRows(7).length;$('recapBtn').classList.toggle('hide',!n);$('recapBtn').querySelector('span').textContent=n+(n===1?' match':' matches')+' in the last 7 days'}
+$('recapBtn').onclick=()=>openRecapP(7);
+document.querySelectorAll('#recapSeg button').forEach(b=>b.onclick=()=>{hideSheet();openRecapP(+b.dataset.v)});
+function updateRecapBtn(){const all=allRows().length,n=weekRows(7).length;$('recapBtn').classList.toggle('hide',!all);$('recapBtn').querySelector('b').textContent='Your padel recap';$('recapBtn').querySelector('span').textContent=(n?n+(n===1?' match':' matches')+' this week. ':'')+'Your week, month or year.'}
 
 /* ================= highlight reel ================= */
-const reelV=document.createElement('video');reelV.playsInline=true;reelV.preload='auto';reelV.className='edvid';document.body.appendChild(reelV);
+const reelV=document.createElement('video');reelV.playsInline=true;reelV.preload='auto';reelV.className='edvid';reelV.poster='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';document.body.appendChild(reelV);
 let reelAudio=null,reelDest=null,reelGain=null,reelCancel=false;
 function reelEnsureAudio(){
   if(reelAudio)return;
@@ -3212,7 +3281,7 @@ function renderProfile(){
       (partner?'<tr><td>Best partner</td><td>'+esc(partner.name)+' ('+partner.w+' of '+partner.p+' won)</td></tr>':'')+
       (nemesis?'<tr><td>Toughest opponent</td><td>'+esc(nemesis.name)+'</td></tr>':'')+'</tbody></table>'
       :'<p class="help" style="margin:14px 2px">Play a match as '+esc(PROF.name)+' and your stats show up here.</p>')+
-    badgesHtml(p);
+    (i>=0?progressHtml(key):'')+badgesHtml(p);
   $('profEdit').onclick=openProfEdit;bindFriends();
 }
 let draftPhoto='';
@@ -3260,7 +3329,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='31';
+const APP_VERSION='33';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -3375,6 +3444,7 @@ async function openScanner(){
   if(!('BarcodeDetector' in window)){toast('Scan the code with your camera app instead. It opens Deucebags with their details.');return}
   let det;try{det=new BarcodeDetector({formats:['qr_code']})}catch(e){toast('Scan the code with your phone\'s camera app instead.');return}
   hideSheet();$('scanView').classList.add('on');
+  $('scanVid').classList.remove('live');$('scanVid').onplaying=()=>$('scanVid').classList.add('live');
   try{scanStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}}});$('scanVid').srcObject=scanStream;await $('scanVid').play()}
   catch(e){closeScanner();toast(camError(e));return}
   const tick=async()=>{
@@ -3600,6 +3670,7 @@ $('tourBack').onclick=()=>{if(tourI>0){tourI--;showTourStep()}};
 $('tourSkip').onclick=endTour;
 window.addEventListener('resize',()=>{if($('tourView').classList.contains('on'))setTimeout(showTourStep,120)});
 document.addEventListener('keydown',e=>{if(!$('tourView').classList.contains('on'))return;if(e.key==='Escape')endTour();if(e.key==='ArrowRight')$('tourNext').click();if(e.key==='ArrowLeft')$('tourBack').click()});
+$('dataRules').onclick=openRules;
 $('dataWelcome').onclick=()=>{hideSheet();$('resultsView').classList.remove('on');setTimeout(openWelcome,250)};
 $('dataTour').onclick=()=>{hideSheet();$('resultsView').classList.remove('on');setTimeout(startTour,200)};
 
@@ -3637,6 +3708,8 @@ $('endCount').onclick=()=>endMatch(true);
 $('endNoCount').onclick=()=>endMatch(false);
 $('endKeep').onclick=()=>hideSheet();
 $('endBtn').onclick=openEndMatch;
+$('fixBtn').onclick=openFixScore;
+$('rulesLink').onclick=()=>{openRules()};
 
 /* ================= storage space for filming ================= */
 const MB_PER_MIN=()=>camPrefs.q==='1080'?45:23;
@@ -3698,6 +3771,7 @@ if(isIOS){
   $('exportSaveTxt').innerHTML='<b>Save to phone</b> opens your share menu. Tap Save to Files.';
 }
 iosInstallHint();
+if(window.DeucebagsNative&&!store.get('db-moved-tip')&&onboarded()){const movedTip=async(n)=>{if(document.querySelector('.sheet.on')||$('askWrap').classList.contains('on')||$('obView').classList.contains('on')){if(n<20)setTimeout(()=>movedTip(n+1),3000);return}store.set('db-moved-tip',1);if(await ask('Used Deucebags in Chrome before?','This app keeps its own results. To bring your old ones across, save a backup in Chrome (Results, Your data), then restore it here.','Restore a backup',false,'Not now'))$('restoreFile').click()};setTimeout(()=>movedTip(0),2500)}
 document.querySelectorAll('.sheet').forEach(s=>{s.setAttribute('role','dialog');s.setAttribute('aria-modal','true');const h=s.querySelector('h3');if(h)h.setAttribute('tabindex','-1')});
 
 /* ================= celebration effects ================= */
@@ -3974,7 +4048,7 @@ async function persistHistory(){
 (async()=>{
   try{
     const saved=await kv.get('history');
-    if(Array.isArray(saved)&&(saved.length>history.length||store.get('db-history-big'))){history=saved;render();if($('resultsView').classList.contains('on'))setTab(tab)}
+    if(Array.isArray(saved)&&(saved.length>history.length||store.get('db-history-big'))){history=saved;bumpHV();render();if($('resultsView').classList.contains('on'))setTab(tab)}
     else if(history.length)kv.set('history',history).catch(()=>{});
     if(navigator.storage&&navigator.storage.estimate){const e=await navigator.storage.estimate();if(e.quota&&e.usage/e.quota>.9)setTimeout(()=>toast('Your phone is nearly out of space for Deucebags. Save any videos and clear them from Your data.'),3000)}
   }catch(e){}
@@ -4035,13 +4109,18 @@ if(NATIVE){
   document.documentElement.classList.add('in-app');
   // files and sharing go through the wrapper, in chunks, because the in-app browser can't download or share by itself
   const sendFile=async(blob,name,action)=>{
-    const id='f'+Date.now().toString(36),CH=768*1024;
+    const id='f'+Date.now().toString(36),CH=768*1024,big=blob.size>20*1048576,mb=Math.round(blob.size/1048576);
+    if(blob.size>300*1048576&&!(await ask('This is a big video','At '+(mb>=1000?(mb/1024).toFixed(1)+' GB':mb+' MB')+', it can take a few minutes to '+(action==='share'?'share':'save')+' from the app. Keep it open until it finishes. Clips and highlight reels are much quicker.',action==='share'?'Share it':'Save it',false)))return false;
+    if(big){$('edBusy').classList.add('on');$('edBar').style.width='0%';$('edPct').textContent='Saving your video…';$('edCancel').classList.add('hide')}
     NATIVE.beginFile(id,name,blob.type||'application/octet-stream',blob.size);
     for(let o=0;o<blob.size;o+=CH){
+      if(big){const pc=Math.round(o/blob.size*100);$('edBar').style.width=pc+'%';$('edPct').textContent='Saving your video… '+pc+'%';await new Promise(r=>setTimeout(r,0))}
       const b64=await new Promise(res=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]||'');r.readAsDataURL(blob.slice(o,o+CH))});
       NATIVE.appendChunk(id,b64);
     }
-    return NATIVE.endFile(id,action);
+    const res=NATIVE.endFile(id,action);
+    if(big){$('edBusy').classList.remove('on');$('edCancel').classList.remove('hide')}
+    return res;
   };
   window.__nativeSave=(blob,name)=>sendFile(blob,name,'save');
   if(!navigator.share||!navigator.canShare){
@@ -4167,6 +4246,231 @@ async function handleSession(data){
   showSheet('incomingSheet');
 }
 
+
+/* ================= fix the score: set games and points directly ================= */
+// Builds a sequence of points that lands on exactly the score you enter, so everything else keeps working.
+function ptsForGames(seq,mode){const out=[];seq.forEach(w=>{for(let i=0;i<4;i++)out.push(w)});return out}
+function interleave(a,b,wA,wB){ // a games for side wA, b for wB, ending without finishing early: alternate, extras last
+  const out=[];let x=a,y=b;while(x>0||y>0){if(x>0){out.push(wA);x--}if(y>0){out.push(wB);y--}}return out;
+}
+function setSeq(win,lose,winner,cfg){ // a completed set as game winners, loser's games spread so it never ends early
+  const N=cfg.games,o=1-winner,seq=[];
+  if(!cfg.race&&win===N+1&&lose===N){ // tiebreak set
+    for(let i=0;i<N;i++){seq.push(winner,o)}
+    return{games:seq,tb:true};
+  }
+  let l=lose;for(let i=0;i<win-1;i++){seq.push(winner);if(l>0){seq.push(o);l--}}
+  while(l>0){seq.push(o);l--}seq.push(winner);
+  return{games:seq,tb:false};
+}
+function pointsSeq(pa,pb){const out=[];let a=pa,b=pb;while(a>0||b>0){if(a>0){out.push(0);a--}if(b>0){out.push(1);b--}}return out}
+function buildPts(cfg,target){
+  const pts=[];const N=cfg.games;
+  target.sets.forEach(s=>{
+    const w=s[0]>s[1]?0:1,r=setSeq(Math.max(...s),Math.min(...s),w,cfg);
+    pts.push(...ptsForGames(r.games));
+    if(r.tb){for(let i=0;i<5;i++)pts.push(w,1-w);pts.push(w,w)} // tiebreak 7–5
+  });
+  const g=target.games;
+  pts.push(...ptsForGames(interleave(g[0],g[1],0,1)));
+  pts.push(...pointsSeq(target.points[0],target.points[1]));
+  return pts;
+}
+const PT_LABELS=['0','15','30','40','Ad'];
+let fixDraft=null;
+function openFixScore(){
+  if(S.mode==='stb'){toast('In a match tiebreak, use undo to fix the score.');return}
+  if(S.done!==null){toast('This match has finished. Use undo to change it.');return}
+  const set=S.sets[S.sets.length-1];
+  fixDraft={sets:S.sets.slice(0,-1).filter(s=>s.w!==undefined&&!s.super).map(s=>s.g.slice()),games:set.g.slice(),points:S.p.slice(),server:S.server===null?0:S.server};
+  if(S.mode==='normal'){fixDraft.points=fixDraft.points.map((p,i)=>{const o=fixDraft.points[1-i];if(p>=3&&o>=3)return p>o?4:3;return Math.min(p,3)})}
+  renderFix();hideSheet();showSheet('fixSheet');
+}
+function renderFix(){
+  const d=fixDraft,tb=!M.cfg.race&&d.games[0]===M.cfg.games&&d.games[1]===M.cfg.games;
+  const step=(label,key,i,max)=>'<div class="stepper"><button data-k="'+key+'" data-i="'+i+'" data-d="-1" aria-label="Fewer '+label+'">−</button><b>'+d[key][i]+'</b><button data-k="'+key+'" data-i="'+i+'" data-d="1" aria-label="More '+label+'">+</button></div>';
+  const ptRow=i=>tb?step('points','points',i,30):'<div class="seg ptseg" data-t="'+i+'">'+PT_LABELS.map((l,v)=>'<button data-v="'+v+'" aria-pressed="'+(d.points[i]===v)+'"'+(v===4&&M.cfg.deuce==='golden'?' disabled':'')+'>'+l+'</button>').join('')+'</div>';
+  $('fixBody').innerHTML=(d.sets.length?'<p class="help" style="margin:0 2px 10px">Sets already played: '+d.sets.map(s=>s.join('–')).join(', ')+'. Undo them first if they\'re wrong.</p>':'')+
+    '<table class="fixgrid"><thead><tr><th></th><th>'+esc(nm(0))+'</th><th>'+esc(nm(1))+'</th></tr></thead><tbody>'+
+    '<tr><td>Games</td><td>'+step('games','games',0)+'</td><td>'+step('games','games',1)+'</td></tr></tbody></table>'+
+    '<p class="lbl" style="margin:14px 0 6px">'+(tb?'Tiebreak points':'Points in this game')+'</p>'+
+    '<div class="fixpts"><span>'+esc(nm(0))+'</span>'+ptRow(0)+'<span>'+esc(nm(1))+'</span>'+ptRow(1)+'</div>'+
+    (tb?'':'<p class="lbl" style="margin:14px 0 6px">Serving now</p><div class="seg" id="fixServe"><button data-v="0" aria-pressed="'+(d.server===0)+'">'+esc(nm(0))+'</button><button data-v="1" aria-pressed="'+(d.server===1)+'">'+esc(nm(1))+'</button></div>');
+  $('fixBody').querySelectorAll('.stepper button').forEach(b=>b.onclick=()=>{const k=b.dataset.k,i=+b.dataset.i;d[k][i]=Math.max(0,Math.min(k==='games'?M.cfg.games+1:40,d[k][i]+(+b.dataset.d)));renderFix()});
+  $('fixBody').querySelectorAll('.ptseg button').forEach(b=>b.onclick=()=>{const i=+b.parentElement.dataset.t,v=+b.dataset.v;d.points[i]=v;
+    if(v===4)d.points[1-i]=3;else if(d.points[1-i]===4&&v<3)d.points[1-i]=3;renderFix()});
+  $('fixBody').querySelectorAll('#fixServe button').forEach(b=>b.onclick=()=>{d.server=+b.dataset.v;renderFix()});
+}
+function fixProblem(cfg,d){
+  const N=cfg.games,g=d.games,a=Math.max(...g),b=Math.min(...g);
+  if(cfg.race){if(a>=N)return'That would finish the set. Use the score before the last game.'}
+  else{if(a>=N&&a-b>=2)return'That would finish the set. Use the score before the last game.';if(a>N+1||(a===N+1&&b<N-1))return'That isn\'t a possible set score.';if(a===N+1&&b===N)return'That would finish the set in a tiebreak.'}
+  const tb=!cfg.race&&g[0]===N&&g[1]===N,p=d.points;
+  if(tb){const m=Math.max(...p),n=Math.min(...p);if(m>=7&&m-n>=2)return'That would finish the tiebreak.'}
+  return'';
+}
+$('fixSave').onclick=()=>{
+  const d=fixDraft,cfg=M.cfg,err=fixProblem(cfg,d);if(err){toast(err);return}
+  const tb=!cfg.race&&d.games[0]===cfg.games&&d.games[1]===cfg.games;
+  const pts=tb?d.points.slice():d.points.map((p,i)=>p===4?4:p);
+  const target={sets:d.sets,games:d.games,points:tb?pts:(pts[0]===4||pts[1]===4)?[pts[0]===4?4:3,pts[1]===4?4:3]:pts};
+  const keepSetFirst=Object.assign({},cfg.setFirst||{});
+  M.cfg.setFirst=keepSetFirst;M.pts=buildPts(cfg,target);M.adjusted=true;if(!M.start)M.start=Date.now();M.last=Date.now();
+  S=replay(M.cfg,M.pts);
+  if(!tb&&S.server!==null&&S.server!==d.server){const idx=S.sets.length-1;M.cfg.setFirst=Object.assign({},M.cfg.setFirst,{[idx]:d.server^((S.G-S.setStartG)%2)});S=replay(M.cfg,M.pts)}
+  prevL=null;prevGames='';changeEndsNow=false;saveM();recordHistory();render();hideSheet();
+  toast('Score fixed. Carry on from '+labels(S,M.cfg).join('–')+'.');
+};
+$('fixCancel').onclick=()=>hideSheet();
+
+/* ================= speed: remember results between screens ================= */
+let HV=0;const memo={};
+function bumpHV(){HV++;for(const k in memo)delete memo[k]}
+
+/* ================= quick pick players ================= */
+function quickPickNames(){
+  const recent={};allRows().slice().sort((a,b)=>b.date-a.date).forEach((r,i)=>[0,1].forEach(s=>members(r.cfg,s).forEach(n=>{const k=pkey(n);if(!(k in recent))recent[k]={name:n,i}})));
+  FRIENDS.forEach(f=>{if(!(f.key in recent))recent[f.key]={name:f.name,i:999}});
+  if(PROF.name&&!(pkey(PROF.name) in recent))recent[pkey(PROF.name)]={name:PROF.name,i:-1};
+  if(PROF.name)recent[pkey(PROF.name)].i=-1;
+  return Object.values(recent).sort((a,b)=>a.i-b.i).slice(0,16).map(x=>x.name);
+}
+const SLOTS=['pA1','pA2','pB1','pB2'];
+function renderQuickPick(){
+  const names=quickPickNames(),box=$('quickPick');
+  if(names.length<2){box.innerHTML='';box.classList.add('hide');return}
+  box.classList.remove('hide');
+  const slotOf=n=>SLOTS.find(id=>pkey($(id).value||'')===pkey(n));
+  const lab={pA1:'You',pA2:'Partner',pB1:'Opp',pB2:'Opp'};
+  box.innerHTML='<p class="lbl" style="margin:0 0 8px">Quick pick<span class="lblhelp" style="display:inline;margin-left:6px">Tap four players in order: your team, then the opponents.</span></p><div class="qpchips">'+
+    names.map(n=>{const s=slotOf(n);return'<button class="qp'+(s?' on':'')+'" data-n="'+esc(n)+'">'+avatar('pav',n,photoFor(n))+'<span>'+esc(n)+'</span>'+(s?'<em>'+(s[1]==='A'?'Your team':'Opponents')+'</em>':'')+'</button>'}).join('')+
+    '</div><button class="linkbtn" id="qpClear">Clear players</button>';
+  box.querySelectorAll('.qp').forEach(b=>b.onclick=()=>{
+    const n=b.dataset.n,s=slotOf(n);
+    if(s){$(s).value=''}else{const free=SLOTS.find(id=>!$(id).value.trim());if(!free){toast('All four places are taken. Tap a player to remove them.');return}$(free).value=n}
+    syncSetup();renderQuickPick();
+  });
+  $('qpClear').onclick=()=>{SLOTS.forEach(id=>$(id).value='');syncSetup();renderQuickPick()};
+}
+
+/* ================= padel rules cheat sheet ================= */
+function openRules(){hideSheet();showSheet('rulesSheet')}
+
+/* ================= recaps for any period ================= */
+let recapPeriod=7;
+function periodRows(days){
+  const since=days>=365?new Date(new Date().getFullYear(),0,1).getTime():days>=30?new Date(new Date().getFullYear(),new Date().getMonth(),1).getTime():Date.now()-days*86400000;
+  const me=meKey();
+  return allRows().filter(r=>r.date>=since&&r.winner!==null).map(r=>{
+    let side=0;if(me){const a=members(r.cfg,0).some(n=>pkey(n)===me),b=members(r.cfg,1).some(n=>pkey(n)===me);if(!a&&!b)return null;side=a?0:1}
+    return Object.assign({},r,{side,won:r.winner===side});
+  }).filter(Boolean).sort((a,b)=>a.date-b.date);
+}
+function periodName(d){return d>=365?'year':d>=30?'month':'week'}
+function recapBig(days){
+  const rows=periodRows(days),me=meKey(),won=rows.filter(r=>r.won).length;
+  const L=computeLeague(),p=me?L.find(x=>x.key===me):null;
+  let delta=null;if(p){const ids=new Set(rows.map(r=>r.id));let d=0;p.matches.forEach((id,i)=>{if(ids.has(id))d+=p.trend[i+1]-p.trend[i]});delta=Math.round(d)}
+  const partners={},opps={};let run=0,best=0,biggest=null,mins=0;
+  rows.forEach(r=>{
+    const mine=members(r.cfg,r.side),theirs=members(r.cfg,1-r.side);
+    mine.forEach(n=>{if(pkey(n)===me)return;const o=partners[pkey(n)]=partners[pkey(n)]||{name:n,w:0,p:0};o.p++;if(r.won)o.w++});
+    theirs.forEach(n=>{const o=opps[pkey(n)]=opps[pkey(n)]||{name:n,l:0,p:0};o.p++;if(!r.won)o.l++});
+    run=r.won?run+1:0;best=Math.max(best,run);
+    const margin=r.gw[r.side]-r.gw[1-r.side];if(r.won&&(!biggest||margin>biggest.m))biggest={m:margin,r};
+    if(r.dur)mins+=r.dur/60000;
+  });
+  const bp=Object.values(partners).filter(o=>o.p>=2).sort((a,b)=>b.w/b.p-a.w/a.p||b.w-a.w)[0]||Object.values(partners).sort((a,b)=>b.w-a.w)[0];
+  const nem=Object.values(opps).filter(o=>o.l>0).sort((a,b)=>b.l-a.l)[0];
+  const since=rows.length?rows[0].date:Date.now();
+  const badges=p?Object.entries(p.badges||{}).filter(([id,d])=>d>=since&&BADGE[id]).sort((a,b)=>BADGE[b[0]][2]-BADGE[a[0]][2]).map(([id])=>BADGE[id][1]):[];
+  return{rows,won,lost:rows.length-won,delta,bp,nem,best,biggest,mins:Math.round(mins),badges,name:p?p.name:'',period:periodName(days)};
+}
+function openRecapP(days){
+  recapPeriod=days||recapPeriod;segSet('recapSeg',String(recapPeriod));
+  const d=recapBig(recapPeriod);
+  $('recapTitle').textContent='Your '+d.period+' in padel';
+  if(!d.rows.length){$('recapBody').innerHTML='<p class="empty">No matches '+(d.period==='week'?'in the last 7 days':'this '+d.period)+(meKey()?'':', or set up your profile so the recap knows which player is you')+'.</p>';$('recapShare').classList.add('hide');showSheet('recapSheet');return}
+  $('recapShare').classList.remove('hide');
+  const card=(v,l,i)=>'<div class="card" style="--i:'+i+'"><b>'+v+'</b><span>'+l+'</span></div>';
+  const line=(l,v)=>v?'<tr><td>'+l+'</td><td>'+v+'</td></tr>':'';
+  const hrs=d.mins>=600?Math.round(d.mins/60)+' hours':d.mins>=60?Math.floor(d.mins/60)+' hr '+(d.mins%60)+' min':d.mins+' min';
+  const badgeLine=d.badges.length?(d.badges.length>3?d.badges.length+' unlocked, including '+d.badges.slice(0,3).join(', '):d.badges.join(', ')):'';
+  $('recapBody').innerHTML='<p class="help" style="margin:-6px 2px 14px">'+(d.name?esc(d.name)+', ':'')+(d.period==='week'?'last 7 days':'this '+d.period+' so far')+'.</p>'+
+    '<div class="cards c4">'+card(d.rows.length,'Played',0)+card(d.won+'–'+d.lost,'Won–lost',1)+card(Math.round(d.won/d.rows.length*100)+'%','Win rate',2)+card(d.delta===null?'–':(d.delta>=0?'+':'')+d.delta,'Rating',3)+'</div>'+
+    '<table class="stats plain"><tbody>'+line('Best partner',d.bp?esc(d.bp.name)+' ('+d.bp.w+' of '+d.bp.p+' won)':'')+line('Toughest opponent',d.nem?esc(d.nem.name)+' (lost '+d.nem.l+')':'')+
+    line('Biggest win',d.biggest?esc(d.biggest.r.side===0?d.biggest.r.b:d.biggest.r.a)+', '+esc(d.biggest.r.side===0?d.biggest.r.score:d.biggest.r.score.replace(/(\d+)–(\d+)/g,'$2–$1')):'')+
+    line('Longest winning run',d.best>1?d.best+' in a row':'')+line('Time on court',d.mins?hrs:'')+line('Achievements',esc(badgeLine))+'</tbody></table>'+
+    '<p class="sh">Matches</p><ul class="recent">'+d.rows.slice().reverse().slice(0,30).map(r=>'<li><button class="linkrow" data-id="'+r.id+'"><span class="res '+(r.won?'w':'l')+'">'+(r.won?'W':'L')+'</span><span>'+esc(r.side===0?r.b:r.a)+'</span><span class="sc">'+esc(r.side===0?r.score:r.score.replace(/(\d+)–(\d+)/g,'$2–$1'))+'</span></button></li>').join('')+'</ul>';
+  $('recapBody').querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>openRow(b.dataset.id));
+  showSheet('recapSheet');
+}
+async function makeRecapCardP(){
+  await loadFonts();const d=recapBig(recapPeriod);
+  const c=document.createElement('canvas');c.width=1080;c.height=1920;const x=c.getContext('2d');
+  const D='"Lilita One","Arial Black",sans-serif',F='Fredoka,sans-serif';
+  x.fillStyle='#80CBFD';x.fillRect(0,0,1080,1920);x.strokeStyle='rgba(255,255,255,.35)';x.lineWidth=8;rr(x,40,40,1000,1840,40);x.stroke();
+  let top=110;
+  if(camPrefs.brand!==false&&logoImg.complete&&logoImg.naturalWidth){const lw=420,lh=lw*logoImg.naturalHeight/logoImg.naturalWidth;x.drawImage(logoImg,540-lw/2,70,lw,lh);top=80+lh}
+  x.textAlign='center';x.fillStyle='#071B33';x.font='400 104px '+D;x.fillText('My '+d.period,540,top+90);x.fillText('in padel',540,top+195);
+  x.font='700 36px '+F;x.fillText(d.name||'',540,top+258);
+  const y0=top+310;x.fillStyle='#071B33';rr(x,70,y0,940,1780-y0,48);x.fill();
+  [[String(d.rows.length),'Played'],[d.won+'–'+d.lost,'Won–lost'],[Math.round(d.won/Math.max(1,d.rows.length)*100)+'%','Win rate'],[d.delta===null?'–':(d.delta>=0?'+':'')+d.delta,'Rating']].forEach((tl,i)=>{
+    const tx=110+(i%2)*440,ty=y0+46+Math.floor(i/2)*236;x.fillStyle='#183B60';rr(x,tx,ty,420,210,30);x.fill();x.fillStyle='#DFFF32';fitFont(x,tl[0],'',116,D,380);x.fillText(tl[0],tx+210,ty+128);x.fillStyle='#fff';x.font='600 32px '+F;x.fillText(tl[1],tx+210,ty+182)});
+  let y=y0+540;
+  const row=(l,v)=>{if(!v)return;x.textAlign='left';x.fillStyle='#7FC8F8';x.font='600 30px '+F;x.fillText(l,120,y);x.fillStyle='#FFFFFF';fitFont(x,v,'700',40,F,840);x.fillText(v,120,y+50);y+=112};
+  row('Best partner',d.bp?d.bp.name+' ('+d.bp.w+' of '+d.bp.p+' won)':'');row('Toughest opponent',d.nem?d.nem.name:'');row('Longest winning run',d.best>1?d.best+' in a row':'');
+  if(d.badges.length){const top=d.badges.slice(0,3).join(', ');x.fillStyle='#DFFF32';rr(x,110,y-10,860,150,28);x.fill();x.textAlign='center';x.fillStyle='#071B33';x.font='700 30px '+F;x.fillText(d.badges.length+' achievement'+(d.badges.length===1?'':'s')+' unlocked',540,y+38);fitFont(x,top,'',46,D,800);x.fillText(top,540,y+100)}
+  x.textAlign='center';x.fillStyle='#071B33';if(camPrefs.brand!==false){x.font='700 36px '+F;x.fillText('Scored with Deucebags',540,1860)}
+  return await new Promise(r=>c.toBlob(r,'image/png'));
+}
+
+/* ================= session card ================= */
+async function makeSessionCard(sid){
+  await loadFonts();const s=sessionSummary(sid);
+  const c=document.createElement('canvas');c.width=1080;c.height=1920;const x=c.getContext('2d');
+  const D='"Lilita One","Arial Black",sans-serif',F='Fredoka,sans-serif';
+  x.fillStyle='#80CBFD';x.fillRect(0,0,1080,1920);x.strokeStyle='rgba(255,255,255,.35)';x.lineWidth=8;rr(x,40,40,1000,1840,40);x.stroke();
+  let top=110;
+  if(camPrefs.brand!==false&&logoImg.complete&&logoImg.naturalWidth){const lw=420,lh=lw*logoImg.naturalHeight/logoImg.naturalWidth;x.drawImage(logoImg,540-lw/2,70,lw,lh);top=80+lh}
+  x.textAlign='center';x.fillStyle='#071B33';x.font='400 100px '+D;x.fillText(s.day+'\'s',540,top+90);x.fillText('session',540,top+190);
+  x.font='700 36px '+F;x.fillText(s.rows.length+' rounds, partners swapping',540,top+252);
+  const y0=top+300;x.fillStyle='#071B33';rr(x,70,y0,940,1780-y0,48);x.fill();
+  let y=y0+70;
+  s.table.forEach((p,i)=>{
+    const lead=i===0;x.fillStyle=lead?'#DFFF32':'#183B60';rr(x,110,y,860,120,26);x.fill();
+    x.textAlign='left';x.fillStyle=lead?'#071B33':'#FFFFFF';x.font='400 54px '+D;x.fillText((i+1)+'',145,y+80);
+    fitFont(x,p.name,'700',46,F,520);x.fillText(p.name,215,y+76);
+    x.textAlign='right';x.font='400 54px '+D;x.fillText(p.w+'–'+p.l,935,y+80);y+=140;
+  });
+  if(s.best){y+=20;x.textAlign='center';x.fillStyle='#7FC8F8';x.font='600 32px '+F;x.fillText('Best pairing',540,y+20);x.fillStyle='#FFFFFF';fitFont(x,s.best.name+', '+s.best.w+'–'+s.best.l,'',62,D,840);x.fillText(s.best.name+', '+s.best.w+'–'+s.best.l,540,y+92)}
+  x.textAlign='center';x.fillStyle='#071B33';if(camPrefs.brand!==false){x.font='700 36px '+F;x.fillText('Scored with Deucebags',540,1860)}
+  return await new Promise(r=>c.toBlob(r,'image/png'));
+}
+async function openSessionCard(sid){
+  toast('Making your session card…');
+  cardBlob=await makeSessionCard(sid);const p=n=>String(n).padStart(2,'0'),dt=new Date();
+  cardName='deucebags-session-'+dt.getFullYear()+'-'+p(dt.getMonth()+1)+'-'+p(dt.getDate())+'.png';
+  const img=$('cardImg');if(img.src)URL.revokeObjectURL(img.src);img.src=URL.createObjectURL(cardBlob);
+  let f=null;try{f=new File([cardBlob],cardName,{type:'image/png'})}catch(e){}
+  $('cardShare').style.display=navigator.canShare&&f&&navigator.canShare({files:[f]})?'':'none';
+  $('cardTitle').textContent='Session card';showSheet('cardSheet');
+}
+
+/* ================= progress charts on profiles ================= */
+function progressHtml(key){
+  const rows=allRows().filter(r=>r.winner!==null).map(r=>{const a=members(r.cfg,0).some(n=>pkey(n)===key),b=members(r.cfg,1).some(n=>pkey(n)===key);if(!a&&!b)return null;const side=a?0:1;return{d:r.date,won:r.winner===side,pf:r.pf===null?null:(side===0?r.pf:r.pa),pa:r.pf===null?null:(side===0?r.pa:r.pf)}}).filter(Boolean).sort((a,b)=>a.d-b.d);
+  if(rows.length<3)return'';
+  const months={};rows.forEach(r=>{const dt=new Date(r.d),k=dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0');const m=months[k]=months[k]||{w:0,p:0,pf:0,pt:0,label:dt.toLocaleDateString('en-GB',{month:'short'})};m.p++;if(r.won)m.w++;if(r.pf!==null){m.pf+=r.pf;m.pt+=r.pf+r.pa}});
+  const ms=Object.keys(months).sort().slice(-6).map(k=>months[k]);
+  const W=320,H=120,bw=W/ms.length;
+  const bars=ms.map((m,i)=>{const pc=m.w/m.p,h=Math.max(3,pc*(H-28));return'<rect x="'+(i*bw+bw*.2)+'" y="'+(H-18-h)+'" width="'+(bw*.6)+'" height="'+h+'" rx="5" fill="#071B33"/><text x="'+(i*bw+bw/2)+'" y="'+(H-4)+'" text-anchor="middle" font-size="11" font-family="Fredoka,sans-serif" font-weight="600" fill="#071B33">'+m.label+'</text><text x="'+(i*bw+bw/2)+'" y="'+(H-22-h)+'" text-anchor="middle" font-size="11" font-family="Fredoka,sans-serif" font-weight="600" fill="#071B33">'+Math.round(pc*100)+'%</text>'}).join('');
+  const pts=ms.filter(m=>m.pt>0);
+  const line=pts.length>1?'<p class="sh">Points won, by month</p><svg class="pchart" viewBox="0 0 '+W+' '+H+'"><line x1="0" x2="'+W+'" y1="'+(H/2)+'" y2="'+(H/2)+'" stroke="#071B33" stroke-opacity=".2" stroke-dasharray="4 4"/><polyline fill="none" stroke="#071B33" stroke-width="3" stroke-linejoin="round" points="'+pts.map((m,i)=>(i/(pts.length-1)*(W-30)+15)+','+(H-12-(m.pf/m.pt)*(H-24))).join(' ')+'"/>'+pts.map((m,i)=>'<circle cx="'+(i/(pts.length-1)*(W-30)+15)+'" cy="'+(H-12-(m.pf/m.pt)*(H-24))+'" r="4.5" fill="#DFFF32" stroke="#071B33" stroke-width="2"/>').join('')+'</svg><p class="help" style="margin:-8px 2px 14px">The dashed line is 50%. Above it, you\'re winning more points than you lose.</p>':'';
+  return'<p class="sh">Win rate, by month</p><svg class="pchart" viewBox="0 0 '+W+' '+H+'">'+bars+'</svg>'+line;
+}
+
+$('rulesClose').onclick=()=>hideSheet();
 /* ================= go ================= */
 window.__dbg={replay,labels,ruleText,pressureText};
 render();
