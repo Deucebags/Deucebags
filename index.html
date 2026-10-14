@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="6.4">
+<meta name="app-version" content="6.7">
 <title>Deucebags</title>
 <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1179x2556.jpg">
 <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1290x2796.jpg">
@@ -141,6 +141,29 @@ button{cursor:pointer;font-family:var(--heading)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---- additions ---- */
+.bsec{margin:10px 0;border:2px solid var(--navy);border-radius:16px;background:rgba(255,255,255,.6);overflow:hidden}
+.bsec>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 14px}
+.bsec>summary::-webkit-details-marker{display:none}
+.bsec .bst{flex:1;display:grid;gap:1px;min-width:0}
+.bsec .bst b{font-family:var(--display);font-weight:400;font-size:24px;line-height:1.1;color:var(--navy)}
+.bsec .bst em{font-style:normal;font-weight:700;font-size:13px;color:var(--muted)}
+.bsec .bsc{flex:none;background:var(--navy);color:var(--lime);border-radius:999px;padding:4px 11px;font-weight:800;font-size:13px}
+.bsec .chev{flex:none;width:28px;height:28px;border-radius:50%;background:var(--navy);position:relative}
+.bsec .chev::after{content:"";position:absolute;left:50%;top:44%;width:8px;height:8px;border-right:2.5px solid var(--lime);border-bottom:2.5px solid var(--lime);transform:translate(-50%,-50%) rotate(45deg);transition:transform .2s}
+.bsec[open] .chev::after{transform:translate(-50%,-25%) rotate(-135deg)}
+.bsec>.badges{padding:0 10px 12px}
+.bsec.tx .bst b{color:#8A6A12}.bsec.tx .bsc{background:linear-gradient(135deg,#F7E08A,#C9A227);color:var(--navy)}
+.bsec.tsec .bst b{color:#5B3F96}.bsec.tsec .bsc{background:#6E4AA0;color:#fff}
+.bsec.t4{background:rgba(7,27,51,.06)}
+.tierpill[data-sk]{cursor:pointer}
+.invicon{width:56px;height:56px;border-radius:50%;background:var(--lime);border:2px solid var(--navy);display:grid;place-items:center;color:var(--navy);margin-bottom:10px}
+.invicon svg{width:28px;height:28px}
+.bio{position:relative;margin:12px 0 6px;padding:12px 14px 12px 18px;background:rgba(255,255,255,.85);border:2px solid var(--navy);border-radius:14px;font-size:16.5px;line-height:1.5;color:var(--navy);font-weight:700;box-shadow:0 3px 0 var(--navy)}
+.bio::before{content:"";position:absolute;left:6px;top:10px;bottom:10px;width:5px;border-radius:3px;background:var(--lime);box-shadow:0 0 0 1.5px var(--navy)}
+.badge .bdate{grid-column:2;display:block;margin-top:5px;font-style:normal;font-family:var(--heading);font-weight:700;font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--navy);opacity:.6}
+.badge.on.t4 .bdate{color:var(--lime);opacity:.85}
+.badge.tx.on .bdate{color:#7A5C0E;opacity:.9}
+.badge.tsec.on .bdate{color:#4F3488;opacity:.9}
 .hmwarn{display:flex;align-items:flex-start;gap:6px;margin-top:8px;font-style:normal;font-weight:700;font-size:13.5px;line-height:1.35;color:var(--navy)}
 .hmwarn svg{width:16px;height:16px;flex:none;margin-top:1px;fill:none;stroke:var(--navy);stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
 .hmacc.warn{background:#FFF4D6;border:2px solid #B7791F;flex-direction:column;align-items:stretch;gap:10px}
@@ -1045,7 +1068,7 @@ button{transition:transform .12s ease}
     <div id="tab-profile" class="hide"><div id="profileBody"></div></div>
     <div id="tab-league" class="hide"><div id="leagueBody"></div><p class="sh" style="margin-top:6px">Players</p><div id="playersBody"></div></div>
     <div id="tab-matches">
-    <button class="recapbtn hide" id="recapBtn"><b>Your week in padel</b><span></span></button>
+    <button class="recapbtn hide" id="recapBtn" style="display:none!important"><b>Your week in padel</b><span></span></button>
     <div class="cards" id="cards"></div>
     <div class="vtools"><button class="primary" id="addResult">Add a result</button><button class="secondary" id="exportCsv">Export to spreadsheet</button></div>
     <div class="filters">
@@ -1403,6 +1426,13 @@ button{transition:transform .12s ease}
   <div class="btns"><button class="secondary" id="awClose">Done</button></div>
 </section>
 
+<section class="sheet" id="inviteSheet" aria-label="Invite players">
+  <div class="invicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.6-3.6 3-5.6 6-5.6s5.4 2 6 5.6"/><path d="M18.5 7v6M15.5 10h6"/></svg></div>
+  <h3 id="invTitle"></h3>
+  <p class="help" id="invBody" style="margin:-4px 2px 14px"></p>
+  <div class="btns"><button class="primary" id="invYes">Invite them</button><button class="secondary" id="invNo">Not now</button></div>
+</section>
+
 <section class="sheet" id="recapSheet" aria-label="Your week in padel">
   <h3 id="recapTitle">Your week in padel</h3>
   <div class="seg three" id="recapSeg" style="margin-bottom:14px"><button data-v="7">Week</button><button data-v="30">Month</button><button data-v="365">Year</button></div>
@@ -1432,7 +1462,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="privacyBtn">Privacy</button>
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v6.4<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v6.7<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -1755,7 +1785,7 @@ function recordHistory(){
     const entry={id:M.id,cfg:M.cfg,pts:M.pts.slice(),start:M.start,end:M.end,tags:Object.assign({},M.tags||{})};
     if(M.session)entry.session=M.session.id;
     if(i>=0)history[i]=entry;else history.unshift(entry);
-    setTimeout(()=>autoSend(entry),300);setTimeout(checkSecrets,2500);
+    setTimeout(()=>autoSend(entry),300);setTimeout(checkSecrets,2500);setTimeout(()=>invitePrompt(entry),4000);
   }else{
     M.end=null;
     if(i>=0)history.splice(i,1);
@@ -3301,7 +3331,7 @@ const FOUNDER_LIMIT=50;
 BADGE_ICON.founder='<path d="M12 21.5c-4.3-1-7.3-4.6-7.8-9.3"/><path d="M12 21.5c4.3-1 7.3-4.6 7.8-9.3"/><path d="M6.3 16.2c-1.6.1-2.8-.9-3.4-2.4 1.6-.1 2.8.8 3.4 2.4zM5 12.6c-1.6-.2-2.6-1.4-2.9-3 1.6.2 2.6 1.3 2.9 3zM5.4 9c-1.4-.6-2-2-2-3.6 1.4.6 2 1.9 2 3.6zM17.7 16.2c1.6.1 2.8-.9 3.4-2.4-1.6-.1-2.8.8-3.4 2.4zM19 12.6c1.6-.2 2.6-1.4 2.9-3-1.6.2-2.6 1.3-2.9 3zM18.6 9c1.4-.6 2-2 2-3.6-1.4.6-2 1.9-2 3.6z"/><path d="M12 5.2l1.4 2.9 3.1.4-2.3 2.2.6 3.1L12 12.3l-2.8 1.5.6-3.1-2.3-2.2 3.1-.4z"/>';
 const founderSpots=()=>{const c=store.get('db-fnd-count');return c===null||c===undefined?null:Math.max(0,FOUNDER_LIMIT-c)};
 function founderTile(date,no,i){
-  if(date)return'<div class="badge tx on" style="--i:'+(i||0)+'"><i class="medal">'+badgeSvg('founder')+'</i><b>Founding member'+(no?' <small>#'+no+'</small>':'')+'</b><span>One of the first '+FOUNDER_LIMIT+' to join Deucebags. Unlocked '+dShort(date)+'.</span></div>';
+  if(date)return'<div class="badge tx on" style="--i:'+(i||0)+'"><i class="medal">'+badgeSvg('founder')+'</i><b>Founding member'+(no?' <small>#'+no+'</small>':'')+'</b><span>One of the first '+FOUNDER_LIMIT+' to join Deucebags.</span><em class="bdate">Unlocked '+dShort(date)+'</em></div>';
   const left=founderSpots();
   if(left===0)return'';
   return'<div class="badge tx" style="--i:'+(i||0)+'"><i class="medal">'+badgeSvg('founder')+'</i><b>Founding member</b><span>Only for the first '+FOUNDER_LIMIT+' people to join'+(left!==null?'. '+left+(left===1?' spot':' spots')+' left':'')+'. Create an account and pick a username to claim yours.</span></div>';
@@ -3369,8 +3399,8 @@ function myExclusive(){
   return{founder:PROF.founder?{n:PROF.founder,date:PROF.founderAt}:null,fgroup:PROF.fgroup?{n:PROF.fgroup,date:PROF.fgroupAt}:null,
     gstarter:xb.gstarter||null,recruiter:xb.recruiter||null,bug:xb.bug||null,secret:secretFor(meKey())};
 }
-function exTile(cls,id,title,text,on,i,prog){
-  return'<div class="badge '+cls+(on?' on':'')+'" style="--i:'+i+'"><i class="medal">'+badgeSvg(id)+'</i><b>'+title+'</b><span>'+text+'</span>'+(prog||'')+'</div>';
+function exTile(cls,id,title,text,on,i,prog,when){
+  return'<div class="badge '+cls+(on?' on':'')+'" style="--i:'+i+'"><i class="medal">'+badgeSvg(id)+'</i><b>'+title+'</b><span>'+text+'</span>'+(when?'<em class="bdate">'+when+'</em>':'')+(prog||'')+'</div>';
 }
 function exclusiveHtml(ex,mine){
   if(!ex)return'';
@@ -3379,13 +3409,14 @@ function exclusiveHtml(ex,mine){
   const fleft=(()=>{const c=store.get('db-fgr-count');return c===null||c===undefined?null:Math.max(0,FGROUP_LIMIT-c)})();
   if(ex.fgroup)tiles.push(exTile('tx','fgroup','Founding group <small>#'+ex.fgroup.n+'</small>','Started one of the first '+FGROUP_LIMIT+' shared groups on Deucebags.',true,i++));
   else if(mine&&fleft!==0)tiles.push(exTile('tx','fgroup','Founding group','Create one of the first '+FGROUP_LIMIT+' shared groups'+(fleft!==null?'. '+fleft+(fleft===1?' spot':' spots')+' left.':'.'),false,i++));
-  if(ex.gstarter)tiles.push(exTile('tx','gstarter','Group starter','Built a shared group of 8 or more. Unlocked '+dShort(ex.gstarter)+'.',true,i++));
+  if(ex.gstarter)tiles.push(exTile('tx','gstarter','Group starter','Built a shared group of 8 or more.',true,i++,'','Unlocked '+dShort(ex.gstarter)));
   else if(mine){const me=FB.user?FB.user.uid:null,best=Math.max(0,...(typeof GRP!=='undefined'?GRP.list:[]).filter(g=>g.createdBy===me).map(g=>(g.members||[]).length));tiles.push(exTile('tx','gstarter','Group starter','Create a shared group that reaches 8 members.',false,i++,best?progBar(best,8):''))}
-  if(ex.recruiter)tiles.push(exTile('tx','recruiter','Recruiter','Connected with 5 friends on Deucebags. Unlocked '+dShort(ex.recruiter)+'.',true,i++));
+  if(ex.recruiter)tiles.push(exTile('tx','recruiter','Recruiter','Connected with 5 friends on Deucebags.',true,i++,'','Unlocked '+dShort(ex.recruiter)));
   else if(mine){const n=typeof SOC!=='undefined'?SOC.links.filter(l=>l.status==='accepted').length:0;tiles.push(exTile('tx','recruiter','Recruiter','Connect with 5 friends on Deucebags.',false,i++,n?progBar(n,5):''))}
   if(ex.bug&&ex.bug.n)tiles.push(exTile('tx','bug','Bug hunter'+(ex.bug.n>1?' <small>×'+ex.bug.n+'</small>':''),'Found a real bug and helped make Deucebags better.',true,i++));
   else if(mine)tiles.push(exTile('tx','bug','Bug hunter','Spot a real bug and report it. Awarded by the Deucebags team.',false,i++));
-  let h=tiles.length?'<p class="tierhead tx">Exclusive<span>Bonus badges, not part of the 50</span></p><div class="badges">'+tiles.join('')+'</div>':'';
+  const exOn=tiles.filter(x=>x.indexOf(' on"')>0||x.indexOf('tx on')>0).length;
+  let h=tiles.length?bsec('ex','tx','Exclusive','Bonus badges, not part of the 50',mine?exOn+' of '+tiles.length:exOn+' earned',tiles.join('')):'';
   return h;
 }
 let exAnnounced=store.get('db-ex-seen')||{};
@@ -3505,10 +3536,10 @@ function secretHtml(sec,mine){
   sec=sec||{};const tiles=[];let i=0,found=0;
   const all=SEASONAL.map(s=>[s[0],s[1],s[4]]).concat(SECRET_ONE);
   all.forEach(([id,name,desc])=>{const v=sec[id];if(!v)return;found++;
-    const ys=v.years;tiles.push(exTile('tsec on',id,name+(ys&&ys.length>1?' <small>×'+ys.length+'</small>':''),ys?desc.replace(/^Play/,'Played')+'. '+ys.join(', ')+'.':desc+'. Found '+dShort(v.date)+'.',true,i++))});
+    const ys=v.years;tiles.push(exTile('tsec on',id,name+(ys&&ys.length>1?' <small>×'+ys.length+'</small>':''),ys?desc.replace(/^Play/,'Played')+'.':desc+'.',true,i++,'',ys?'Collected '+ys.join(', '):'Found '+dShort(v.date)))});
   if(mine)all.forEach(([id])=>{if(sec[id])return;tiles.push('<div class="badge tsec mystery" style="--i:'+(i++)+'"><i class="medal">'+badgeSvg(id)+'</i><b>???</b><span>Keep playing to find out.</span></div>')});
   if(!tiles.length)return'';
-  return'<p class="tierhead tsec">Secret<span>'+(mine?found+' of '+SECRET_TOTAL+' found':'Hidden achievements')+'</span></p><div class="badges">'+tiles.join('')+'</div>';
+  return bsec('sec','tsec','Secret',mine?'Hidden until you find them':'Hidden achievements',mine?found+' of '+SECRET_TOTAL:found+' found',tiles.join(''));
 }
 function checkSecrets(){
   const s=secretFor(meKey()),y=new Date().getFullYear();
@@ -3557,6 +3588,22 @@ function closePop(){POP.open=false;POP.queue=[];$('achPop').className='achpop'}
 $('apNext').onclick=()=>{POP.queue.shift();if(POP.queue.length)showPop();else closePop()};
 $('apAll').onclick=()=>{closePop();hideHome&&hideHome();openResults();setTab('profile');setTimeout(()=>{const e=document.querySelector('#profileBody .tiers');if(e)$('resultsView').scrollTop=e.offsetTop-120},350)};
 
+/* ================= invite players who aren't on Deucebags yet ================= */
+function invitePrompt(entry){
+  if(!FB.user||!PROF.username||!entry||!entry.cfg)return;
+  const asked=store.get('db-invite-asked')||{},me=meKey();
+  const names=[0,1].flatMap(s=>members(entry.cfg,s)).filter(n=>{const k=pkey(n);if(!k||k===me||asked[k])return false;const f=friendOf(k);return!(f&&f.uid)});
+  if(!names.length)return;
+  const go=()=>{
+    if(POP.open||POP.queue.length||$('celView').classList.contains('on')||document.querySelector('.sheet.on')||$('askWrap').classList.contains('on')){setTimeout(go,900);return}
+    names.forEach(n=>asked[pkey(n)]=1);store.set('db-invite-asked',asked);
+    const list=names.length>1?names.slice(0,-1).join(', ')+' and '+names[names.length-1]:names[0];
+    $('invTitle').textContent=list+(names.length>1?' aren\'t':' isn\'t')+' on Deucebags yet';
+    $('invBody').textContent='Invite '+(names.length>1?'them':names[0].split(' ')[0])+' so your results land on '+(names.length>1?'their':'their')+' phone automatically, and you can share a league.';
+    showSheet('inviteSheet');
+  };
+  setTimeout(go,2500);
+}
 /* ================= achievements ================= */
 const TIERS=[null,{n:'Rookie',c:'t1'},{n:'Club',c:'t2'},{n:'Pro',c:'t3'},{n:'Legend',c:'t4'}];
 const DAY=86400000;
@@ -3642,16 +3689,22 @@ function runBadges(p,r,side,gap,grudge,allP){
   const ctx={p,r,side,o,won,gap,grudge,top,has:(t,team)=>aw.some(a=>a.title===t&&a.team===team),hasN:(t,team)=>(aw.find(a=>a.title===t&&a.team===team)||{n:0}).n};
   BADGES.forEach(b=>{if(!p.badges[b[0]]&&b[4](ctx))p.badges[b[0]]=r.date});
 }
+const secOpen=()=>store.get('db-sec-open')||{};
+function bsec(key,cls,title,sub,count,inner){
+  return'<details class="bsec '+cls+'" data-sk="'+key+'"'+(secOpen()[key]?' open':'')+'><summary><span class="bst"><b>'+title+'</b><em>'+sub+'</em></span><span class="bsc">'+count+'</span><i class="chev" aria-hidden="true"></i></summary><div class="badges">'+inner+'</div></details>';
+}
+document.addEventListener('toggle',e=>{const d=e.target;if(!d||!d.classList||!d.classList.contains('bsec'))return;const m=secOpen();if(d.open)m[d.dataset.sk]=1;else delete m[d.dataset.sk];store.set('db-sec-open',m)},true);
+document.addEventListener('click',e=>{const p=e.target.closest&&e.target.closest('.tierpill[data-sk]');if(!p)return;const box=p.closest('#profileBody,#playerBody')||document;const d=box.querySelector('details.bsec[data-sk="'+p.dataset.sk+'"]');if(d){d.open=true;d.scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'start'})}});
 function tierSummary(p){
   const got=p.badges||{};
   return'<div class="tiers">'+[1,2,3,4].map(t=>{const all=BADGES.filter(b=>b[2]===t),n=all.filter(b=>got[b[0]]).length;
-    return'<div class="tierpill '+TIERS[t].c+'"><i></i><b>'+TIERS[t].n+'</b><span>'+n+' of '+all.length+'</span></div>'}).join('')+'</div>';
+    return'<div class="tierpill '+TIERS[t].c+'" data-sk="t'+t+'" role="button" tabindex="0"><i></i><b>'+TIERS[t].n+'</b><span>'+n+' of '+all.length+'</span></div>'}).join('')+'</div>';
 }
 function badgeTile(b,p,i){
   const d=(p.badges||{})[b[0]],tier=TIERS[b[2]];
   let prog='';
   if(!d&&b[5]){const pr=b[5](p);if(pr){const[a,z,lab]=pr;if(z>1){const pc=Math.min(100,Math.round(a/z*100));prog='<em class="prog"><i style="width:'+pc+'%"></i></em><span class="pn">'+(lab||Math.min(a,z).toLocaleString('en-GB')+' of '+z.toLocaleString('en-GB'))+'</span>'}}}
-  return'<div class="badge '+tier.c+(d?' on':'')+'" style="--i:'+i+'"><i class="medal">'+badgeSvg(b[0])+'</i><b>'+esc(b[1])+'</b><span>'+esc(d?'Unlocked '+dShort(d):b[3])+'</span>'+prog+'</div>';
+  return'<div class="badge '+tier.c+(d?' on':'')+'" style="--i:'+i+'"><i class="medal">'+badgeSvg(b[0])+'</i><b>'+esc(b[1])+'</b><span>'+esc(b[3])+'</span>'+(d?'<em class="bdate">Unlocked '+dShort(d)+'</em>':'')+prog+'</div>';
 }
 function badgesHtml(p,compact){
   const got=p.badges||{},n=Object.keys(got).filter(k=>BADGE[k]).length;
@@ -3659,7 +3712,8 @@ function badgesHtml(p,compact){
   let i=0;
   [1,2,3,4].forEach(t=>{
     const list=BADGES.filter(b=>b[2]===t).sort((a,b)=>(got[b[0]]?1:0)-(got[a[0]]?1:0));
-    h+='<p class="tierhead '+TIERS[t].c+'">'+TIERS[t].n+'<span>'+(t===1?'Getting started':t===2?'Regular at the club':t===3?'Serious player':'The very best')+'</span></p><div class="badges">'+list.map(b=>badgeTile(b,p,i++)).join('')+'</div>';
+    const nGot=list.filter(b=>got[b[0]]).length;
+    h+=bsec('t'+t,TIERS[t].c,TIERS[t].n,(t===1?'Getting started':t===2?'Regular at the club':t===3?'Serious player':'The very best'),nGot+' of '+list.length,list.map(b=>badgeTile(b,p,i++)).join(''));
   });
   if(p.ex)h+=secretHtml(legacySecret(p.ex),!!p.exMine);
   return h;
@@ -3893,7 +3947,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='6.4';
+const APP_VERSION='6.7';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -5071,6 +5125,7 @@ function progressHtml(key){
 
 $('rulesClose').onclick=()=>hideSheet();
 $('acClose').onclick=()=>hideSheet();
+$('invYes').onclick=()=>{hideSheet();inviteFriend()};$('invNo').onclick=()=>hideSheet();
 $('awGo').onclick=findForAward;$('awClose').onclick=()=>hideSheet();
 $('grCreate').onclick=createGroup;$('grClose').onclick=()=>hideSheet();$('liveClose').onclick=()=>hideSheet();
 $('grLive').onchange=e=>store.set('db-live-share',e.target.checked);
