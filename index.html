@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="5.8">
+<meta name="app-version" content="6.4">
 <title>Deucebags</title>
 <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1179x2556.jpg">
 <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1290x2796.jpg">
@@ -141,6 +141,61 @@ button{cursor:pointer;font-family:var(--heading)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---- additions ---- */
+.hmwarn{display:flex;align-items:flex-start;gap:6px;margin-top:8px;font-style:normal;font-weight:700;font-size:13.5px;line-height:1.35;color:var(--navy)}
+.hmwarn svg{width:16px;height:16px;flex:none;margin-top:1px;fill:none;stroke:var(--navy);stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
+.hmacc.warn{background:#FFF4D6;border:2px solid #B7791F;flex-direction:column;align-items:stretch;gap:10px}
+.hmacc.warn b{display:flex;align-items:center;gap:6px;color:#5C3D0A}
+.hmacc.warn b svg{width:18px;height:18px;fill:none;stroke:#B7791F;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.hmacc.warn em{color:#5C3D0A;opacity:.9;line-height:1.4}
+.hmacc.warn i{align-self:flex-start;background:var(--navy);padding:9px 16px}
+input,textarea,select{font-family:var(--body);font-weight:600}
+input::placeholder,textarea::placeholder{font-family:var(--body);font-weight:600;opacity:.65}
+.badge.tsec.mystery .medal{background:#24476E;color:#9C8AD8;opacity:.75}
+.achpop{position:fixed;inset:0;z-index:40;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(7,27,51,.78)}
+.achpop.on{display:flex;animation:fade .25s ease-out}
+.apcard{position:relative;width:min(360px,100%);background:var(--ice);border:3px solid var(--navy);border-radius:28px;padding:26px 22px 18px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.apcard.go{animation:apIn .55s cubic-bezier(.2,1.4,.4,1)}
+@keyframes apIn{from{opacity:0;transform:translateY(30px) scale(.85)}}
+.apcount{position:absolute;top:14px;right:16px;font-weight:700;font-size:13px;color:var(--muted)}
+.apkicker{margin:0 0 14px;font-family:var(--heading);font-weight:600;font-size:15px;letter-spacing:.3px;color:var(--muted)}
+.apmedal{display:grid;place-items:center;margin-bottom:14px}
+.apmedal .medal{width:110px;height:110px;border-radius:50%;display:grid;place-items:center;border:4px solid var(--navy);animation:apMedal .8s cubic-bezier(.2,1.6,.4,1) .1s both;position:relative;overflow:hidden}
+.apmedal .medal svg{width:58px;height:58px;fill:none;stroke-width:1.8}
+.apmedal .medal::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.6) 50%,transparent 70%);transform:translateX(-100%);animation:shine 2.4s ease-in-out .7s infinite}
+@keyframes apMedal{0%{transform:scale(0) rotate(-30deg)}70%{transform:scale(1.12) rotate(6deg)}100%{transform:none}}
+.achpop.t1 .medal{background:#7FC8F8;color:var(--navy)}.achpop.t2 .medal{background:#183B60;color:#fff}.achpop.t3 .medal{background:#DFFF32;color:var(--navy)}
+.achpop.t4 .medal{background:linear-gradient(135deg,#DFFF32,#7FC8F8);color:var(--navy)}
+.achpop.tx .medal{background:linear-gradient(135deg,#F7E08A,#C9A227);color:var(--navy)}
+.achpop.tsec .medal{background:linear-gradient(135deg,#B9A6FF,#6E4AA0);color:#fff}
+.apcard h3{font-family:var(--display);font-weight:400;font-size:32px;line-height:1.1;margin:0 0 8px;color:var(--navy)}
+.apcard h3 small{font-size:20px;color:var(--muted)}
+.aptier{display:inline-block;background:var(--navy);color:var(--lime);border-radius:999px;padding:3px 12px;font-weight:700;font-size:13px;margin-bottom:10px}
+.achpop.tx .aptier{background:linear-gradient(135deg,#F7E08A,#C9A227);color:var(--navy)}
+.achpop.tsec .aptier{background:#6E4AA0;color:#fff}
+.apdesc{margin:0 0 16px;font-size:16px;line-height:1.45;color:var(--navy)}
+.apcard .btns{margin:0}
+.badge.tsec .medal{background:linear-gradient(135deg,#B9A6FF,#6E4AA0);color:var(--white)}
+.badge.tsec.on{background:linear-gradient(135deg,#EFE9FF,#D9CCFF);border:2px solid var(--navy)}
+.badge.tsec.on b{color:var(--navy)}.badge.tsec.on b small{color:#4F3488;font-size:13px}
+.badge.tsec.on span{color:#3F2A6E;font-weight:600}
+.badge.tsec.mystery{background:var(--navy);border:2px solid var(--navy)}
+.badge.tsec.mystery .medal{background:#24476E;color:#B9A6FF;filter:none;opacity:1}
+.badge.tsec.mystery b{color:#B9A6FF}.badge.tsec.mystery span{color:rgba(255,255,255,.7)}
+.tierhead.tsec{color:#5B3F96;margin-top:22px}
+.hmacc{width:100%;display:flex;align-items:center;gap:10px;text-align:left;background:var(--white);border:2px dashed var(--navy);border-radius:16px;padding:12px 14px;margin:0 0 12px;color:var(--navy)}
+.hmacc span{flex:1;display:grid;gap:2px}
+.hmacc b{font-family:var(--heading);font-weight:600;font-size:16px}
+.hmacc em{font-style:normal;font-size:13.5px;color:var(--muted)}
+.hmacc i{font-style:normal;background:var(--navy);color:var(--lime);border-radius:999px;padding:7px 14px;font-weight:700;font-size:14px;flex:none}
+.obtick.acc{background:var(--sky)}
+button.wide{width:100%;margin:2px 0 8px}
+.moreopts{background:var(--white);border:2px solid var(--line);border-radius:16px;margin:4px 0 14px;padding:0 14px}
+.moreopts>summary{list-style:none;cursor:pointer;padding:14px 26px 14px 0;font-family:var(--heading);font-weight:600;font-size:16px;color:var(--navy);display:grid;gap:2px;position:relative}
+.moreopts>summary::-webkit-details-marker{display:none}
+.moreopts>summary span{font-family:var(--body);font-weight:600;font-size:13px;color:var(--muted)}
+.moreopts>summary::after{content:"";position:absolute;right:4px;top:22px;width:10px;height:10px;border-right:2.5px solid var(--navy);border-bottom:2.5px solid var(--navy);transform:rotate(45deg);transition:transform .2s}
+.moreopts[open]>summary::after{transform:rotate(-135deg);top:26px}
+.moreopts[open]{padding-bottom:6px}
 .badge.tx:not(.on) .medal{filter:grayscale(1);opacity:.45}
 .badge.tsea .medal{background:linear-gradient(135deg,#FFB3C7,#E8505B);color:var(--white)}
 .badge.tsea:not(.on) .medal{filter:grayscale(1);opacity:.4}
@@ -928,7 +983,7 @@ button{transition:transform .12s ease}
       <button class="ghost" id="newBtn" aria-label="New match"><span class="long">New match</span><span class="short">New</span></button>
     </div>
   </header>
-  <div class="info"><button class="fmtbtn" id="fmtBtn" aria-label="Change match settings"><span id="fmt"></span><span class="chg">Change</span></button><span class="locktag hide" id="lockTag">Locked</span><span id="clock"></span></div>
+  <div class="info"><button class="fmtbtn" id="fmtBtn" aria-label="Change match settings"><span id="fmt"></span><span class="chg">Change</span></button><span id="clock"></span></div>
   <div class="chiprow"><div class="status ends" id="ends">Change ends</div><div class="status" id="status"></div><div class="status press" id="press"></div></div>
 
   <main class="court" id="court">
@@ -952,10 +1007,9 @@ button{transition:transform .12s ease}
       <div class="dtext"><h2 id="doneTitle"></h2>
       <p id="doneScore"></p></div>
       <div class="btns">
-        <button class="primary" id="doneCard">Share match card</button>
+        <button class="primary" id="doneCard">Share card</button>
         <button class="secondary" id="doneStats">Match stats and awards</button>
         <button class="secondary" id="doneSwap">Swap partners, next set</button>
-        <button class="secondary hide" id="doneSession">Send the whole session</button>
         <button class="secondary" id="doneRematch">Rematch</button>
         <button class="secondary" id="doneNew">Start new match</button>
         <button class="secondary" id="doneHome">Home</button>
@@ -1038,10 +1092,7 @@ button{transition:transform .12s ease}
   <div id="rowBody"></div>
   <div class="field"><label for="rowNotes">Notes</label><textarea id="rowNotes" placeholder="Venue, partner, how it went"></textarea></div>
   <div class="btns">
-    <button class="primary" id="rowCard">Share match card</button>
-    <button class="primary hide" id="rowSession">Send the whole session</button>
-    <button class="secondary hide" id="rowSessionCard">Session card</button>
-    <button class="secondary" id="rowSend">Send result to players</button>
+    <button class="primary" id="rowCard">Share card</button>
     <button class="secondary" id="rowSave">Save notes</button>
     <button class="secondary" id="rowEdit">Edit score</button>
     <button class="danger" id="rowDelete">Delete this match</button>
@@ -1056,17 +1107,13 @@ button{transition:transform .12s ease}
   <div class="teambox">
     <span class="lbl">Your team</span>
     <div class="pair"><input type="text" id="pA1" list="playerNames" maxlength="20" placeholder="You" autocomplete="off" aria-label="Your team, player 1"><input type="text" id="pA2" list="playerNames" maxlength="20" placeholder="Partner" autocomplete="off" aria-label="Your team, player 2"></div>
-    <input type="text" id="inA" maxlength="24" placeholder="Team name (optional)" aria-label="Your team name">
   </div>
   <div class="teambox">
     <span class="lbl">Opponents</span>
     <div class="pair"><input type="text" id="pB1" list="playerNames" maxlength="20" placeholder="Player 1" autocomplete="off" aria-label="Opponents, player 1"><input type="text" id="pB2" list="playerNames" maxlength="20" placeholder="Player 2" autocomplete="off" aria-label="Opponents, player 2"></div>
-    <input type="text" id="inB" maxlength="24" placeholder="Team name (optional)" aria-label="Opponents team name">
   </div>
-  <p class="help" style="margin:-6px 2px 16px">Add everyone's name to give each player their own record and rating, whoever they partner. Player 1 serves first for each team.</p>
+  <p class="help" style="margin:-6px 2px 16px">Player 1 on each team serves first.</p>
   <datalist id="playerNames"></datalist>
-  <div class="field"><label for="inGroup">Group (optional)</label><input type="text" id="inGroup" list="groupNames" maxlength="24" autocomplete="off" placeholder="For example, Sunday crew"><p class="help">Keeps different friend groups apart. Filter by group in Results.</p></div>
-  <datalist id="groupNames"></datalist>
   <div class="field"><span class="lbl">Format</span>
     <div class="seg" id="segPlay"><button data-v="doubles">Doubles</button><button data-v="singles">Singles</button></div>
   </div>
@@ -1085,16 +1132,23 @@ button{transition:transform .12s ease}
     <div class="seg quad" id="segGames"><button data-v="6">6 games</button><button data-v="4">4 games</button><button data-v="r3">First to 3</button><button data-v="r5">First to 5</button></div>
     <p class="help" id="gamesHelp"></p>
   </div>
+  <details class="moreopts" id="moreOpts"><summary>More options<span>Group, team names, deciding set, video and display settings</span></summary>
+  <div class="field"><label for="inGroup">Group (optional)</label><input type="text" id="inGroup" list="groupNames" maxlength="24" autocomplete="off" placeholder="For example, Sunday crew"><p class="help">Keeps different friend groups apart. Filter by group in Results.</p></div>
+  <datalist id="groupNames"></datalist>
+  <div class="field"><span class="lbl">Team names (optional)</span><div class="pair">
+    <input type="text" id="inA" maxlength="24" placeholder="Team name (optional)" aria-label="Your team name">
+    <input type="text" id="inB" maxlength="24" placeholder="Team name (optional)" aria-label="Opponents team name">
+  </div><p class="help">Leave blank to use the players' names.</p></div>
   <div class="field" id="deciderField"><span class="lbl">Deciding set</span>
     <div class="seg" id="segDecider"><button data-v="set">Full set</button><button data-v="stb">Match tiebreak</button></div>
     <p class="help">A match tiebreak is first to 10 points, winning by 2.</p>
   </div>
   <div class="field toggle"><label for="inOverlay" style="margin:0">Show the score on videos</label><input type="checkbox" id="inOverlay"></div>
-  <div class="field toggle"><label for="inLock" style="margin:0">Lock scoring<span class="lblhelp">Press and hold to score, so pocket taps don't count.</span></label><input type="checkbox" id="inLock"></div>
   <div class="field toggle"><label for="inOutdoor" style="margin:0">Outdoor mode<span class="lblhelp">Bigger, bolder scores that are easier to read in sunlight.</span></label><input type="checkbox" id="inOutdoor"></div>
   <div class="field toggle"><label for="inSound" style="margin:0">Sounds (a tick when you score and tap)<span class="lblhelp">Turn your media volume up. On iPhone, the silent switch mutes them.</span></label><input type="checkbox" id="inSound"></div>
   <div class="field toggle"><label for="inClips" style="margin:0">Clip that while filming (uses a bit more battery)</label><input type="checkbox" id="inClips"></div>
   <div class="field toggle"><label for="inBrand" style="margin:0">Show the Deucebags logo on videos and match cards</label><input type="checkbox" id="inBrand"></div>
+  </details>
   <div class="btns">
     <button class="primary" id="startBtn">Start match</button>
     <button class="secondary" id="keepBtn">Save changes and keep the score</button>
@@ -1321,6 +1375,7 @@ button{transition:transform .12s ease}
 <section class="sheet" id="usernameSheet" aria-label="Choose a username">
   <h3 id="unTitle">Pick your username</h3>
   <p class="help" id="unWhy" style="margin:-4px 2px 12px"></p>
+  <div class="field hide" id="unNameWrap"><label for="unName">Your name</label><input type="text" id="unName" maxlength="20" autocomplete="name" placeholder="The name you play under"></div>
   <div class="field"><div class="unwrap"><span>@</span><input type="text" id="unInput" maxlength="20" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="yourname"></div><p class="help" id="unMsg"></p></div>
   <div class="btns"><button class="primary" id="unSave">Save username</button><button class="secondary" id="unSkip">Sign out instead</button></div>
 </section>
@@ -1352,7 +1407,7 @@ button{transition:transform .12s ease}
   <h3 id="recapTitle">Your week in padel</h3>
   <div class="seg three" id="recapSeg" style="margin-bottom:14px"><button data-v="7">Week</button><button data-v="30">Month</button><button data-v="365">Year</button></div>
   <div id="recapBody"></div>
-  <div class="btns"><button class="primary" id="recapShare">Share recap card</button><button class="secondary" id="recapClose">Close</button></div>
+  <div class="btns"><button class="secondary" id="recapClose">Close</button></div>
 </section>
 
 <section class="sheet" id="dataSheet" aria-label="Your data">
@@ -1365,12 +1420,9 @@ button{transition:transform .12s ease}
   <div class="where">
     <div><b>Scores, results, players and the league</b><span>Kept in the app on this phone. If you sign in, they're also saved to your account so they sync between devices. <span id="dataCount"></span></span></div>
     <div><b>Videos, clips, match cards and spreadsheets</b><span id="dataSaveTxt">Save puts a copy in Downloads, in your Files app. Share sends them straight to WhatsApp, Instagram or Google Drive.</span></div>
-    <div><b>Using Chrome and the Android app?</b><span>Each keeps its own results. Stick to one, and move your data across with a backup.</span></div>
-    <div><b>Keep a backup</b><span>Clearing Chrome's data or switching phones wipes your results. A backup brings everything back.</span></div>
+    <div><b>Keeping it safe</b><span>Signed in, your account keeps a copy of everything and brings it back on any phone. Signed out, results live on this phone only, and clearing your browser's data deletes them.</span></div>
   </div>
   <div class="btns">
-    <button class="primary" id="dataBackup">Save a backup</button>
-    <button class="secondary" id="dataRestore">Restore from a backup</button>
     <button class="secondary" id="dataCsv">Export results to a spreadsheet</button>
     <button class="secondary" id="dataEdit">Make a clip from a video</button>
     <button class="secondary" id="dataAccount">Account and sync</button>
@@ -1380,8 +1432,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="privacyBtn">Privacy</button>
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
-  <input type="file" id="restoreFile" accept="application/json,.json" class="hide">
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v5.8<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v6.4<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -1493,6 +1544,12 @@ button{transition:transform .12s ease}
       <p class="builtby">Made by Raza Rebuilt</p>
     </div>
     <div class="obstep">
+      <div class="obtick acc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4.2 4-6.5 8-6.5s7.2 2.3 8 6.5"/></svg></div>
+      <h2>Create your account</h2>
+      <p>Keep your results safe on any phone, add friends by username, and share a league with your group. It's free.</p>
+      <div class="btns"><button class="primary" id="obCreate">Create an account</button><button class="secondary" id="obHave">I already have an account</button><button class="linkbtn" id="obLocal">Just score for now</button></div>
+    </div>
+    <div class="obstep">
       <h2>What should we call you?</h2>
       <p>Use the name your friends know you by. It's how we link up your stats and achievements.</p>
       <div class="obphoto"><div id="obPhoto"></div><div class="obpbtns"><button class="secondary" id="obPhotoBtn">Add a photo</button><button class="secondary" id="obAvatarBtn">Make an avatar</button></div></div>
@@ -1534,6 +1591,17 @@ button{transition:transform .12s ease}
 </div>
 <div class="dimview" id="dimView"><p>Still recording.<br>Tap anywhere to wake the screen.</p></div>
 <div class="sr-only" aria-hidden="true"></div>
+<div class="achpop" id="achPop" role="dialog" aria-modal="true" aria-labelledby="apName">
+  <div class="apcard" id="apCard">
+    <span class="apcount" id="apCount"></span>
+    <p class="apkicker" id="apKicker">Achievement unlocked</p>
+    <div class="apmedal"><i class="medal" id="apMedal"></i></div>
+    <h3 id="apName"></h3>
+    <span class="aptier" id="apTier"></span>
+    <p class="apdesc" id="apDesc"></p>
+    <div class="btns"><button class="primary" id="apNext">Nice!</button><button class="linkbtn" id="apAll">See all achievements</button></div>
+  </div>
+</div>
 <canvas class="fx" id="fx"></canvas>
 <div class="toast" id="toast" role="status"></div>
 
@@ -1687,7 +1755,7 @@ function recordHistory(){
     const entry={id:M.id,cfg:M.cfg,pts:M.pts.slice(),start:M.start,end:M.end,tags:Object.assign({},M.tags||{})};
     if(M.session)entry.session=M.session.id;
     if(i>=0)history[i]=entry;else history.unshift(entry);
-    setTimeout(()=>autoSend(entry),300);setTimeout(checkSeasonal,2500);
+    setTimeout(()=>autoSend(entry),300);setTimeout(checkSecrets,2500);
   }else{
     M.end=null;
     if(i>=0)history.splice(i,1);
@@ -1789,7 +1857,7 @@ function render(){
     $('doneTitle').textContent=n+(plural?' win':' wins');
     $('doneScore').textContent=setLine(S);
     $('doneSwap').style.display=fourPlayers(M.cfg)?'':'none';
-    $('doneSession').classList.toggle('hide',!(M.session&&sessionEntries(M.session.id).length>1));
+
   }else d.classList.remove('on');
   $('undoBtn').disabled=!M.pts.length;
   updateSession();
@@ -1839,8 +1907,8 @@ function renderStats(){
   }else{
     $('statsTitle').textContent=S.done!==null?nm(S.done)+' won':'This match';
     const cr=S.done!==null?currentRow():null;
-    body.innerHTML='<p class="setline">'+esc(setLine(S)||'0–0')+'</p>'+newBadgesHtml()+(cr?awardsHtml(cr)+'<div class="btns" style="margin:0 0 16px"><button class="primary" id="statsCard">Share match card</button><button class="secondary" id="statsSend">Send result to players</button></div>':'')+statsTable(M.cfg,S,M.start,M.end)+(S.log.length>3?'<p class="sh">Momentum</p>'+momentumSvg(S,M.cfg):'');
-    if(cr){$('statsCard').onclick=()=>openCard(cr);$('statsSend').onclick=()=>sendResult(cr.h)}
+    body.innerHTML='<p class="setline">'+esc(setLine(S)||'0–0')+'</p>'+newBadgesHtml()+(cr?awardsHtml(cr)+'<div class="btns" style="margin:0 0 16px"><button class="primary" id="statsCard">Share card</button></div>':'')+statsTable(M.cfg,S,M.start,M.end)+(S.log.length>3?'<p class="sh">Momentum</p>'+momentumSvg(S,M.cfg):'');
+    if(cr){$('statsCard').onclick=()=>openCard(cr)}
   }
 }
 $('statsBtn').onclick=()=>{renderStats();showSheet('statsSheet')};
@@ -1908,7 +1976,7 @@ function openSetup(){
   $('inOverlay').checked=!!draft.overlay;
   $('inBrand').checked=camPrefs.brand!==false;
   $('inClips').checked=camPrefs.clips!==false;
-  $('inSound').checked=soundOn();$('inLock').checked=lockOn();$('inOutdoor').checked=store.get('db-outdoor')===true;
+  $('inSound').checked=soundOn();$('inOutdoor').checked=store.get('db-outdoor')===true;
   const inProgress=S.done===null&&M.pts.length>0;
   $('keepBtn').style.display=inProgress?'':'none';
   $('progressBox').style.display=inProgress?'':'none';
@@ -2505,8 +2573,7 @@ function openRow(id){
   $('rowBody').innerHTML='<p class="setline">'+esc(r.score)+'</p>'+awardsHtml(r)+(r.st?statsTable(r.cfg,r.st,h.start,h.end)+(r.st.log.length>3?'<p class="sh">Momentum</p>'+momentumSvg(r.st,r.cfg):''):'');
   $('rowCard').onclick=()=>openCard(r);
   if(h.session){$('rowBody').insertAdjacentHTML('afterbegin',sessionHtml(h.session))}
-  $('rowSession').classList.toggle('hide',!h.session);$('rowSession').onclick=()=>sendSession(h.session);
-  $('rowSessionCard').classList.toggle('hide',!h.session);$('rowSessionCard').onclick=()=>openSessionCard(h.session);$('rowSend').style.display=r.winner===null?'none':'';$('rowSend').onclick=()=>sendResult(h);
+
   $('rowNotes').value=r.notes;
   $('rowEdit').style.display=h.manual?'':'none';
   showSheet('rowSheet');
@@ -2855,7 +2922,8 @@ async function makeCard(row){
   else{x.fillStyle='#071B33';x.font='400 120px '+D;x.fillText('Match result',540,330)}
   return await new Promise(res=>c.toBlob(res,'image/png'));
 }
-async function openCard(row){
+function openCard(r0){if(r0&&r0.h&&r0.h.session&&typeof sessionEntries==='function'&&sessionEntries(r0.h.session).length>1){openSessionCard(r0.h.session);return}return openMatchCard(r0)}
+async function openMatchCard(row){
   toast('Making your match card…');
   cardBlob=await makeCard(row);
   const p=n=>String(n).padStart(2,'0'),d=new Date(row.date);
@@ -2902,29 +2970,6 @@ $('dataClear').onclick=async()=>{
   openData();toast('Unsaved videos cleared.');
 };
 $('dataCsv').onclick=()=>{hideSheet();exportCsv()};
-$('dataBackup').onclick=async()=>{
-  const data={app:'deucebags',version:1,saved:new Date().toISOString(),history,match:M,profile:PROF,friends:FRIENDS};
-  const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
-  const name='deucebags-backup-'+todayStr()+'.json';
-  const r=await saveBlob(blob,name);
-  if(r==='saved'){store.set('db-backup',{n:history.length,t:Date.now()});toast(savedMsg(name,'Backup saved'))}else if(r==='failed')toast('Couldn\'t save the backup here.');
-};
-$('dataRestore').onclick=()=>$('restoreFile').click();
-$('restoreFile').onchange=async e=>{
-  const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
-  try{
-    const data=JSON.parse(await f.text());
-    if(data.app!=='deucebags'||!Array.isArray(data.history))throw new Error('bad');
-    const ids=new Set(history.map(h=>h.id));let added=0;
-    data.history.forEach(h=>{if(h&&h.id&&!ids.has(h.id)){history.push(h);added++}});
-    if(Array.isArray(data.friends)){data.friends.forEach(f=>{if(f&&f.key&&!friendOf(f.key))FRIENDS.push(f)});saveFriends()}
-    if(data.profile&&data.profile.name&&!PROF.name){PROF=Object.assign({},PROF_DEF,data.profile);saveProf();setMe(pkey(PROF.name));syncAvatar()}
-    history.sort((a,b)=>((b.date||b.start||0)-(a.date||a.start||0)));
-    saveH();hideSheet();
-    if(tab)setTab(tab);
-    toast(added?'Restored '+added+(added===1?' match.':' matches.'):'Nothing new in that backup. You\'ve already got everything in it.');
-  }catch(err){toast('That file isn\'t a Deucebags backup.')}
-};
 
 
 /* ================= clip editor ================= */
@@ -3171,7 +3216,6 @@ $('dataEdit').onclick=()=>{hideSheet();openEditor(null);edListFootage()};
 /* branding switch (for a wider release, switch it off and every video goes out clean) */
 $('inBrand').onchange=e=>{camPrefs.brand=e.target.checked;store.set('db-cam',camPrefs)};
 $('inClips').onchange=e=>{camPrefs.clips=e.target.checked;store.set('db-cam',camPrefs)};
-$('inLock').onchange=e=>{store.set('db-lock',e.target.checked);syncLock()};
 $('inOutdoor').onchange=e=>{store.set('db-outdoor',e.target.checked);syncOutdoor()};
 $('inSound').onchange=e=>{store.set('db-sound',e.target.checked);if(e.target.checked){audioCtx();setTimeout(()=>tickSound('point'),60);toast('Sounds on. You should hear a tick.')}};
 
@@ -3277,7 +3321,7 @@ async function ensureFounder(){
     });
     if(n){
       PROF.founder=n;PROF.founderAt=Date.now();saveProf();store.set('db-fnd-count',n);
-      setTimeout(()=>{fxCannons(80);toast('Achievement unlocked: Founding member #'+n+'. One of the first '+FOUNDER_LIMIT+' to join, for good.')},900);
+      setTimeout(()=>queuePop([{key:'x:founder',id:'founder',name:'Founding member',extra:'#'+n,tier:'x',desc:'One of the first '+FOUNDER_LIMIT+' people to join Deucebags. Nobody can ever earn this again.'}]),900);
       if(tab==='profile'&&$('resultsView').classList.contains('on'))renderProfile();
     }else{const m=await meta.get();if(m.exists)store.set('db-fnd-count',m.data().count||0)}
   }catch(e){}
@@ -3323,7 +3367,7 @@ function nextChance(mm,a){const now=new Date(),y=now.getFullYear();let d=new Dat
 function myExclusive(){
   const xb=PROF.xb||{};
   return{founder:PROF.founder?{n:PROF.founder,date:PROF.founderAt}:null,fgroup:PROF.fgroup?{n:PROF.fgroup,date:PROF.fgroupAt}:null,
-    gstarter:xb.gstarter||null,recruiter:xb.recruiter||null,bug:xb.bug||null,seasonal:seasonalFor(meKey())};
+    gstarter:xb.gstarter||null,recruiter:xb.recruiter||null,bug:xb.bug||null,secret:secretFor(meKey())};
 }
 function exTile(cls,id,title,text,on,i,prog){
   return'<div class="badge '+cls+(on?' on':'')+'" style="--i:'+i+'"><i class="medal">'+badgeSvg(id)+'</i><b>'+title+'</b><span>'+text+'</span>'+(prog||'')+'</div>';
@@ -3342,23 +3386,16 @@ function exclusiveHtml(ex,mine){
   if(ex.bug&&ex.bug.n)tiles.push(exTile('tx','bug','Bug hunter'+(ex.bug.n>1?' <small>×'+ex.bug.n+'</small>':''),'Found a real bug and helped make Deucebags better.',true,i++));
   else if(mine)tiles.push(exTile('tx','bug','Bug hunter','Spot a real bug and report it. Awarded by the Deucebags team.',false,i++));
   let h=tiles.length?'<p class="tierhead tx">Exclusive<span>Bonus badges, not part of the 50</span></p><div class="badges">'+tiles.join('')+'</div>':'';
-  const sea=ex.seasonal||{},st=[];
-  SEASONAL.forEach(([id,name,mm,[a],how])=>{
-    const ys=sea[id];
-    if(ys&&ys.length)st.push(exTile('tsea',id,name+(ys.length>1?' <small>×'+ys.length+'</small>':''),ys.join(', '),true,i++));
-    else if(mine)st.push(exTile('tsea',id,name,how+'. Next chance: '+nextChance(mm,a).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+'.',false,i++));
-  });
-  if(st.length)h+='<p class="tierhead tsea">Seasonal<span>Back every year. Collect each one</span></p><div class="badges">'+st.join('')+'</div>';
   return h;
 }
 let exAnnounced=store.get('db-ex-seen')||{};
-function celebrateEx(key,msg){if(exAnnounced[key])return;exAnnounced[key]=1;store.set('db-ex-seen',exAnnounced);setTimeout(()=>{fxCannons(70);toast(msg)},700)}
+function celebrateEx(key,msg,pop){if(exAnnounced[key])return;exAnnounced[key]=1;store.set('db-ex-seen',exAnnounced);if(pop){setTimeout(()=>queuePop([Object.assign({key:'x:'+key},pop)]),900)}else setTimeout(()=>{fxCannons(70);toast(msg)},700)}
 function setXb(k,v){PROF.xb=Object.assign({},PROF.xb||{},{[k]:v});saveProf()}
 // group starter and recruiter: checked as groups and friends update
 function checkSocialBadges(){
   if(!FB.user)return;const me=FB.user.uid,xb=PROF.xb||{};
-  if(!xb.gstarter&&(GRP.list||[]).some(g=>g.createdBy===me&&(g.members||[]).length>=8)){setXb('gstarter',Date.now());celebrateEx('gstarter','Exclusive badge unlocked: Group starter.')}
-  if(!xb.recruiter&&SOC.links.filter(l=>l.status==='accepted').length>=5){setXb('recruiter',Date.now());celebrateEx('recruiter','Exclusive badge unlocked: Recruiter.')}
+  if(!xb.gstarter&&(GRP.list||[]).some(g=>g.createdBy===me&&(g.members||[]).length>=8)){setXb('gstarter',Date.now());celebrateEx('gstarter','',{id:'gstarter',name:'Group starter',tier:'x',desc:'You built a shared group of 8 or more.'})}
+  if(!xb.recruiter&&SOC.links.filter(l=>l.status==='accepted').length>=5){setXb('recruiter',Date.now());celebrateEx('recruiter','',{id:'recruiter',name:'Recruiter',tier:'x',desc:'You connected with 5 friends on Deucebags.'})}
 }
 // founding group: the first ten shared groups ever made
 async function ensureFoundingGroups(){
@@ -3377,7 +3414,7 @@ async function ensureFoundingGroups(){
       });
       if(n){PROF.fgroup=n;PROF.fgroupAt=Date.now();saveProf();store.set('db-fgr-count',n);
         db.collection('groups').doc(g.id).update({fn:n}).catch(()=>{});
-        celebrateEx('fgroup','Exclusive badge unlocked: Founding group #'+n+'.');return}
+        celebrateEx('fgroup','',{id:'fgroup',name:'Founding group',extra:'#'+n,tier:'x',desc:'You started one of the first '+FGROUP_LIMIT+' shared groups on Deucebags.'});return}
       const m=await meta.get();store.set('db-fgr-count',m.exists?(m.data().count||0):0);return;
     }catch(e){}
   }
@@ -3387,11 +3424,11 @@ async function ensureFoundingGroups(){
 async function checkAwards(){
   if(!FB.user)return;
   try{const d=await FB.db.collection('awards').doc(FB.user.uid).get();
-    if(d.exists){const a=d.data(),cur=(PROF.xb||{}).bug;if(a.bugs&&(!cur||cur.n!==a.bugs)){setXb('bug',{n:a.bugs,date:a.last||Date.now()});celebrateEx('bug'+a.bugs,'Exclusive badge unlocked: Bug hunter'+(a.bugs>1?' ×'+a.bugs:'')+'. Thank you!')}}}catch(e){}
+    if(d.exists){const a=d.data(),cur=(PROF.xb||{}).bug;if(a.bugs&&(!cur||cur.n!==a.bugs)){setXb('bug',{n:a.bugs,date:a.last||Date.now()});celebrateEx('bug'+a.bugs,'',{id:'bug',name:'Bug hunter',extra:a.bugs>1?'×'+a.bugs:'',tier:'x',desc:'You found a real bug and helped make Deucebags better. Thank you!'})}}}catch(e){}
   try{const ad=await FB.db.collection('admins').doc(FB.user.uid).get();FB.admin=ad.exists}catch(e){FB.admin=false}
 }
 // seasonal: celebrate the first time a season is collected this year
-function checkSeasonal(){
+function checkSecrets(){
   const s=seasonalFor(meKey()),y=new Date().getFullYear();
   SEASONAL.forEach(([id,name])=>{if((s[id]||[]).includes(y))celebrateEx(id+y,'Seasonal badge collected: '+name+' '+y+'.')});
 }
@@ -3412,6 +3449,113 @@ async function giveAward(){
   try{await FB.db.collection('awards').doc(awardTarget.uid).set({bugs:awardTarget.bugs+1,last:Date.now(),by:FB.user.uid},{merge:true});
     toast('Bug hunter awarded to '+awardTarget.name+'. They\'ll see it next time they open the app.');awardTarget.bugs++;findForAward()}catch(e){toast(fbError(e))}
 }
+
+
+/* ================= secret achievements: hidden until found ================= */
+Object.assign(BADGE_ICON,{
+  x_midnight:'<path d="M15.5 4.5A7.5 7.5 0 1 0 19.5 16 6 6 0 0 1 15.5 4.5z"/><path d="M19 3.5v2M18 4.5h2M21 8.5v1.5M20.2 9.2h1.6"/>',
+  x_dawn:'<path d="M3 17h18M6 17a6 6 0 0 1 12 0"/><path d="M12 4v5M9.5 6.5 12 4l2.5 2.5M3 21h18"/>',
+  x_deuce:'<path d="M5 9h6M5 13h6M13 9h6M13 13h6"/><path d="M4 18c2.5-1.5 5-1.5 8 0s5.5 1.5 8 0"/>',
+  x_phoenix:'<path d="M12 21c-3-2-4-5-3-8 1 1.5 2 2 3 2-1-3 0-6 3-9 0 3 1.5 4.5 3 6 1.5 2 1.5 6-1 8"/><path d="M3 9c3 0 5 1.5 6 4M21 9c-3 0-5 1.5-6 4"/>',
+  x_white:'<rect x="3.5" y="5" width="17" height="14" rx="2.5"/><path d="M7 9h3l-2.2 6M14.5 9.5a2 2.5 0 1 1 0 5 2 2.5 0 1 1 0-5z"/>',
+  x_three:'<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/><path d="M7.5 14.5l1.2 1.2 2-2.2M11.5 14.5l1.2 1.2 2-2.2M15.5 14.5l1.2 1.2 2-2.2"/>',
+  x_ride:'<circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/>',
+  x_secret:'<circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.6 2.3c-.8.4-1.2 1-1.2 1.8v.5"/><path d="M12 16.8v.2"/>'
+});
+const SECRET_ONE=[
+  ['x_midnight','Midnight padel','Started a match between 11pm and 4am'],
+  ['x_dawn','Dawn patrol','Started a match before 7am'],
+  ['x_deuce','Deuce drama','Played a game that went to deuce five times'],
+  ['x_phoenix','Phoenix','Won a set after trailing 0–5'],
+  ['x_white','Tiebreak whitewash','Won a tiebreak 7–0'],
+  ['x_three','Three-peat','Played three days in a row'],
+  ['x_ride','Ride or die','Played 25 matches with the same partner']
+];
+const SECRET_TOTAL=SEASONAL.length+SECRET_ONE.length;
+function secretFor(key){
+  const out={};if(!key)return out;
+  Object.entries(seasonalFor(key)).forEach(([id,ys])=>out[id]={years:ys});
+  const rows=allRows().filter(r=>r.date&&[0,1].some(s=>members(r.cfg,s).some(n=>pkey(n)===key))).sort((a,b)=>a.date-b.date);
+  const hit=(id,d)=>{if(!out[id])out[id]={date:d}};
+  const days=new Set(),partners={};
+  rows.forEach(r=>{
+    const side=members(r.cfg,0).some(n=>pkey(n)===key)?0:1,o=1-side,d=new Date(r.date),hr=d.getHours(),live=!r.h.manual;
+    if(live&&(hr>=23||hr<4))hit('x_midnight',r.date);
+    if(live&&hr>=4&&hr<7)hit('x_dawn',r.date);
+    const st=r.st;
+    if(st&&st.log&&r.cfg.deuce!=='golden'){
+      let a=0,b=0,dc=0,gi=0;
+      for(const e of st.log){const tb=st.games[gi]&&st.games[gi].tb;if(!tb){e.w===0?a++:b++;if(a>=3&&b>=3&&a===b)dc++;if(dc>=5){hit('x_deuce',r.date);break}}if(e.ge){a=0;b=0;dc=0;gi++}}
+    }
+    if(st&&st.games&&!r.cfg.race){
+      const N=r.cfg.games||6;
+      (st.sets||[]).forEach((s,si)=>{if(s.w!==side||s.super)return;if(st.games.some(g=>g.s===si&&g.g&&g.g[side]===0&&g.g[o]>=N-1))hit('x_phoenix',r.date)});
+    }
+    (r.sets||[]).forEach(s=>{if(s.tb&&s.tb[side]>=7&&s.tb[o]===0&&s.g[side]>s.g[o])hit('x_white',r.date)});
+    days.add(new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime());
+    const mine=members(r.cfg,side).filter(n=>pkey(n)!==key);
+    mine.forEach(n=>{const k=pkey(n);partners[k]=(partners[k]||0)+1;if(partners[k]===25)hit('x_ride',r.date)});
+  });
+  const ds=[...days].sort((a,b)=>a-b);
+  for(let i=2;i<ds.length;i++){if(ds[i]-ds[i-1]<=90000000&&ds[i-1]-ds[i-2]<=90000000&&ds[i]-ds[i-1]>=82800000&&ds[i-1]-ds[i-2]>=82800000){hit('x_three',ds[i]);break}}
+  return out;
+}
+function legacySecret(x){if(!x)return{};if(x.secret)return x.secret;const o={};Object.entries(x.seasonal||{}).forEach(([id,ys])=>o[id]={years:ys});return o}
+function secretHtml(sec,mine){
+  sec=sec||{};const tiles=[];let i=0,found=0;
+  const all=SEASONAL.map(s=>[s[0],s[1],s[4]]).concat(SECRET_ONE);
+  all.forEach(([id,name,desc])=>{const v=sec[id];if(!v)return;found++;
+    const ys=v.years;tiles.push(exTile('tsec on',id,name+(ys&&ys.length>1?' <small>×'+ys.length+'</small>':''),ys?desc.replace(/^Play/,'Played')+'. '+ys.join(', ')+'.':desc+'. Found '+dShort(v.date)+'.',true,i++))});
+  if(mine)all.forEach(([id])=>{if(sec[id])return;tiles.push('<div class="badge tsec mystery" style="--i:'+(i++)+'"><i class="medal">'+badgeSvg(id)+'</i><b>???</b><span>Keep playing to find out.</span></div>')});
+  if(!tiles.length)return'';
+  return'<p class="tierhead tsec">Secret<span>'+(mine?found+' of '+SECRET_TOTAL+' found':'Hidden achievements')+'</span></p><div class="badges">'+tiles.join('')+'</div>';
+}
+function checkSecrets(){
+  const s=secretFor(meKey()),y=new Date().getFullYear();
+  SECRET_ONE.forEach(([id,name,desc])=>{if(s[id])celebrateEx(id,'',{id,name,tier:'s',desc:desc+'.'})});
+  SEASONAL.forEach(([id,name,,,how])=>{if(s[id]&&(s[id].years||[]).includes(y))celebrateEx(id+y,'',{id,name,extra:String(y),tier:'s',desc:how.replace(/^Play/,'You played')+'.'})});
+}
+
+
+/* ================= achievement pop-up: a proper moment, after the match celebration ================= */
+function pastTense(s){
+  const V={Play:'played',Win:'won',Reach:'reached',Beat:'beat',Hold:'held',Break:'broke',Save:'saved',Top:'topped',Unlock:'unlocked'};
+  const m=s.match(/^(\w+)\s(.*)$/);if(!m||!V[m[1]])return s+(s.endsWith('.')?'':'.');
+  return'You '+V[m[1]]+' '+m[2].replace(/ still win$/,' still won').replace(/ that starts /,' that started ')+(s.endsWith('.')?'':'.');
+}
+const POP={queue:[],open:false,i:0,total:0};
+const TIERCLS={1:'t1',2:'t2',3:'t3',4:'t4',x:'tx',s:'tsec'};
+const TIERNAME={1:'Rookie',2:'Club',3:'Pro',4:'Legend',x:'Exclusive',s:'Secret'};
+function queuePop(items){
+  items.forEach(it=>{if(!POP.queue.some(q=>q.key===it.key))POP.queue.push(it)});
+  POP.total=POP.queue.length+(POP.open?POP.i:0);
+  tryPop();
+}
+function tryPop(){
+  if(POP.open||!POP.queue.length)return;
+  // wait until the match celebration, sheets and pop-ups have cleared
+  if($('celView').classList.contains('on')||document.querySelector('.sheet.on')||$('askWrap').classList.contains('on')||$('obView').classList.contains('on')||$('tourView').classList.contains('on')){setTimeout(tryPop,700);return}
+  POP.open=true;POP.i=0;POP.total=POP.queue.length;showPop();
+}
+function showPop(){
+  const it=POP.queue[0];if(!it){closePop();return}
+  POP.i++;
+  const v=$('achPop');
+  v.className='achpop on '+(TIERCLS[it.tier]||'t1');
+  $('apMedal').innerHTML=badgeSvg(it.id);
+  $('apKicker').textContent=it.tier==='s'?'Secret achievement found':it.tier==='x'?'Exclusive badge unlocked':'Achievement unlocked';
+  $('apName').innerHTML=esc(it.name)+(it.extra?' <small>'+esc(it.extra)+'</small>':'');
+  $('apTier').textContent=TIERNAME[it.tier]||'';
+  $('apDesc').textContent=it.desc||'';
+  $('apCount').textContent=POP.total>1?POP.i+' of '+POP.total:'';
+  $('apNext').textContent=POP.queue.length>1?'Next':'Nice!';
+  const card=$('apCard');card.classList.remove('go');void card.offsetWidth;card.classList.add('go');
+  if(!reduceMotion){const r=$('apMedal').getBoundingClientRect();setTimeout(()=>fxBurst(r.left+r.width/2,r.top+r.height/2,34,true),260)}
+  try{navigator.vibrate&&navigator.vibrate([30,40,60])}catch(e){}
+}
+function closePop(){POP.open=false;POP.queue=[];$('achPop').className='achpop'}
+$('apNext').onclick=()=>{POP.queue.shift();if(POP.queue.length)showPop();else closePop()};
+$('apAll').onclick=()=>{closePop();hideHome&&hideHome();openResults();setTab('profile');setTimeout(()=>{const e=document.querySelector('#profileBody .tiers');if(e)$('resultsView').scrollTop=e.offsetTop-120},350)};
 
 /* ================= achievements ================= */
 const TIERS=[null,{n:'Rookie',c:'t1'},{n:'Club',c:'t2'},{n:'Pro',c:'t3'},{n:'Legend',c:'t4'}];
@@ -3517,6 +3661,7 @@ function badgesHtml(p,compact){
     const list=BADGES.filter(b=>b[2]===t).sort((a,b)=>(got[b[0]]?1:0)-(got[a[0]]?1:0));
     h+='<p class="tierhead '+TIERS[t].c+'">'+TIERS[t].n+'<span>'+(t===1?'Getting started':t===2?'Regular at the club':t===3?'Serious player':'The very best')+'</span></p><div class="badges">'+list.map(b=>badgeTile(b,p,i++)).join('')+'</div>';
   });
+  if(p.ex)h+=secretHtml(legacySecret(p.ex),!!p.exMine);
   return h;
 }
 function emptyPlayer(){const p={p:0,w:0,l:0,streak:0,rating:START_RATING,opps:{},partners:{}};initBadgeState(p);return p}
@@ -3528,8 +3673,9 @@ function newBadgesBetween(a,b){
 function announceBadges(list){
   if(!list.length)return;
   M.newBadges=list;saveM();
-  const names=[...new Set(list.map(x=>x.name))];
-  setTimeout(()=>toast(names.length===1?'Achievement unlocked: '+names[0]+'.':names.length+' achievements unlocked. See them in match stats.'),2200);
+  const me=meKey(),mine=list.filter(x=>!me||pkey(x.who)===me);
+  const items=(mine.length?mine:list).filter((x,i,a)=>a.findIndex(y=>y.id===x.id)===i).sort((a,b)=>a.tier-b.tier).map(x=>({key:'b:'+x.id,id:x.id,name:x.name,tier:x.tier,desc:pastTense((BADGE[x.id]||[])[3]||'')}));
+  setTimeout(()=>queuePop(items),1500);
 }
 function newBadgesHtml(){
   const l=(S.done!==null&&M.newBadges)||[];if(!l.length)return'';
@@ -3591,15 +3737,6 @@ async function makeRecapCard(){
   x.fillStyle='#071B33';if(camPrefs.brand!==false){x.font='700 36px '+F;x.fillText('Scored with Deucebags',540,1860)}
   return await new Promise(r=>c.toBlob(r,'image/png'));
 }
-$('recapShare').onclick=async()=>{
-  toast('Making your recap card…');
-  cardBlob=await makeRecapCardP();const p=n=>String(n).padStart(2,'0'),dt=new Date();
-  cardName='deucebags-'+periodName(recapPeriod)+'-'+dt.getFullYear()+'-'+p(dt.getMonth()+1)+'-'+p(dt.getDate())+'.png';
-  const img=$('cardImg');if(img.src)URL.revokeObjectURL(img.src);img.src=URL.createObjectURL(cardBlob);
-  let f=null;try{f=new File([cardBlob],cardName,{type:'image/png'})}catch(e){}
-  $('cardShare').style.display=navigator.canShare&&f&&navigator.canShare({files:[f]})?'':'none';
-  $('cardTitle').textContent='Recap card';showSheet('cardSheet');
-};
 $('recapClose').onclick=()=>hideSheet();
 $('recapBtn').onclick=()=>openRecapP(7);
 document.querySelectorAll('#recapSeg button').forEach(b=>b.onclick=()=>{hideSheet();openRecapP(+b.dataset.v)});
@@ -3756,7 +3893,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='5.8';
+const APP_VERSION='6.4';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -3896,6 +4033,11 @@ async function handleLink(hash){
   let data;try{data=await unpackData(m[2])}catch(e){toast('That link looks incomplete. Ask your friend to send it again.');return true}
   if(m[1]==='session'&&data&&Array.isArray(data.items)){await handleSession(data);return true}
   if(m[1]==='friend'&&data&&data.n){
+    if(FB.user&&data.u){openResults();setTab('profile');setTimeout(()=>{if($('frFind')){$('frFind').value=data.u;findByUsername()}},400);toast('Friend codes are now usernames. Tap Add to send '+data.n+' a request.')}
+    else toast('Friend codes have been replaced by usernames. Ask '+data.n+' for theirs, then search for it in Friends.');
+    return true;
+  }
+  if(m[1]==='friend'&&data&&data.n){
     const f=cardToFriend(data);
     const mine=(PROF.id&&f.id===PROF.id);
     const sameId=friendById(f.id),nameIsMe=!mine&&PROF.name&&f.key===pkey(PROF.name);
@@ -3992,11 +4134,17 @@ function friendsHtml(){
   const list=FRIENDS.slice().sort((a,b)=>a.name.localeCompare(b.name));
   return'<p class="sh">Friends <span class="muted">'+list.length+'</span></p>'+
     (list.length?'<div class="frlist">'+list.map(f=>'<button class="fr" data-k="'+esc(f.key)+'">'+avatar('pav',f.name,f.photo)+'<span><b>'+esc(f.name)+(f.uid?' <i class="ondb" title="On Deucebags"></i>':'')+'</b>'+(f.username?'<em>@'+esc(f.username)+'</em>':'')+'</span></button>').join('')+'</div>'
-      :'<p class="help" style="margin:0 2px 10px">'+(FB.user?'Find friends by their username below. Matches you play together are sent to them automatically.':'Swap friend codes with the people you play with. Their photos and socials show up on their profiles.')+'</p>')+
-    socialHtml()+'<div class="btns two" style="margin-bottom:6px"><button class="'+(FB.user?'secondary':'primary')+'" id="frShare">Share my friend code</button><button class="secondary" id="frScan">Scan a code</button></div>';
+      :'<p class="help" style="margin:0 2px 10px">'+(FB.user?'Find friends by their username below. Matches you play together are sent to them automatically.':'Create an account to add friends by their username.')+'</p>')+
+    (FB.user?socialHtml()+'<button class="secondary wide" id="frInviteAll">Invite a friend to Deucebags</button>':'<button class="primary wide" id="frSignIn2">Create an account or sign in</button>');
+}
+async function inviteFriend(){
+  const text='Join me on Deucebags, the padel app I use for scores, leagues and match videos. Create an account, then add me'+(PROF.username?': @'+PROF.username:'')+'.';
+  const url=appUrl();
+  if(navigator.share){try{await navigator.share({title:'Deucebags',text,url});return}catch(e){if(e&&e.name==='AbortError')return}}
+  try{await navigator.clipboard.writeText(text+' '+url);toast('Invite copied. Paste it into a chat.')}catch(e){toast('Couldn\'t share the invite here.')}
 }
 function bindFriends(){
-  $('frShare').onclick=openFriendCode;$('frScan').onclick=openScanner;bindSocial();
+  if($('frInviteAll'))$('frInviteAll').onclick=inviteFriend;if($('frSignIn2'))$('frSignIn2').onclick=()=>{hideSheet();openAccount()};bindSocial();
   document.querySelectorAll('.fr').forEach(b=>b.onclick=()=>openFriend(b.dataset.k));
 }
 function friendHeader(f){
@@ -4028,7 +4176,7 @@ async function removeFriend(key){
 /* ================= first-open welcome ================= */
 let obPhoto='';
 const onboarded=()=>!!store.get('db-onboarded');
-function obStep(n){document.querySelectorAll('#obView .obstep').forEach((s,i)=>s.classList.toggle('on',i===n));$('obDots').innerHTML=[0,1,2].map(i=>'<i class="'+(i===n?'on':'')+'"></i>').join('')}
+function obStep(n){document.querySelectorAll('#obView .obstep').forEach((s,i)=>s.classList.toggle('on',i===n));$('obDots').innerHTML=[0,1,2,3].map(i=>'<i class="'+(i===n?'on':'')+'"></i>').join('')}
 function openWelcome(){
   $('obName').value=PROF.name||'';obPhoto=PROF.photo||'';obSyncPhoto();fillNameList();
   $('obView').classList.add('on');obStep(0);
@@ -4047,14 +4195,17 @@ $('obFile').onchange=async e=>{
   obPhoto=c.toDataURL('image/jpeg',.85);URL.revokeObjectURL(url);obSyncPhoto();
 };
 $('obSignIn').onclick=()=>{store.set('db-onboarded',1);$('obView').classList.remove('on');setTimeout(openAccount,200)};
-$('obStart').onclick=()=>{obStep(1);setTimeout(()=>$('obName').focus(),300)};
+$('obStart').onclick=()=>obStep(1);
+const obToAccount=mode=>{store.set('db-onboarded',1);$('obView').classList.remove('on');authMode=mode;setTimeout(()=>{showHome();openAccount()},200)};
+$('obCreate').onclick=()=>obToAccount('up');$('obHave').onclick=()=>obToAccount('in');
+$('obLocal').onclick=()=>{obStep(2);setTimeout(()=>$('obName').focus(),300)};
 $('obSkip').onclick=()=>finishWelcome(false);
-$('obSkip2').onclick=()=>obStep(2);
+$('obSkip2').onclick=()=>obStep(3);
 $('obNext').onclick=()=>{
   const name=$('obName').value.trim();
   if(!name){toast('Add your name or tap Skip for now.');return}
   PROF=Object.assign({},PROF,{name,photo:obPhoto,id:PROF.id||newId()});saveProf();setMe(pkey(name));syncAvatar();
-  $('obHello').textContent='Nice one, '+name.split(' ')[0]+'.';obStep(2);
+  $('obHello').textContent='Nice one, '+name.split(' ')[0]+'.';obStep(3);
 };
 $('obTour').onclick=()=>finishWelcome(true);
 $('obPlay').onclick=()=>finishWelcome(false);
@@ -4172,14 +4323,14 @@ async function spaceGuard(){
 }
 
 /* ================= backup reminders ================= */
-function backupNudge(){
+function backupNudge(){return;
   const last=store.get('db-backup')||{n:0,t:0},nag=store.get('db-backup-nag')||0;
   const since=history.length-last.n;
   if(since<10||Date.now()-nag<3*86400000)return;
   store.set('db-backup-nag',Date.now());
   setTimeout(async()=>{
     if(document.querySelector('.sheet.on')||$('askWrap').classList.contains('on'))return;
-    if(await ask('Back up your results?','You\'ve played '+since+' matches since your last backup. It takes a second and keeps everything safe if you change phones.','Save a backup',false,'Not now'))$('dataBackup').click();
+    if(await ask('Back up your results?','You\'ve played '+since+' matches since your last backup. It takes a second and keeps everything safe if you change phones.','Save a backup',false,'Not now'))return;
   },3500);
 }
 
@@ -4213,7 +4364,6 @@ if(isIOS){
   $('exportSaveTxt').innerHTML='<b>Save to phone</b> opens your share menu. Tap Save to Files.';
 }
 iosInstallHint();
-if(window.DeucebagsNative&&!store.get('db-moved-tip')&&onboarded()){const movedTip=async(n)=>{if(document.querySelector('.sheet.on')||$('askWrap').classList.contains('on')||$('obView').classList.contains('on')){if(n<20)setTimeout(()=>movedTip(n+1),3000);return}store.set('db-moved-tip',1);if(await ask('Used Deucebags in Chrome before?','This app keeps its own results. To bring your old ones across, save a backup in Chrome (Results, Your data), then restore it here.','Restore a backup',false,'Not now'))$('restoreFile').click()};setTimeout(()=>movedTip(0),2500)}
 document.querySelectorAll('.sheet').forEach(s=>{s.setAttribute('role','dialog');s.setAttribute('aria-modal','true');const h=s.querySelector('h3');if(h)h.setAttribute('tabindex','-1')});
 
 /* ================= celebration effects ================= */
@@ -4404,7 +4554,7 @@ function doSwap(p){
 }
 $('doneSwap').onclick=()=>openSwap(true);
 $('doneHome').onclick=()=>{M=newMatch(Object.assign({},M.cfg));S=replay(M.cfg,M.pts);prevL=null;saveM();render();showHome()};
-$('doneSession').onclick=()=>{if(M.session)sendSession(M.session.id)};
+
 
 
 /* ================= names: tidy, spot near-duplicates, rename and merge ================= */
@@ -4501,14 +4651,14 @@ async function persistHistory(){
 })();
 
 /* ================= scoring lock: press and hold to score ================= */
-const lockOn=()=>store.get('db-lock')===true;
+const lockOn=()=>false;
 ['halfUs','halfThem'].forEach((id,i)=>{
   const el=$(id);let t=null,fired=false;
   el.addEventListener('pointerdown',()=>{if(!lockOn()||S.done!==null)return;fired=false;el.classList.add('holding');t=setTimeout(()=>{fired=true;el.classList.remove('holding');point(i)},420)});
   ['pointerup','pointerleave','pointercancel'].forEach(ev=>el.addEventListener(ev,()=>{clearTimeout(t);el.classList.remove('holding')}));
   el.addEventListener('click',e=>{if(!lockOn())return;e.stopImmediatePropagation();if(!fired&&S.done===null)toast('Scoring is locked. Press and hold to score.');fired=false},true);
 });
-function syncLock(){$('lockTag').classList.toggle('hide',!lockOn())}
+function syncLock(){}
 
 /* ================= outdoor mode ================= */
 function syncOutdoor(){document.documentElement.classList.toggle('outdoor',store.get('db-outdoor')===true)}
@@ -4840,8 +4990,7 @@ function openRecapP(days){
   recapPeriod=days||recapPeriod;segSet('recapSeg',String(recapPeriod));
   const d=recapBig(recapPeriod);
   $('recapTitle').textContent='Your '+d.period+' in padel';
-  if(!d.rows.length){$('recapBody').innerHTML='<p class="empty">No matches '+(d.period==='week'?'in the last 7 days':'this '+d.period)+(meKey()?'':', or set up your profile so the recap knows which player is you')+'.</p>';$('recapShare').classList.add('hide');showSheet('recapSheet');return}
-  $('recapShare').classList.remove('hide');
+  if(!d.rows.length){$('recapBody').innerHTML='<p class="empty">No matches '+(d.period==='week'?'in the last 7 days':'this '+d.period)+(meKey()?'':', or set up your profile so the recap knows which player is you')+'.</p>';showSheet('recapSheet');return}
   const card=(v,l,i)=>'<div class="card" style="--i:'+i+'"><b>'+v+'</b><span>'+l+'</span></div>';
   const line=(l,v)=>v?'<tr><td>'+l+'</td><td>'+v+'</td></tr>':'';
   const hrs=d.mins>=600?Math.round(d.mins/60)+' hours':d.mins>=60?Math.floor(d.mins/60)+' hr '+(d.mins%60)+' min':d.mins+' min';
@@ -5200,7 +5349,7 @@ async function onAuthChange(){
   await syncNow(true);startSocial();
   if(openSheet&&openSheet.id==='accountSheet'){renderAccount();toast('Signed in. Your results are synced.')}
   if(PROF.username){await ensureUsername();await ensureFounder()}else refreshFounderCount();
-  checkAwards();checkSeasonal();
+  checkAwards();checkSecrets();
   if(needsUsername())setTimeout(()=>{if(needsUsername()&&!$('obView').classList.contains('on'))openUsername()},700);
 }
 function syncAccountBits(){
@@ -5244,6 +5393,7 @@ function openUsername(){
   $('unTitle').textContent=unameRequired?'Pick your username':'Change your username';
   $('unWhy').textContent=unameRequired?'You need one to use your account. It\'s how friends find and add you, and nobody else can take it.':'It\'s how friends find you. Every username is unique, so nobody else can take yours.';
   $('unSkip').textContent=unameRequired?'Sign out instead':'Cancel';
+  $('unNameWrap').classList.toggle('hide',!!PROF.name);$('unName').value=PROF.name||'';
   $('unInput').value=PROF.username||'';$('unMsg').textContent='3 to 20 letters, numbers, dots or underscores.';$('unMsg').className='help';
   showSheet('usernameSheet');setTimeout(()=>$('unInput').focus(),300);
 }
@@ -5261,6 +5411,7 @@ $('unInput').oninput=()=>{
   },450);
 };
 $('unSave').onclick=async()=>{
+  if(!$('unNameWrap').classList.contains('hide')){const nm2=tidyName($('unName').value);if(!nm2){toast('Add your name first.');$('unName').focus();return}PROF.name=nm2;if(!PROF.id)PROF.id=newId();saveProf();setMe(pkey(nm2));syncAvatar()}
   const v=$('unInput').value.trim().toLowerCase();if(!USER_RE.test(v)){toast('Use 3 to 20 letters, numbers, dots or underscores.');return}
   if(badWords(v)){toast('That username isn\'t allowed. Try another.');return}
   const old=(PROF.username||'').toLowerCase(),uid=FB.user.uid;
@@ -5273,7 +5424,7 @@ $('unSave').onclick=async()=>{
       if(old&&old!==v)tx.delete(FB.db.collection('usernames').doc(old));
       tx.set(FB.db.collection('users').doc(uid),{username:v,usernameLower:v},{merge:true});
     });
-    PROF.username=v;saveProf();unameRequired=false;hideSheet();toast('You\'re @'+v+'.');setTimeout(ensureFounder,1500);if(tab==='profile')renderProfile();syncNow(true);
+    PROF.username=v;saveProf();unameRequired=false;hideSheet();toast('You\'re @'+v+'.');if(typeof renderHome==='function'&&$('homeView').classList.contains('on'))renderHome();setTimeout(ensureFounder,1500);if(tab==='profile')renderProfile();syncNow(true);
   }catch(e){toast(e&&e.code==='taken'?'@'+v+' was just taken. Try another.':fbError(e))}
 };
 $('unSkip').onclick=()=>{if(unameRequired&&needsUsername()){signOutNow();return}hideSheet()};
@@ -5677,11 +5828,12 @@ function renderHome(){
   const fmtLine=formatText(M.cfg);
   const lastTeams=last?(last.a+' v '+last.b):'';
   let h='<div class="hmhead"><div><span class="hmhi">'+greeting()+(first?', '+esc(first):'')+'</span><b>Ready to play?</b></div></div>';
+  if(!(typeof FB!=='undefined'&&FB.user))h+='<button class="hmacc" id="hmAcc"><span><b>Create your free account</b><em>Keep your results safe, add friends and share a league.</em></span><i>Sign up</i></button>';
   if(inProgress){
     const L2=labels(S,M.cfg);
     h+='<button class="hmcard hmcarry" id="hmCarry"><span class="hmtag"><span class="livedot"></span>Match in progress</span><b>'+esc(nm(0))+' v '+esc(nm(1))+'</b><span class="hmscore">'+esc((setLine(S)||'0–0')+', '+L2[0]+'–'+L2[1])+'</span><span class="hmgo">Carry on</span></button>';
   }
-  h+='<button class="hmcard hmstart'+(inProgress?' sec':'')+'" id="hmStart"><b>'+(inProgress?'Start a new match':'Start a match')+'</b><span>'+esc(fmtLine)+(lastTeams&&!inProgress?'<br>Last time: '+esc(lastTeams):'')+'</span><span class="hmgo">'+(inProgress?'New':'Let\'s play')+'</span></button>';
+  h+='<button class="hmcard hmstart'+(inProgress?' sec':'')+'" id="hmStart"><b>'+(inProgress?'Start a new match':'Start a match')+'</b><span>'+esc(fmtLine)+(lastTeams&&!inProgress?'<br>Last time: '+esc(lastTeams):'')+(!(typeof FB!=='undefined'&&FB.user)?'<em class="hmwarn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19z"/><path d="M12 9.5v5M12 17.4v.1"/></svg>Your results won\'t be backed up without an account.</em>':'')+'</span><span class="hmgo">'+(inProgress?'New':'Let\'s play')+'</span></button>';
   if(live.length){const r=live[0],st=r.st;
     h+='<button class="hmcard hmlive" id="hmLive"><span class="hmtag"><span class="livedot'+(r.ended?' off':'')+'"></span>'+(r.ended?'Just finished':'Live now')+', '+esc(r.g)+'</span><b>'+esc(st.us.name)+' v '+esc(st.them.name)+'</b><span class="hmscore">'+(r.ended?esc(st.winner+' won '+st.score):esc((st.score?st.score+', ':'')+st.us.points+'–'+st.them.points))+'</span></button>'}
   if(reqs.length)h+='<button class="hmcard hmreq" id="hmReq"><b>'+reqs.length+' friend request'+(reqs.length===1?'':'s')+'</b><span>'+esc(reqs.map(l=>l.fromName||'@'+l.fromUsername).slice(0,3).join(', '))+'</span><span class="hmgo">View</span></button>';
@@ -5703,6 +5855,7 @@ function renderHome(){
   if($('hmLast'))$('hmLast').onclick=()=>{openResults();setTab('matches');setTimeout(()=>openRow(last.id),150)};
   box.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{openResults();setTab(b.dataset.go)});
   $('hmRules').onclick=()=>openRules();
+  if($('hmAcc'))$('hmAcc').onclick=()=>{authMode='up';openAccount()};
   $('hmTour').onclick=()=>startTour();
   syncHomeAvatar();
 }
@@ -5720,12 +5873,7 @@ function bindConnect(f){
       const p=await FB.db.collection('profiles').doc(uid).get();await sendRequest(uid,p.exists?p.data():{username:v,name:f.name});
     }catch(e){toast(fbError(e))}
   };
-  if($('frInvite'))$('frInvite').onclick=async()=>{
-    const text='Join me on Deucebags, the padel app we use. Create an account, pick a username and add me'+(PROF.username?': @'+PROF.username:'')+'.';
-    const url=appUrl();
-    if(navigator.share){try{await navigator.share({title:'Deucebags',text,url});return}catch(e){if(e&&e.name==='AbortError')return}}
-    try{await navigator.clipboard.writeText(text+' '+url);toast('Invite copied. Paste it into a chat.')}catch(e){toast('Couldn\'t share the invite here.')}
-  };
+  if($('frInvite'))$('frInvite').onclick=inviteFriend;
 }
 
 function friendHero(f){
@@ -5798,6 +5946,7 @@ function friendExtras(f,key){
   return h;
 }
 
+setTimeout(()=>{try{if(meKey())checkSecrets()}catch(e){}},3500);
 /* ================= go ================= */
 window.__dbg={replay,labels,ruleText,pressureText};
 render();
