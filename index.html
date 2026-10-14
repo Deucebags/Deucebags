@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="5.2">
+<meta name="app-version" content="5.4">
 <title>Deucebags</title>
 <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1179x2556.jpg">
 <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1290x2796.jpg">
@@ -141,6 +141,19 @@ button{cursor:pointer;font-family:var(--heading)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---- additions ---- */
+.frtag2{display:table;margin-top:6px;background:var(--lime);color:var(--navy);border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700;justify-self:start}
+#playerBody .profhero{margin-bottom:4px}
+.fbadges{background:var(--white);border:2px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:12px}
+.fbadges>b{font-family:var(--heading);font-weight:600;font-size:15px;color:var(--navy);display:block;margin-bottom:6px}
+.fbadges>div{display:flex;flex-wrap:wrap;gap:6px}
+.fbadge{display:inline-flex;align-items:center;gap:6px;background:var(--ice);border-radius:999px;padding:3px 10px 3px 3px;font-weight:700;font-size:13px;color:var(--navy)}
+.fbadge .medal{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--navy)}
+.fbadge .medal svg{width:15px;height:15px;fill:none!important}
+.fbadge.t1 .medal{background:#7FC8F8;color:var(--navy)}.fbadge.t2 .medal{background:#183B60;color:#fff}.fbadge.t3 .medal{background:#DFFF32;color:var(--navy)}.fbadge.t4 .medal{background:linear-gradient(135deg,#DFFF32,#7FC8F8);color:var(--navy)}
+.together{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.together>div{background:var(--navy);border-radius:14px;padding:10px 12px;display:grid;gap:2px}
+.together b{font-family:var(--display);font-weight:400;font-size:28px;color:var(--lime)}
+.together span{font-size:13px;font-weight:700;color:rgba(255,255,255,.8)}
 .hmhelp{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 .hmhelp button{display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;border:2px dashed var(--navy);border-radius:14px;padding:12px 8px;font-family:var(--heading);font-weight:600;font-size:15px;color:var(--navy)}
 .hmhelp svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -184,7 +197,7 @@ button{cursor:pointer;font-family:var(--heading)}
 .hmgrid button{display:grid;justify-items:center;gap:6px;background:var(--white);border:2px solid var(--navy);border-radius:16px;padding:12px 4px;font-family:var(--heading);font-weight:600;font-size:13.5px;color:var(--navy)}
 .hmgrid svg{width:24px;height:24px;fill:none;stroke:var(--navy);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .ptlvl{display:inline-block;margin:2px 0 4px;background:var(--lime);border:1.5px solid var(--navy);border-radius:999px;padding:0 8px;font-size:11.5px;font-weight:700;color:var(--navy)}
-.soc.pt{background:#0E7C66}
+.soc.ptk{background:#0E7C66}
 .grbox{background:var(--white);border:2px solid var(--line);border-radius:14px;margin-bottom:8px;overflow:hidden}
 .grbox .grrow{border:0;margin:0;border-radius:0}
 .gradmin{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:0 12px 10px;font-size:13.5px;color:var(--navy)}
@@ -1181,7 +1194,7 @@ button{transition:transform .12s ease}
 <h4>What you choose to share</h4>
 <p>Friend codes and match results travel inside the links you send. Anyone with one of those links can see what's in it: your name, photo, bio and socials for a friend code, or the match score for a result. Nothing is shared unless you send it.</p>
 <h4>If you sign in</h4>
-<p>Signing in is optional. If you do, your results, profile and friends list are also saved to your Deucebags account on Google Firebase, stored in London, so they sync between your devices. Your results stay private to you, apart from matches you play with friends you've connected with, which are sent to them. Your profile card (name, username, photo, bio and padel details) can be seen by other Deucebags users who search for your username. If you join a shared group, matches tagged with that group, and live scores while you're scoring one, are shared with its members. Your email is used to sign you in and is never shown to anyone. You can delete your account and everything in it at any time from Account and sync.</p>
+<p>Signing in is optional. If you do, your results, profile and friends list are also saved to your Deucebags account on Google Firebase, stored in London, so they sync between your devices. Your results stay private to you, apart from matches you play with friends you've connected with, which are sent to them. Your profile card (name, username, photo, bio, padel details and headline stats such as matches played, win rate, rating and achievements) can be seen by other Deucebags users who search for your username. If you join a shared group, matches tagged with that group, and live scores while you're scoring one, are shared with its members. Your email is used to sign you in and is never shown to anyone. You can delete your account and everything in it at any time from Account and sync.</p>
 <h4>Other services the app uses</h4>
 <p>The app is hosted on GitHub Pages and loads its fonts from Google Fonts and its QR code tool from Cloudflare. Like any website, those services can see your device's IP address when the app loads. They don't receive any of your scores, videos or profile.</p>
 <h4>Questions</h4>
@@ -1341,7 +1354,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
   <input type="file" id="restoreFile" accept="application/json,.json" class="hide">
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v5.2<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v5.4<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -2665,7 +2678,7 @@ function sparkline(vals,w,h){
   const pts=vals.map((v,i)=>(i/(vals.length-1)*w).toFixed(1)+','+(h-4-(v-mn)/rg*(h-8)).toFixed(1)).join(' ');
   return'<svg class="spark" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none"><polyline points="'+pts+'" fill="none" stroke="#071B33" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>';
 }
-function openPlayer(key){
+function openPlayer(key,refreshing){
   const L=computeLeague(),i=L.findIndex(p=>p.key===key),p=L[i];if(!p)return;
   const best=(obj,fn)=>Object.values(obj).sort(fn)[0];
   const partner=best(p.partners,(a,b)=>(b.w/b.p)-(a.w/a.p)||b.p-a.p);
@@ -2679,7 +2692,9 @@ function openPlayer(key){
     const side=members(r.cfg,0).some(n=>pkey(n)===key)?0:1;const won=r.winner===side;
     return'<li><button class="linkrow" data-id="'+r.id+'"><span class="res '+(won?'w':'l')+'">'+(won?'W':'L')+'</span><span>'+esc(side===0?r.b:r.a)+'</span><span class="sc">'+esc(side===0?r.score:r.score.replace(/(\d+)–(\d+)/g,'$2–$1'))+'</span></button></li>'}).join('');
   const isMe=meKey()===key,fr=friendOf(key);
-  $('playerBody').innerHTML=(fr?friendHeader(fr):'')+'<div class="merow"><p class="help" style="margin:0">Ranked '+(i+1)+' of '+L.length+' in your league.</p><button class="mini'+(isMe?' lime':'')+'" id="meBtn">'+(isMe?'This is you':'This is me')+'</button></div>'+
+  $('playerBody').dataset.key=key;
+  const frFull=fr&&fr.stats&&fr.stats.bmap;
+  $('playerBody').innerHTML=(fr?friendHero(fr)+friendDetails(fr)+'<div style="height:6px"></div>'+friendExtras(fr,key)+friendBadges(fr)+'<p class="sh" style="margin-top:14px">In your matches</p>':'')+'<div class="merow"><p class="help" style="margin:0">Ranked '+(i+1)+' of '+L.length+' in your league.</p><button class="mini'+(isMe?' lime':'')+(fr&&fr.uid?' hide':'')+'" id="meBtn">'+(isMe?'This is you':'This is me')+'</button></div>'+
     '<div class="cards c4">'+card(Math.round(p.rating),'Rating',0)+card(p.p,'Played',1)+card(p.w+'–'+p.l,'Won–lost',2)+card(Math.round(p.w/Math.max(1,p.p)*100)+'%','Win rate',3)+'</div>'+
     (p.trend.length>2?'<p class="sh">Rating over time</p>'+sparkline(p.trend,320,70):'')+
     '<table class="stats plain"><tbody>'+
@@ -2689,12 +2704,13 @@ function openPlayer(key){
     line('Favourite opponent',victim?esc(victim.name)+' (beat them '+victim.w+' times)':'')+
     line('Points won',p.pf+p.pa?Math.round(p.pf/(p.pf+p.pa)*100)+'% in matches scored live':'')+
     line('Form',formDots(p.form))+
-    '</tbody></table>'+progressHtml(key)+badgesHtml(p)+(recent?'<p class="sh">Recent matches</p><ul class="recent">'+recent+'</ul>':'')+'<button class="secondary" id="rnBtn" style="width:100%;margin-bottom:8px">Rename or merge this player</button>'+(fr?'<button class="danger" id="frRemove">Remove friend</button>':'');
+    '</tbody></table>'+progressHtml(key)+(frFull?'':badgesHtml(p))+(recent?'<p class="sh">Recent matches</p><ul class="recent">'+recent+'</ul>':'')+'<button class="secondary" id="rnBtn" style="width:100%;margin-bottom:8px">Rename or merge this player</button>'+(fr?'<button class="danger" id="frRemove">Remove friend</button>':'');
   $('rnBtn').onclick=()=>openRename(key,p.name);
   if(fr)$('frRemove').onclick=()=>removeFriend(key);
   $('playerBody').querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>openRow(b.dataset.id));
   $('meBtn').onclick=()=>{setMe(isMe?'':key);if(!isMe&&!PROF.name){PROF.name=p.name;saveProf()}openPlayer(key);if(tab==='league')renderPlayers();toast(isMe?'Cleared.':'Done. Your weekly recap now follows '+p.name+'.')};
-  showSheet('playerSheet');
+  if(!refreshing)showSheet('playerSheet');
+  if(!refreshing){const fr0=friendOf(key);if(fr0&&fr0.uid)refreshFriend(fr0,key)}
 }
 
 /* ================= awards ================= */
@@ -3484,7 +3500,7 @@ function renderProfile(){
   if(PROF.club)chips.push('Home club: '+PROF.club);if(PROF.racket)chips.push('Racket: '+PROF.racket);
   if(PROF.since)chips.push('Playing since '+PROF.since);if(PROF.shot)chips.push('Favourite shot: '+PROF.shot);
   if(PROF.ptLevel)chips.unshift('Playtomic level '+PROF.ptLevel);
-  const socials=(PROF.playtomic?'<a class="soc pt" href="'+esc(PROF.playtomic)+'" target="_blank" rel="noopener">'+PT_ICON+'<span>Playtomic</span></a>':'')+SOCIALS.filter(([k])=>PROF[k]).map(([k,l,u])=>'<a class="soc" href="'+u(PROF[k])+'" target="_blank" rel="noopener" aria-label="'+l+'">'+SOC_ICON[k]+'<span>'+esc(l)+'</span></a>').join('');
+  const socials=(PROF.playtomic?'<a class="soc ptk" href="'+esc(PROF.playtomic)+'" target="_blank" rel="noopener">'+PT_ICON+'<span>Playtomic</span></a>':'')+SOCIALS.filter(([k])=>PROF[k]).map(([k,l,u])=>'<a class="soc" href="'+u(PROF[k])+'" target="_blank" rel="noopener" aria-label="'+l+'">'+SOC_ICON[k]+'<span>'+esc(l)+'</span></a>').join('');
   const card=(v,l,n)=>'<div class="card" style="--i:'+n+'"><b>'+v+'</b><span>'+l+'</span></div>';
   const partner=Object.values(p.partners||{}).sort((a,b)=>(b.w/b.p)-(a.w/a.p)||b.p-a.p)[0];
   const nemesis=Object.values(p.opps||{}).filter(o=>o.l>0).sort((a,b)=>b.l-a.l)[0];
@@ -3551,7 +3567,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='5.2';
+const APP_VERSION='5.4';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -3798,18 +3814,20 @@ function friendHeader(f){
   const chips=[];if(f.side)chips.push(f.side==='Either'?'Plays either side':'Plays on the '+f.side.toLowerCase());if(f.hand)chips.push(f.hand);if(f.level)chips.push(f.level);
   if(f.club)chips.push('Home club: '+f.club);if(f.racket)chips.push('Racket: '+f.racket);if(f.since)chips.push('Playing since '+f.since);if(f.shot)chips.push('Favourite shot: '+f.shot);
   if(f.ptLevel)chips.unshift('Playtomic level '+f.ptLevel);
-  const soc=(f.playtomic?'<a class="soc pt" href="'+esc(f.playtomic)+'" target="_blank" rel="noopener">'+PT_ICON+'<span>Playtomic</span></a>':'')+SOCIALS.filter(([k])=>f[k]).map(([k,l,u])=>'<a class="soc" href="'+u(f[k])+'" target="_blank" rel="noopener">'+SOC_ICON[k]+'<span>'+l+'</span></a>').join('');
+  const soc=(f.playtomic?'<a class="soc ptk" href="'+esc(f.playtomic)+'" target="_blank" rel="noopener">'+PT_ICON+'<span>Playtomic</span></a>':'')+SOCIALS.filter(([k])=>f[k]).map(([k,l,u])=>'<a class="soc" href="'+u(f[k])+'" target="_blank" rel="noopener">'+SOC_ICON[k]+'<span>'+l+'</span></a>').join('');
   return'<div class="inprof">'+avatar('pav big',f.name,f.photo)+'<div><b>'+esc(f.name)+(f.country?' '+flagOf(f.country):'')+'</b>'+(f.username?'<span>@'+esc(f.username)+'</span>':'')+'<span class="frtag">Friend</span></div></div>'+
     (f.bio?'<p class="bio">'+esc(f.bio)+'</p>':'')+(chips.length?'<div class="pchips">'+chips.map(c=>'<span>'+esc(c)+'</span>').join('')+'</div>':'')+(soc?'<div class="socials">'+soc+'</div>':'')+'<div style="height:14px"></div>';
 }
-function openFriend(key){
-  if(computeLeague().some(p=>p.key===key)){openPlayer(key);return}
+function openFriendSheet(key,refreshing){
+  if(computeLeague().some(p=>p.key===key)){openPlayer(key,refreshing);return}
   const f=friendOf(key);if(!f)return;
-  $('playerTitle').textContent=f.name;
-  $('playerBody').innerHTML=friendHeader(f)+'<p class="help">No matches together yet. Add '+esc(f.name)+' to a match and their stats show up here.</p><button class="danger" id="frRemove">Remove friend</button>';
+  $('playerTitle').textContent=f.name+(f.country?' '+flagOf(f.country):'');
+  $('playerBody').dataset.key=key;
+  $('playerBody').innerHTML=friendHero(f)+friendDetails(f)+'<div style="height:6px"></div>'+friendExtras(f,key)+friendBadges(f)+'<p class="help" style="margin-top:12px">No matches together on your phone yet. Add '+esc(f.name)+' to a match and your record together builds up here.</p><button class="danger" id="frRemove">Remove friend</button>';
   $('frRemove').onclick=()=>removeFriend(key);
-  showSheet('playerSheet');
+  if(!refreshing)showSheet('playerSheet');
 }
+function openFriend(key){openFriendSheet(key);const f=friendOf(key);if(f)refreshFriend(f,key)}
 async function removeFriend(key){
   const f=friendOf(key);if(!f)return;
   if(!(await ask('Remove '+f.name+'?','They\'ll come off your friends list. Your matches together stay in your results.','Remove friend',true)))return;
@@ -4878,6 +4896,7 @@ async function syncNow(quiet){
       await b.commit();
     }
     store.set('db-synced',synced);store.set(pullKey,started);
+    if(writes.length||pulled||removed)publishProfile().catch(()=>{});
     if(typeof syncGroups==='function')pulled+=await syncGroups();
     if(pulled||removed){history.sort((a,b)=>((b.date||b.start||0)-(a.date||a.start||0)));saveH(true);render();if($('resultsView').classList.contains('on'))setTab(tab)}
     await syncProfile();
@@ -5105,10 +5124,10 @@ const myUid=()=>FB.user?FB.user.uid:null;
 async function publishProfile(){
   if(!FB.user)return;
   const photo=PROF.photo?await smallPhoto(PROF.photo,96):'';
-  const pub={username:PROF.username||'',name:PROF.name||'',photo,bio:PROF.bio||'',country:PROF.country||'',side:PROF.side||'',hand:PROF.hand||'',level:PROF.level||'',club:PROF.club||'',racket:PROF.racket||'',since:PROF.since||'',shot:PROF.shot||'',ig:PROF.ig||'',tiktok:PROF.tiktok||'',x:PROF.x||'',yt:PROF.yt||'',ptLevel:PROF.ptLevel||'',playtomic:PROF.playtomic||'',u:Date.now()};
+  const pub={username:PROF.username||'',name:PROF.name||'',photo,bio:PROF.bio||'',country:PROF.country||'',side:PROF.side||'',hand:PROF.hand||'',level:PROF.level||'',club:PROF.club||'',racket:PROF.racket||'',since:PROF.since||'',shot:PROF.shot||'',ig:PROF.ig||'',tiktok:PROF.tiktok||'',x:PROF.x||'',yt:PROF.yt||'',ptLevel:PROF.ptLevel||'',playtomic:PROF.playtomic||'',stats:myStats(),u:Date.now()};
   await FB.db.collection('profiles').doc(FB.user.uid).set(pub);
 }
-const pubToFriend=(uid,p)=>({uid,id:uid,key:pkey(p.name||p.username),name:p.name||p.username,username:p.username||'',bio:p.bio||'',country:p.country||'',side:p.side||'',hand:p.hand||'',level:p.level||'',club:p.club||'',racket:p.racket||'',since:p.since||'',shot:p.shot||'',ptLevel:p.ptLevel||'',playtomic:p.playtomic||'',ig:p.ig||'',tiktok:p.tiktok||'',x:p.x||'',yt:p.yt||'',photo:p.photo||''});
+const pubToFriend=(uid,p)=>({uid,id:uid,key:pkey(p.name||p.username),name:p.name||p.username,username:p.username||'',bio:p.bio||'',country:p.country||'',side:p.side||'',hand:p.hand||'',level:p.level||'',club:p.club||'',racket:p.racket||'',since:p.since||'',shot:p.shot||'',ptLevel:p.ptLevel||'',playtomic:p.playtomic||'',ig:p.ig||'',tiktok:p.tiktok||'',x:p.x||'',yt:p.yt||'',photo:p.photo||'',stats:p.stats||null});
 
 /* --- live listeners while signed in --- */
 function startSocial(){
@@ -5495,6 +5514,77 @@ function renderHome(){
   syncHomeAvatar();
 }
 function syncHomeAvatar(){const b=$('hmAv');if(!b)return;b.innerHTML=$('avBtn').innerHTML;b.className=$('avBtn').className;b.id='hmAv'}
+
+
+/* ================= richer friend profiles ================= */
+function friendHero(f){
+  return'<div class="profhero">'+avatar('pav big',f.name,f.photo)+'<div class="phinfo"><h3>'+esc(f.name)+(f.country?' <span class="flag-e">'+flagOf(f.country)+'</span>':'')+'</h3>'+(f.username?'<span class="handle">@'+esc(f.username)+'</span>':'')+'<span class="frtag2">'+(f.uid?'Friend on Deucebags':'Friend')+'</span></div></div>';
+}
+function friendDetails(f){
+  const chips=[];if(f.ptLevel)chips.push('Playtomic level '+f.ptLevel);
+  if(f.side)chips.push(f.side==='Either'?'Plays either side':'Plays on the '+f.side.toLowerCase());if(f.hand)chips.push(f.hand);if(f.level)chips.push(f.level);
+  if(f.club)chips.push('Home club: '+f.club);if(f.racket)chips.push('Racket: '+f.racket);if(f.since)chips.push('Playing since '+f.since);if(f.shot)chips.push('Favourite shot: '+f.shot);
+  const soc=(f.playtomic?'<a class="soc ptk" href="'+esc(f.playtomic)+'" target="_blank" rel="noopener">'+PT_ICON+'<span>Playtomic</span></a>':'')+SOCIALS.filter(([k])=>f[k]).map(([k,l,u])=>'<a class="soc" href="'+u(f[k])+'" target="_blank" rel="noopener">'+SOC_ICON[k]+'<span>'+l+'</span></a>').join('');
+  return(f.bio?'<p class="bio">'+esc(f.bio)+'</p>':'')+(chips.length?'<div class="pchips">'+chips.map(c=>'<span>'+esc(c)+'</span>').join('')+'</div>':'')+(soc?'<div class="socials">'+soc+'</div>':'');
+}
+function friendBadges(f){
+  const st=f.stats;if(!st||!st.bmap)return'';
+  const pr=st.prog||{};
+  const pseudo=Object.assign({p:0,w:0,bestStreak:0,tbw:0,maxRating:START_RATING,maxOpp:0,maxOppWins:0,setsWon:0,maxWeekend:0,wallMatches:0,bagels:0},pr,{partnersWon:{size:pr.partners||0},badges:st.bmap});
+  return badgesHtml(pseudo);
+}
+
+// your headline stats, published on your public card so friends can see them
+function myStats(){
+  const me=meKey();if(!me)return null;
+  const p=computeLeague().find(x=>x.key===me);if(!p)return{played:0,u:Date.now()};
+  const dates=p.matches.map(id=>{const h=history.find(x=>x.id===id);return h?(h.start||h.date||0):0}).filter(Boolean).sort((a,b)=>a-b);
+  const top=Object.keys(p.badges||{}).filter(id=>BADGE[id]).sort((a,b)=>BADGE[b][2]-BADGE[a][2]).slice(0,3);
+  const prog={p:p.p,w:p.w,bestStreak:p.bestStreak||0,partners:p.partnersWon?p.partnersWon.size:0,tbw:p.tbw||0,maxRating:Math.round(p.maxRating||START_RATING),maxOpp:p.maxOpp||0,maxOppWins:p.maxOppWins||0,setsWon:p.setsWon||0,maxWeekend:p.maxWeekend||0,wallMatches:p.wallMatches||0,bagels:p.bagels||0};
+  return{played:p.p,w:p.w,l:p.l,rating:Math.round(p.rating),form:p.form.slice(-5),badges:Object.keys(p.badges||{}).length,top,bmap:Object.assign({},p.badges||{}),prog,first:dates[0]||0,last:dates[dates.length-1]||0,best:p.bestStreak||0,u:Date.now()};
+}
+async function refreshFriend(f,key){
+  if(!f||!f.uid||!FB.user)return;
+  try{
+    const d=await FB.db.collection('profiles').doc(f.uid).get();if(!d.exists)return;
+    const p=d.data(),fresh=pubToFriend(f.uid,p);
+    Object.assign(f,fresh,{name:f.name,key:f.key});saveFriendsRaw();
+    if(openSheet&&openSheet.id==='playerSheet'&&$('playerBody').dataset.key===key){const y=$('playerSheet').scrollTop;openFriendSheet(key,true);$('playerSheet').scrollTop=y}
+  }catch(e){}
+}
+function togetherWith(key){
+  const me=meKey();if(!me)return null;
+  const out={pw:0,pl:0,ow:0,ol:0,last:null};
+  allRows().filter(r=>r.winner!==null).forEach(r=>{
+    const A=members(r.cfg,0).map(pkey),B=members(r.cfg,1).map(pkey);
+    const ms=A.includes(me)?0:B.includes(me)?1:-1,ts=A.includes(key)?0:B.includes(key)?1:-1;if(ms<0||ts<0)return;
+    const won=r.winner===ms;
+    if(ms===ts){won?out.pw++:out.pl++}else{won?out.ow++:out.ol++}
+    if(!out.last||r.date>out.last.date)out.last={date:r.date,won,score:ms===0?r.score:r.score.replace(/(\d+)–(\d+)/g,'$2–$1'),partners:ms===ts};
+  });
+  return out;
+}
+function friendExtras(f,key){
+  let h='';const st=f.stats;
+  if(st&&st.played){
+    const card=(v,l,i)=>'<div class="card" style="--i:'+i+'"><b>'+v+'</b><span>'+l+'</span></div>';
+    const mon=ts=>new Date(ts).toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+    h+='<p class="sh">'+esc(f.name.split(' ')[0])+'\'s padel</p><div class="cards c4">'+card(st.rating,'Rating',0)+card(st.played,'Played',1)+card(st.w+'–'+st.l,'Won–lost',2)+card(Math.round(st.w/Math.max(1,st.played)*100)+'%','Win rate',3)+'</div>'+
+      '<table class="stats plain"><tbody>'+(st.form&&st.form.length?'<tr><td>Form</td><td>'+formDots(st.form)+'</td></tr>':'')+
+      (st.best>1?'<tr><td>Best winning run</td><td>'+st.best+' in a row</td></tr>':'')+
+      (st.first?'<tr><td>Playing since</td><td>'+mon(st.first)+'</td></tr>':'')+
+      (st.last?'<tr><td>Last played</td><td>'+timeAgo(st.last)+'</td></tr>':'')+'</tbody></table>'+
+      (st.bmap?'':'<div class="fbadges"><b>'+st.badges+' of '+BADGES.length+' achievements</b>'+(st.top&&st.top.length?'<div>'+st.top.map(id=>BADGE[id]?'<span class="fbadge '+TIERS[BADGE[id][2]].c+'"><i class="medal">'+badgeSvg(id)+'</i>'+esc(BADGE[id][1])+'</span>':'').join('')+'</div>':'')+'</div>')+
+      '<p class="help" style="margin:4px 2px 14px">From '+esc(f.name.split(' ')[0])+'\'s own app, updated '+timeAgo(st.u)+'.</p>';
+  }else if(f.uid){h+='<p class="help" style="margin:4px 2px 14px">'+esc(f.name.split(' ')[0])+'\'s stats will show here once they\'ve played a match in Deucebags.</p>'}
+  const t=togetherWith(key);
+  if(t&&(t.pw+t.pl+t.ow+t.ol)){
+    h+='<p class="sh">You and '+esc(f.name.split(' ')[0])+'</p><div class="together"><div><b>'+t.pw+'–'+t.pl+'</b><span>As partners</span></div><div><b>'+t.ow+'–'+t.ol+'</b><span>Against each other</span></div></div>'+
+      (t.last?'<p class="help" style="margin:0 2px 14px">Last time: '+(t.last.partners?'together, ':'against each other, ')+(t.last.won?'you won ':'you lost ')+esc(t.last.score)+', '+timeAgo(t.last.date)+'.</p>':'');
+  }
+  if(f.uid&&typeof GRP!=='undefined'){const gs=GRP.list.filter(g=>(g.members||[]).includes(f.uid)).map(g=>g.name);if(gs.length)h+='<p class="help" style="margin:0 2px 14px">In your groups: '+gs.map(esc).join(', ')+'.</p>'}
+  return h;
+}
 
 /* ================= go ================= */
 window.__dbg={replay,labels,ruleText,pressureText};
