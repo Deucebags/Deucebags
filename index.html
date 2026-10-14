@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="5.5">
+<meta name="app-version" content="5.8">
 <title>Deucebags</title>
 <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1179x2556.jpg">
 <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1290x2796.jpg">
@@ -141,6 +141,22 @@ button{cursor:pointer;font-family:var(--heading)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---- additions ---- */
+.badge.tx:not(.on) .medal{filter:grayscale(1);opacity:.45}
+.badge.tsea .medal{background:linear-gradient(135deg,#FFB3C7,#E8505B);color:var(--white)}
+.badge.tsea:not(.on) .medal{filter:grayscale(1);opacity:.4}
+.badge.tsea.on{background:linear-gradient(135deg,#FFE1EA,#FFC2D2);border:2px solid var(--navy)}
+.badge.tsea.on b{color:var(--navy)}.badge.tsea.on b small{color:#A3324A;font-size:13px}
+.badge.tsea.on span{color:#7A2338;font-weight:700}
+.tierhead.tsea{color:#A3324A}
+.fndtag.inl{display:inline-block;margin:0 0 0 4px;vertical-align:middle;font-size:11px}
+.badges.one{grid-template-columns:1fr}
+.tierhead.tx{color:#8A6A12}
+.badge.tx .medal{background:linear-gradient(135deg,#F7E08A,#C9A227);color:var(--navy)}
+.badge.tx.on{background:linear-gradient(135deg,#FFF6CF,#F1D67A);border:2px solid var(--navy);overflow:hidden;position:relative}
+.badge.tx.on b{color:var(--navy)}.badge.tx.on b small{color:#7A5C0E;font-size:13px}
+.badge.tx.on span{color:#5C4609}
+.badge.tx.on::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-100%);animation:shine 3.2s ease-in-out infinite}
+.fndtag{display:table;margin-top:6px;background:linear-gradient(135deg,#F7E08A,#C9A227);color:var(--navy);border-radius:999px;padding:2px 10px;font-size:12px;font-weight:800}
 .connectbox{display:grid;gap:8px;background:var(--white);border:2px dashed var(--navy);border-radius:16px;padding:14px;margin:6px 0 14px}
 .connectbox b{font-family:var(--heading);font-weight:600;font-size:16px;color:var(--navy)}
 .connectbox span{font-size:14px;line-height:1.45;color:var(--muted)}
@@ -1324,6 +1340,14 @@ button{transition:transform .12s ease}
   <div class="btns"><button class="secondary" id="liveClose">Close</button></div>
 </section>
 
+<section class="sheet" id="awardSheet" aria-label="Award badges">
+  <h3>Award badges</h3>
+  <p class="help" style="margin:-4px 2px 12px">Only you can see this. Give Bug hunter to anyone who reports a real bug. You can award it more than once.</p>
+  <div class="frsearch"><div class="unwrap"><span>@</span><input type="text" id="awFind" maxlength="21" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Their username"></div><button class="mini" id="awGo">Find</button></div>
+  <div id="awResult"></div>
+  <div class="btns"><button class="secondary" id="awClose">Done</button></div>
+</section>
+
 <section class="sheet" id="recapSheet" aria-label="Your week in padel">
   <h3 id="recapTitle">Your week in padel</h3>
   <div class="seg three" id="recapSeg" style="margin-bottom:14px"><button data-v="7">Week</button><button data-v="30">Month</button><button data-v="365">Year</button></div>
@@ -1357,7 +1381,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
   <input type="file" id="restoreFile" accept="application/json,.json" class="hide">
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v5.5<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v5.8<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -1663,7 +1687,7 @@ function recordHistory(){
     const entry={id:M.id,cfg:M.cfg,pts:M.pts.slice(),start:M.start,end:M.end,tags:Object.assign({},M.tags||{})};
     if(M.session)entry.session=M.session.id;
     if(i>=0)history[i]=entry;else history.unshift(entry);
-    setTimeout(()=>autoSend(entry),300);
+    setTimeout(()=>autoSend(entry),300);setTimeout(checkSeasonal,2500);
   }else{
     M.end=null;
     if(i>=0)history.splice(i,1);
@@ -2707,7 +2731,7 @@ function openPlayer(key,refreshing){
     line('Favourite opponent',victim?esc(victim.name)+' (beat them '+victim.w+' times)':'')+
     line('Points won',p.pf+p.pa?Math.round(p.pf/(p.pf+p.pa)*100)+'% in matches scored live':'')+
     line('Form',formDots(p.form))+
-    '</tbody></table>'+progressHtml(key)+(frFull?'':badgesHtml(p))+(recent?'<p class="sh">Recent matches</p><ul class="recent">'+recent+'</ul>':'')+'<button class="secondary" id="rnBtn" style="width:100%;margin-bottom:8px">Rename or merge this player</button>'+(fr?'<button class="danger" id="frRemove">Remove friend</button>':'');
+    '</tbody></table>'+progressHtml(key)+(frFull?'':badgesHtml(isMe?Object.assign({},p,{ex:myExclusive(),exMine:true}):p))+(recent?'<p class="sh">Recent matches</p><ul class="recent">'+recent+'</ul>':'')+'<button class="secondary" id="rnBtn" style="width:100%;margin-bottom:8px">Rename or merge this player</button>'+(fr?'<button class="danger" id="frRemove">Remove friend</button>':'');
   $('rnBtn').onclick=()=>openRename(key,p.name);
   if(fr)$('frRemove').onclick=()=>removeFriend(key);
   $('playerBody').querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>openRow(b.dataset.id));
@@ -3227,6 +3251,168 @@ const BADGE_ICON={
 };
 const badgeSvg=id=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(BADGE_ICON[id]||BADGE_ICON.first_serve)+'</svg>';
 
+
+/* ================= founding member: the first 100 accounts, numbered in order ================= */
+const FOUNDER_LIMIT=50;
+BADGE_ICON.founder='<path d="M12 21.5c-4.3-1-7.3-4.6-7.8-9.3"/><path d="M12 21.5c4.3-1 7.3-4.6 7.8-9.3"/><path d="M6.3 16.2c-1.6.1-2.8-.9-3.4-2.4 1.6-.1 2.8.8 3.4 2.4zM5 12.6c-1.6-.2-2.6-1.4-2.9-3 1.6.2 2.6 1.3 2.9 3zM5.4 9c-1.4-.6-2-2-2-3.6 1.4.6 2 1.9 2 3.6zM17.7 16.2c1.6.1 2.8-.9 3.4-2.4-1.6-.1-2.8.8-3.4 2.4zM19 12.6c1.6-.2 2.6-1.4 2.9-3-1.6.2-2.6 1.3-2.9 3zM18.6 9c1.4-.6 2-2 2-3.6-1.4.6-2 1.9-2 3.6z"/><path d="M12 5.2l1.4 2.9 3.1.4-2.3 2.2.6 3.1L12 12.3l-2.8 1.5.6-3.1-2.3-2.2 3.1-.4z"/>';
+const founderSpots=()=>{const c=store.get('db-fnd-count');return c===null||c===undefined?null:Math.max(0,FOUNDER_LIMIT-c)};
+function founderTile(date,no,i){
+  if(date)return'<div class="badge tx on" style="--i:'+(i||0)+'"><i class="medal">'+badgeSvg('founder')+'</i><b>Founding member'+(no?' <small>#'+no+'</small>':'')+'</b><span>One of the first '+FOUNDER_LIMIT+' to join Deucebags. Unlocked '+dShort(date)+'.</span></div>';
+  const left=founderSpots();
+  if(left===0)return'';
+  return'<div class="badge tx" style="--i:'+(i||0)+'"><i class="medal">'+badgeSvg('founder')+'</i><b>Founding member</b><span>Only for the first '+FOUNDER_LIMIT+' people to join'+(left!==null?'. '+left+(left===1?' spot':' spots')+' left':'')+'. Create an account and pick a username to claim yours.</span></div>';
+}
+async function ensureFounder(){
+  if(!FB.user||!PROF.username)return;
+  const uid=FB.user.uid,db=FB.db,ref=db.collection('founders').doc(uid),meta=db.collection('meta').doc('founders');
+  try{
+    const mine=await ref.get();
+    if(mine.exists){const d=mine.data();if(PROF.founder!==d.n){PROF.founder=d.n;PROF.founderAt=d.at;saveProf()}return}
+    const n=await db.runTransaction(async tx=>{
+      const m=await tx.get(meta),c=m.exists?(m.data().count||0):0;
+      if(c>=FOUNDER_LIMIT)return 0;
+      tx.set(ref,{n:c+1,at:Date.now()});
+      if(m.exists)tx.update(meta,{count:c+1});else tx.set(meta,{count:1});
+      return c+1;
+    });
+    if(n){
+      PROF.founder=n;PROF.founderAt=Date.now();saveProf();store.set('db-fnd-count',n);
+      setTimeout(()=>{fxCannons(80);toast('Achievement unlocked: Founding member #'+n+'. One of the first '+FOUNDER_LIMIT+' to join, for good.')},900);
+      if(tab==='profile'&&$('resultsView').classList.contains('on'))renderProfile();
+    }else{const m=await meta.get();if(m.exists)store.set('db-fnd-count',m.data().count||0)}
+  }catch(e){}
+}
+async function refreshFounderCount(){try{if(!FB.user)return;const m=await FB.db.collection('meta').doc('founders').get();store.set('db-fnd-count',m.exists?(m.data().count||0):0)}catch(e){}}
+
+
+/* ================= exclusive and seasonal badges (bonus, never part of the 50) ================= */
+const FGROUP_LIMIT=10;
+Object.assign(BADGE_ICON,{
+  fgroup:'<path d="M5 21V4"/><path d="M5 4h10l-2 3.5 2 3.5H5"/><circle cx="17.5" cy="16.5" r="3.5"/><path d="M17.5 14.8v3.4M15.8 16.5h3.4"/>',
+  gstarter:'<circle cx="8" cy="8" r="2.6"/><circle cx="16" cy="8" r="2.6"/><circle cx="12" cy="14" r="2.6"/><path d="M3.5 20c.4-2.6 2.2-4.2 4.5-4.2M20.5 20c-.4-2.6-2.2-4.2-4.5-4.2M8 21.5c.4-2.3 2-3.6 4-3.6s3.6 1.3 4 3.6"/>',
+  recruiter:'<circle cx="9" cy="8" r="3.2"/><path d="M3 20c.6-3.6 3-5.6 6-5.6s5.4 2 6 5.6"/><path d="M18.5 7v6M15.5 10h6"/>',
+  bug:'<path d="M9 7.5a3 3 0 0 1 6 0"/><rect x="7" y="7.5" width="10" height="11" rx="5"/><path d="M12 9.5v9M7 12H3.5M17 12h3.5M7.5 16.5l-3 2M16.5 16.5l3 2M7.5 9.5 5 7.5M16.5 9.5 19 7.5"/>',
+  s_newyear:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/><circle cx="12" cy="12" r="1.6"/>',
+  s_love:'<path d="M12 20s-7.5-4.6-7.5-10.1A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 7.5 2.3C19.5 15.4 12 20 12 20z"/><path d="M9 11.5h6"/>',
+  s_summer:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/>',
+  s_halloween:'<path d="M12 7c-5 0-8 3-8 7s3 7 8 7 8-3 8-7-3-7-8-7z"/><path d="M12 7c0-2 1-3.5 3-4"/><path d="M8.5 12.5l1.5 1.5M15.5 12.5 14 14M9 17c2 1.2 4 1.2 6 0"/>',
+  s_bonfire:'<path d="M12 3l1.5 4 4-1.5-1.5 4 4 1.5-4 1.5 1.5 4-4-1.5L12 19l-1.5-4-4 1.5 1.5-4-4-1.5 4-1.5-1.5-4 4 1.5z"/>',
+  s_xmas:'<path d="M12 3 6 11h3l-4 6h14l-4-6h3z"/><path d="M12 17v4"/>',
+  s_nye:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M10 2.5h4"/>'
+});
+const SEASONAL=[
+  ['s_newyear','New Year, new rating',0,[1,1],'Play on 1 January'],
+  ['s_love','Love all',1,[14,14],'Play on 14 February'],
+  ['s_summer','Summer smash',5,[21,21],'Play on 21 June, the longest day'],
+  ['s_halloween','Spooky smash',9,[31,31],'Play on 31 October'],
+  ['s_bonfire','Bonfire night',10,[5,5],'Play on 5 November'],
+  ['s_xmas','Christmas cracker',11,[24,26],'Play between 24 and 26 December'],
+  ['s_nye','Last ball of the year',11,[31,31],'Play on 31 December']
+];
+function seasonalFor(key){
+  const out={};if(!key)return out;
+  allRows().forEach(r=>{
+    if(r.h.manual||!r.date)return;
+    if(![0,1].some(s=>members(r.cfg,s).some(n=>pkey(n)===key)))return;
+    const d=new Date(r.date),m=d.getMonth(),day=d.getDate(),y=d.getFullYear();
+    SEASONAL.forEach(([id,,mm,[a,b]])=>{if(m===mm&&day>=a&&day<=b){(out[id]=out[id]||[]);if(!out[id].includes(y))out[id].push(y)}});
+  });
+  Object.values(out).forEach(a=>a.sort());return out;
+}
+function nextChance(mm,a){const now=new Date(),y=now.getFullYear();let d=new Date(y,mm,a);const end=new Date(y,mm,a,23,59);if(end<now)d=new Date(y+1,mm,a);return d}
+function myExclusive(){
+  const xb=PROF.xb||{};
+  return{founder:PROF.founder?{n:PROF.founder,date:PROF.founderAt}:null,fgroup:PROF.fgroup?{n:PROF.fgroup,date:PROF.fgroupAt}:null,
+    gstarter:xb.gstarter||null,recruiter:xb.recruiter||null,bug:xb.bug||null,seasonal:seasonalFor(meKey())};
+}
+function exTile(cls,id,title,text,on,i,prog){
+  return'<div class="badge '+cls+(on?' on':'')+'" style="--i:'+i+'"><i class="medal">'+badgeSvg(id)+'</i><b>'+title+'</b><span>'+text+'</span>'+(prog||'')+'</div>';
+}
+function exclusiveHtml(ex,mine){
+  if(!ex)return'';
+  let i=0;const tiles=[],progBar=(a,z)=>'<em class="prog"><i style="width:'+Math.min(100,Math.round(a/z*100))+'%"></i></em><span class="pn">'+Math.min(a,z)+' of '+z+'</span>';
+  if(ex.founder)tiles.push(founderTile(ex.founder.date||Date.now(),ex.founder.n,i++));else if(mine){const t=founderTile(null,0,i);if(t){tiles.push(t);i++}}
+  const fleft=(()=>{const c=store.get('db-fgr-count');return c===null||c===undefined?null:Math.max(0,FGROUP_LIMIT-c)})();
+  if(ex.fgroup)tiles.push(exTile('tx','fgroup','Founding group <small>#'+ex.fgroup.n+'</small>','Started one of the first '+FGROUP_LIMIT+' shared groups on Deucebags.',true,i++));
+  else if(mine&&fleft!==0)tiles.push(exTile('tx','fgroup','Founding group','Create one of the first '+FGROUP_LIMIT+' shared groups'+(fleft!==null?'. '+fleft+(fleft===1?' spot':' spots')+' left.':'.'),false,i++));
+  if(ex.gstarter)tiles.push(exTile('tx','gstarter','Group starter','Built a shared group of 8 or more. Unlocked '+dShort(ex.gstarter)+'.',true,i++));
+  else if(mine){const me=FB.user?FB.user.uid:null,best=Math.max(0,...(typeof GRP!=='undefined'?GRP.list:[]).filter(g=>g.createdBy===me).map(g=>(g.members||[]).length));tiles.push(exTile('tx','gstarter','Group starter','Create a shared group that reaches 8 members.',false,i++,best?progBar(best,8):''))}
+  if(ex.recruiter)tiles.push(exTile('tx','recruiter','Recruiter','Connected with 5 friends on Deucebags. Unlocked '+dShort(ex.recruiter)+'.',true,i++));
+  else if(mine){const n=typeof SOC!=='undefined'?SOC.links.filter(l=>l.status==='accepted').length:0;tiles.push(exTile('tx','recruiter','Recruiter','Connect with 5 friends on Deucebags.',false,i++,n?progBar(n,5):''))}
+  if(ex.bug&&ex.bug.n)tiles.push(exTile('tx','bug','Bug hunter'+(ex.bug.n>1?' <small>×'+ex.bug.n+'</small>':''),'Found a real bug and helped make Deucebags better.',true,i++));
+  else if(mine)tiles.push(exTile('tx','bug','Bug hunter','Spot a real bug and report it. Awarded by the Deucebags team.',false,i++));
+  let h=tiles.length?'<p class="tierhead tx">Exclusive<span>Bonus badges, not part of the 50</span></p><div class="badges">'+tiles.join('')+'</div>':'';
+  const sea=ex.seasonal||{},st=[];
+  SEASONAL.forEach(([id,name,mm,[a],how])=>{
+    const ys=sea[id];
+    if(ys&&ys.length)st.push(exTile('tsea',id,name+(ys.length>1?' <small>×'+ys.length+'</small>':''),ys.join(', '),true,i++));
+    else if(mine)st.push(exTile('tsea',id,name,how+'. Next chance: '+nextChance(mm,a).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+'.',false,i++));
+  });
+  if(st.length)h+='<p class="tierhead tsea">Seasonal<span>Back every year. Collect each one</span></p><div class="badges">'+st.join('')+'</div>';
+  return h;
+}
+let exAnnounced=store.get('db-ex-seen')||{};
+function celebrateEx(key,msg){if(exAnnounced[key])return;exAnnounced[key]=1;store.set('db-ex-seen',exAnnounced);setTimeout(()=>{fxCannons(70);toast(msg)},700)}
+function setXb(k,v){PROF.xb=Object.assign({},PROF.xb||{},{[k]:v});saveProf()}
+// group starter and recruiter: checked as groups and friends update
+function checkSocialBadges(){
+  if(!FB.user)return;const me=FB.user.uid,xb=PROF.xb||{};
+  if(!xb.gstarter&&(GRP.list||[]).some(g=>g.createdBy===me&&(g.members||[]).length>=8)){setXb('gstarter',Date.now());celebrateEx('gstarter','Exclusive badge unlocked: Group starter.')}
+  if(!xb.recruiter&&SOC.links.filter(l=>l.status==='accepted').length>=5){setXb('recruiter',Date.now());celebrateEx('recruiter','Exclusive badge unlocked: Recruiter.')}
+}
+// founding group: the first ten shared groups ever made
+async function ensureFoundingGroups(){
+  if(!FB.user||PROF.fgroup)return;
+  const me=FB.user.uid,db=FB.db,meta=db.collection('meta').doc('groups');
+  for(const g of GRP.list.filter(g=>g.createdBy===me)){
+    try{
+      const ref=db.collection('fgroups').doc(g.id),mine=await ref.get();
+      if(mine.exists){const d=mine.data();PROF.fgroup=d.n;PROF.fgroupAt=d.at;saveProf();return}
+      const n=await db.runTransaction(async tx=>{
+        const m=await tx.get(meta),c=m.exists?(m.data().count||0):0;
+        if(c>=FGROUP_LIMIT)return 0;
+        tx.set(ref,{n:c+1,by:me,at:Date.now()});
+        if(m.exists)tx.update(meta,{count:c+1,last:g.id});else tx.set(meta,{count:1,last:g.id});
+        return c+1;
+      });
+      if(n){PROF.fgroup=n;PROF.fgroupAt=Date.now();saveProf();store.set('db-fgr-count',n);
+        db.collection('groups').doc(g.id).update({fn:n}).catch(()=>{});
+        celebrateEx('fgroup','Exclusive badge unlocked: Founding group #'+n+'.');return}
+      const m=await meta.get();store.set('db-fgr-count',m.exists?(m.data().count||0):0);return;
+    }catch(e){}
+  }
+  try{const m=await meta.get();store.set('db-fgr-count',m.exists?(m.data().count||0):0)}catch(e){}
+}
+// bug hunter: awarded by an admin, read on each sync
+async function checkAwards(){
+  if(!FB.user)return;
+  try{const d=await FB.db.collection('awards').doc(FB.user.uid).get();
+    if(d.exists){const a=d.data(),cur=(PROF.xb||{}).bug;if(a.bugs&&(!cur||cur.n!==a.bugs)){setXb('bug',{n:a.bugs,date:a.last||Date.now()});celebrateEx('bug'+a.bugs,'Exclusive badge unlocked: Bug hunter'+(a.bugs>1?' ×'+a.bugs:'')+'. Thank you!')}}}catch(e){}
+  try{const ad=await FB.db.collection('admins').doc(FB.user.uid).get();FB.admin=ad.exists}catch(e){FB.admin=false}
+}
+// seasonal: celebrate the first time a season is collected this year
+function checkSeasonal(){
+  const s=seasonalFor(meKey()),y=new Date().getFullYear();
+  SEASONAL.forEach(([id,name])=>{if((s[id]||[]).includes(y))celebrateEx(id+y,'Seasonal badge collected: '+name+' '+y+'.')});
+}
+// the admin screen, only for you
+let awardTarget=null;
+function openAward(){$('awFind').value='';$('awResult').innerHTML='';awardTarget=null;hideSheet();showSheet('awardSheet')}
+async function findForAward(){
+  const v=$('awFind').value.trim().replace(/^@/,'').toLowerCase();if(!v)return;
+  try{const u=await FB.db.collection('usernames').doc(v).get();if(!u.exists){$('awResult').innerHTML='<p class="help">Nobody has that username.</p>';return}
+    const uid=u.data().uid,p=await FB.db.collection('profiles').doc(uid).get(),a=await FB.db.collection('awards').doc(uid).get();
+    awardTarget={uid,name:(p.exists&&p.data().name)||v,bugs:a.exists?(a.data().bugs||0):0};
+    $('awResult').innerHTML='<div class="frfound"><div><b>'+esc(awardTarget.name)+'</b><span>@'+esc(v)+' · Bug hunter ×'+awardTarget.bugs+'</span></div><button class="mini lime" id="awGive">Award Bug hunter</button></div>';
+    $('awGive').onclick=giveAward;
+  }catch(e){toast(fbError(e))}
+}
+async function giveAward(){
+  if(!awardTarget)return;
+  try{await FB.db.collection('awards').doc(awardTarget.uid).set({bugs:awardTarget.bugs+1,last:Date.now(),by:FB.user.uid},{merge:true});
+    toast('Bug hunter awarded to '+awardTarget.name+'. They\'ll see it next time they open the app.');awardTarget.bugs++;findForAward()}catch(e){toast(fbError(e))}
+}
+
 /* ================= achievements ================= */
 const TIERS=[null,{n:'Rookie',c:'t1'},{n:'Club',c:'t2'},{n:'Pro',c:'t3'},{n:'Legend',c:'t4'}];
 const DAY=86400000;
@@ -3284,7 +3470,7 @@ const BADGES=[
   ['untouchable','Untouchable',4,'Reach a rating of 1,500',c=>c.p.maxRating>=1500,p=>p.p?[Math.max(0,Math.round(p.maxRating)-1000),500,'Rating '+Math.round(p.maxRating).toLocaleString('en-GB')+' of 1,500']:null],
   ['top_dog','Top dog',4,'Top the league after playing at least 20 matches',c=>c.p.p>=20&&c.top],
   ['unbreakable','Unbreakable',4,'Hold every service game in 10 different matches',c=>c.p.wallMatches>=10,p=>[p.wallMatches,10]],
-  ['complete','Completionist',4,'Unlock every other achievement',c=>Object.keys(c.p.badges).filter(k=>k!=='complete').length>=BADGES.length-1]
+  ['complete','Completionist',4,'Unlock every other achievement',c=>Object.keys(c.p.badges).filter(k=>k!=='complete'&&BADGE[k]).length>=BADGES.length-1]
 ];
 const BADGE=Object.fromEntries(BADGES.map(b=>[b[0],b]));
 let awDirty=false;
@@ -3324,8 +3510,8 @@ function badgeTile(b,p,i){
   return'<div class="badge '+tier.c+(d?' on':'')+'" style="--i:'+i+'"><i class="medal">'+badgeSvg(b[0])+'</i><b>'+esc(b[1])+'</b><span>'+esc(d?'Unlocked '+dShort(d):b[3])+'</span>'+prog+'</div>';
 }
 function badgesHtml(p,compact){
-  const got=p.badges||{},n=Object.keys(got).length;
-  let h='<p class="sh">Achievements <span class="muted">'+n+' of '+BADGES.length+'</span></p>'+tierSummary(p);
+  const got=p.badges||{},n=Object.keys(got).filter(k=>BADGE[k]).length;
+  let h='<p class="sh">Achievements <span class="muted">'+n+' of '+BADGES.length+'</span></p>'+tierSummary(p)+(p.ex?exclusiveHtml(p.ex,!!p.exMine):'');
   let i=0;
   [1,2,3,4].forEach(t=>{
     const list=BADGES.filter(b=>b[2]===t).sort((a,b)=>(got[b[0]]?1:0)-(got[a[0]]?1:0));
@@ -3507,7 +3693,7 @@ function renderProfile(){
   const card=(v,l,n)=>'<div class="card" style="--i:'+n+'"><b>'+v+'</b><span>'+l+'</span></div>';
   const partner=Object.values(p.partners||{}).sort((a,b)=>(b.w/b.p)-(a.w/a.p)||b.p-a.p)[0];
   const nemesis=Object.values(p.opps||{}).filter(o=>o.l>0).sort((a,b)=>b.l-a.l)[0];
-  box.innerHTML='<div id="profAccount"></div><div class="profhero">'+avatar('pav big',PROF.name,PROF.photo)+'<div class="phinfo"><h3>'+esc(PROF.name)+(PROF.country?' <span class="flag-e" title="'+esc(countryName(PROF.country))+'">'+flagOf(PROF.country)+'</span>':'')+'</h3>'+(PROF.username?'<span class="handle">@'+esc(PROF.username)+'</span>':'')+'</div><button class="mini" id="profEdit">Edit</button></div>'+
+  box.innerHTML='<div id="profAccount"></div><div class="profhero">'+avatar('pav big',PROF.name,PROF.photo)+'<div class="phinfo"><h3>'+esc(PROF.name)+(PROF.country?' <span class="flag-e" title="'+esc(countryName(PROF.country))+'">'+flagOf(PROF.country)+'</span>':'')+'</h3>'+(PROF.username?'<span class="handle">@'+esc(PROF.username)+'</span>':'')+(PROF.founder?'<span class="fndtag">Founding member #'+PROF.founder+'</span>':'')+'</div><button class="mini" id="profEdit">Edit</button></div>'+
     (PROF.bio?'<p class="bio">'+esc(PROF.bio)+'</p>':'')+
     (chips.length?'<div class="pchips">'+chips.map(c=>'<span>'+esc(c)+'</span>').join('')+'</div>':'')+
     (socials?'<div class="socials">'+socials+'</div>':'')+
@@ -3517,7 +3703,7 @@ function renderProfile(){
       (partner?'<tr><td>Best partner</td><td>'+esc(partner.name)+' ('+partner.w+' of '+partner.p+' won)</td></tr>':'')+
       (nemesis?'<tr><td>Toughest opponent</td><td>'+esc(nemesis.name)+'</td></tr>':'')+'</tbody></table>'
       :'<p class="help" style="margin:14px 2px">Play a match as '+esc(PROF.name)+' and your stats show up here.</p>')+
-    (i>=0?progressHtml(key):'')+badgesHtml(p);
+    (i>=0?progressHtml(key):'')+badgesHtml(Object.assign({},p,{ex:myExclusive(),exMine:true}));
   $('profEdit').onclick=openProfEdit;bindFriends();syncAccountBits();
 }
 let draftPhoto='';
@@ -3570,7 +3756,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='5.5';
+const APP_VERSION='5.8';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -4736,6 +4922,7 @@ function progressHtml(key){
 
 $('rulesClose').onclick=()=>hideSheet();
 $('acClose').onclick=()=>hideSheet();
+$('awGo').onclick=findForAward;$('awClose').onclick=()=>hideSheet();
 $('grCreate').onclick=createGroup;$('grClose').onclick=()=>hideSheet();$('liveClose').onclick=()=>hideSheet();
 $('grLive').onchange=e=>store.set('db-live-share',e.target.checked);
 
@@ -4900,6 +5087,7 @@ async function syncNow(quiet){
     }
     store.set('db-synced',synced);store.set(pullKey,started);
     if(writes.length||pulled||removed)publishProfile().catch(()=>{});
+    checkAwards();
     if(typeof syncGroups==='function')pulled+=await syncGroups();
     if(pulled||removed){history.sort((a,b)=>((b.date||b.start||0)-(a.date||a.start||0)));saveH(true);render();if($('resultsView').classList.contains('on'))setTab(tab)}
     await syncProfile();
@@ -4952,11 +5140,11 @@ function renderAccount(){
     $('acTitle').textContent='Your account';
     b.innerHTML='<div class="acrow"><b>'+esc(PROF.username?'@'+PROF.username:'No username yet')+'</b><span>'+esc(FB.user.email||'Signed in with Google')+'</span></div>'+
       '<p class="help" id="acSync"></p>'+
-      '<div class="btns"><button class="primary" id="acSyncBtn">Sync now</button><button class="secondary" id="acUser">'+(PROF.username?'Change username':'Choose a username')+'</button><button class="secondary" id="acGroups">Shared groups</button><button class="secondary" id="acOut">Sign out</button><button class="danger" id="acDelete">Delete my account</button></div>'+
+      '<div class="btns"><button class="primary" id="acSyncBtn">Sync now</button><button class="secondary" id="acUser">'+(PROF.username?'Change username':'Choose a username')+'</button><button class="secondary" id="acGroups">Shared groups</button>'+(FB.admin?'<button class="secondary" id="acAward">Award badges (admin)</button>':'')+'<button class="secondary" id="acOut">Sign out</button><button class="danger" id="acDelete">Delete my account</button></div>'+
       '<label class="livetoggle" style="margin:12px 2px"><input type="checkbox" id="acAuto"'+(autoSendOn()?' checked':'')+'> Send results to friends automatically</label>'+
       '<p class="help">Your results, profile and friends are saved to your account and kept in sync on every device you sign in on. Friends you\'ve connected with get matches you play together straight away. Videos stay on your phone.</p>';
     setSyncLabel();
-    $('acSyncBtn').onclick=()=>syncNow(false);$('acAuto').onchange=e=>store.set('db-autosend',e.target.checked);$('acUser').onclick=openUsername;$('acGroups').onclick=openGroups;$('acOut').onclick=signOutNow;$('acDelete').onclick=deleteAccount;
+    $('acSyncBtn').onclick=()=>syncNow(false);$('acAuto').onchange=e=>store.set('db-autosend',e.target.checked);$('acUser').onclick=openUsername;$('acGroups').onclick=openGroups;if($('acAward'))$('acAward').onclick=openAward;$('acOut').onclick=signOutNow;$('acDelete').onclick=deleteAccount;
     return;
   }
   $('acTitle').textContent=authMode==='up'?'Create your account':'Sign in';
@@ -5011,7 +5199,8 @@ async function onAuthChange(){
   if(!FB.user){stopSocial();return}
   await syncNow(true);startSocial();
   if(openSheet&&openSheet.id==='accountSheet'){renderAccount();toast('Signed in. Your results are synced.')}
-  if(PROF.username)await ensureUsername();
+  if(PROF.username){await ensureUsername();await ensureFounder()}else refreshFounderCount();
+  checkAwards();checkSeasonal();
   if(needsUsername())setTimeout(()=>{if(needsUsername()&&!$('obView').classList.contains('on'))openUsername()},700);
 }
 function syncAccountBits(){
@@ -5084,7 +5273,7 @@ $('unSave').onclick=async()=>{
       if(old&&old!==v)tx.delete(FB.db.collection('usernames').doc(old));
       tx.set(FB.db.collection('users').doc(uid),{username:v,usernameLower:v},{merge:true});
     });
-    PROF.username=v;saveProf();unameRequired=false;hideSheet();toast('You\'re @'+v+'.');if(tab==='profile')renderProfile();syncNow(true);
+    PROF.username=v;saveProf();unameRequired=false;hideSheet();toast('You\'re @'+v+'.');setTimeout(ensureFounder,1500);if(tab==='profile')renderProfile();syncNow(true);
   }catch(e){toast(e&&e.code==='taken'?'@'+v+' was just taken. Try another.':fbError(e))}
 };
 $('unSkip').onclick=()=>{if(unameRequired&&needsUsername()){signOutNow();return}hideSheet()};
@@ -5127,10 +5316,10 @@ const myUid=()=>FB.user?FB.user.uid:null;
 async function publishProfile(){
   if(!FB.user)return;
   const photo=PROF.photo?await smallPhoto(PROF.photo,96):'';
-  const pub={username:PROF.username||'',name:PROF.name||'',photo,bio:PROF.bio||'',country:PROF.country||'',side:PROF.side||'',hand:PROF.hand||'',level:PROF.level||'',club:PROF.club||'',racket:PROF.racket||'',since:PROF.since||'',shot:PROF.shot||'',ig:PROF.ig||'',tiktok:PROF.tiktok||'',x:PROF.x||'',yt:PROF.yt||'',ptLevel:PROF.ptLevel||'',playtomic:PROF.playtomic||'',stats:myStats(),u:Date.now()};
+  const pub={username:PROF.username||'',name:PROF.name||'',photo,bio:PROF.bio||'',country:PROF.country||'',side:PROF.side||'',hand:PROF.hand||'',level:PROF.level||'',club:PROF.club||'',racket:PROF.racket||'',since:PROF.since||'',shot:PROF.shot||'',ig:PROF.ig||'',tiktok:PROF.tiktok||'',x:PROF.x||'',yt:PROF.yt||'',ptLevel:PROF.ptLevel||'',playtomic:PROF.playtomic||'',founder:PROF.founder||0,x:myExclusive(),stats:myStats(),u:Date.now()};
   await FB.db.collection('profiles').doc(FB.user.uid).set(pub);
 }
-const pubToFriend=(uid,p)=>({uid,id:uid,key:pkey(p.name||p.username),name:p.name||p.username,username:p.username||'',bio:p.bio||'',country:p.country||'',side:p.side||'',hand:p.hand||'',level:p.level||'',club:p.club||'',racket:p.racket||'',since:p.since||'',shot:p.shot||'',ptLevel:p.ptLevel||'',playtomic:p.playtomic||'',ig:p.ig||'',tiktok:p.tiktok||'',x:p.x||'',yt:p.yt||'',photo:p.photo||'',stats:p.stats||null});
+const pubToFriend=(uid,p)=>({uid,id:uid,key:pkey(p.name||p.username),name:p.name||p.username,username:p.username||'',bio:p.bio||'',country:p.country||'',side:p.side||'',hand:p.hand||'',level:p.level||'',club:p.club||'',racket:p.racket||'',since:p.since||'',shot:p.shot||'',ptLevel:p.ptLevel||'',playtomic:p.playtomic||'',ig:p.ig||'',tiktok:p.tiktok||'',x:p.x||'',yt:p.yt||'',photo:p.photo||'',founder:p.founder||0,x:p.x||null,stats:p.stats||null});
 
 /* --- live listeners while signed in --- */
 function startSocial(){
@@ -5141,6 +5330,7 @@ function startSocial(){
     const before=new Set(SOC.links.filter(l=>l.status==='accepted').map(l=>l.id));
     SOC.links=list;
     list.filter(l=>l.status==='accepted'&&!before.has(l.id)).forEach(l=>linkFriend(l.users.find(u=>u!==me)));
+    checkSocialBadges();
     syncRequestBadge();if(tab==='profile'&&$('resultsView').classList.contains('on'))renderProfile();
   },()=>{});
   SOC.unsubInbox=FB.db.collection('inbox').doc(me).collection('items').onSnapshot(snap=>{
@@ -5281,7 +5471,7 @@ function startGroups(){
   stopGroups();if(!FB.user)return;
   GRP.unsub=FB.db.collection('groups').where('members','array-contains',FB.user.uid).onSnapshot(snap=>{
     const list=[];snap.forEach(d=>list.push(Object.assign({id:d.id},d.data())));
-    GRP.list=list;watchLive();
+    GRP.list=list;watchLive();checkSocialBadges();ensureFoundingGroups();
     if($('resultsView').classList.contains('on'))renderGroupBar();
     if(openSheet&&openSheet.id==='groupsSheet')renderGroupsSheet();
   },()=>{});
@@ -5297,7 +5487,7 @@ async function createGroup(){
   try{
     await FB.db.collection('groups').doc(gid).set({name,members:[me],admins:[me],names:{[me]:PROF.name||PROF.username||'Player'},inv,createdBy:me,createdAt:Date.now()});
     await FB.db.collection('invites').doc(inv).set({gid,name,by:me,createdAt:Date.now()});
-    $('grName').value='';toast(name+' created. Invite people with its link.');
+    $('grName').value='';toast(name+' created. Invite people with its link.');setTimeout(ensureFoundingGroups,1500);
     let n=0;history.forEach(h=>{if(groupOf(h.cfg).toLowerCase()===name.toLowerCase()&&!h.cfg.gid){h.cfg=Object.assign({},h.cfg,{gid});n++}});
     if(n){saveH();setTimeout(()=>syncNow(true),500)}
   }catch(e){toast(fbError(e))}
@@ -5372,7 +5562,7 @@ function renderGroupsSheet(){
   const me=FB.user?FB.user.uid:null;
   $('grList').innerHTML=GRP.list.length?GRP.list.map(g=>{
     const admin=(g.admins||[]).includes(me),others=(g.members||[]).filter(u=>u!==me);
-    return'<div class="grbox" data-g="'+g.id+'"><div class="grrow"><div><b>'+esc(g.name)+(admin?' <small class="unf">Admin</small>':'')+'</b><span>'+g.members.length+(g.members.length===1?' member':' members')+'</span></div><button class="mini lime" data-a="inv">Invite</button><button class="mini" data-a="leave">Leave</button></div>'+
+    return'<div class="grbox" data-g="'+g.id+'"><div class="grrow"><div><b>'+esc(g.name)+(admin?' <small class="unf">Admin</small>':'')+(g.fn?' <small class="fndtag inl">Founding group #'+g.fn+'</small>':'')+'</b><span>'+g.members.length+(g.members.length===1?' member':' members')+'</span></div><button class="mini lime" data-a="inv">Invite</button><button class="mini" data-a="leave">Leave</button></div>'+
       (admin?'<div class="gradmin">'+(others.length?others.map(u=>'<span class="grm">'+esc((g.names||{})[u]||'Player')+' <button class="linkbtn inl" data-rm="'+u+'">remove</button></span>').join(''):'<span class="help">No one else yet.</span>')+'<button class="linkbtn" data-a="reset">Reset invite link</button></div>':'')+'</div>'}).join('')
     :'<p class="help" style="margin:0 2px 12px">No shared groups yet. Create one for each set of friends you play with.</p>';
   $('grList').querySelectorAll('.grbox').forEach(r=>{const g=GRP.list.find(x=>x.id===r.dataset.g);
@@ -5539,7 +5729,7 @@ function bindConnect(f){
 }
 
 function friendHero(f){
-  return'<div class="profhero">'+avatar('pav big',f.name,f.photo)+'<div class="phinfo"><h3>'+esc(f.name)+(f.country?' <span class="flag-e">'+flagOf(f.country)+'</span>':'')+'</h3>'+(f.username?'<span class="handle">@'+esc(f.username)+'</span>':'')+'<span class="frtag2">'+(f.uid?'Friend on Deucebags':'Friend')+'</span></div></div>';
+  return'<div class="profhero">'+avatar('pav big',f.name,f.photo)+'<div class="phinfo"><h3>'+esc(f.name)+(f.country?' <span class="flag-e">'+flagOf(f.country)+'</span>':'')+'</h3>'+(f.username?'<span class="handle">@'+esc(f.username)+'</span>':'')+'<span class="frtag2">'+(f.uid?'Friend on Deucebags':'Friend')+'</span>'+(f.founder?'<span class="fndtag">Founding member #'+f.founder+'</span>':'')+'</div></div>';
 }
 function friendDetails(f){
   const chips=[];if(f.ptLevel)chips.push('Playtomic level '+f.ptLevel);
@@ -5549,20 +5739,20 @@ function friendDetails(f){
   return(f.bio?'<p class="bio">'+esc(f.bio)+'</p>':'')+(chips.length?'<div class="pchips">'+chips.map(c=>'<span>'+esc(c)+'</span>').join('')+'</div>':'')+(soc?'<div class="socials">'+soc+'</div>':'');
 }
 function friendBadges(f){
-  const st=f.stats;if(!st||!st.bmap)return'';
+  const st=f.stats;if(!st||!st.bmap){const ex=f.x||(f.founder?{founder:{n:f.founder}}:null);const h=ex?exclusiveHtml(ex,false):'';return h?'<p class="sh">Achievements</p>'+h:''}
   const pr=st.prog||{};
   const pseudo=Object.assign({p:0,w:0,bestStreak:0,tbw:0,maxRating:START_RATING,maxOpp:0,maxOppWins:0,setsWon:0,maxWeekend:0,wallMatches:0,bagels:0},pr,{partnersWon:{size:pr.partners||0},badges:st.bmap});
-  return badgesHtml(pseudo);
+  pseudo.ex=f.x||(f.founder?{founder:{n:f.founder}}:null);return badgesHtml(pseudo);
 }
 
 // your headline stats, published on your public card so friends can see them
 function myStats(){
   const me=meKey();if(!me)return null;
-  const p=computeLeague().find(x=>x.key===me);if(!p)return{played:0,u:Date.now()};
+  const p=computeLeague().find(x=>x.key===me);if(!p)return{played:0,bmap:PROF.founder?{founder:PROF.founderAt}:{},u:Date.now()};
   const dates=p.matches.map(id=>{const h=history.find(x=>x.id===id);return h?(h.start||h.date||0):0}).filter(Boolean).sort((a,b)=>a-b);
   const top=Object.keys(p.badges||{}).filter(id=>BADGE[id]).sort((a,b)=>BADGE[b][2]-BADGE[a][2]).slice(0,3);
   const prog={p:p.p,w:p.w,bestStreak:p.bestStreak||0,partners:p.partnersWon?p.partnersWon.size:0,tbw:p.tbw||0,maxRating:Math.round(p.maxRating||START_RATING),maxOpp:p.maxOpp||0,maxOppWins:p.maxOppWins||0,setsWon:p.setsWon||0,maxWeekend:p.maxWeekend||0,wallMatches:p.wallMatches||0,bagels:p.bagels||0};
-  return{played:p.p,w:p.w,l:p.l,rating:Math.round(p.rating),form:p.form.slice(-5),badges:Object.keys(p.badges||{}).length,top,bmap:Object.assign({},p.badges||{}),prog,first:dates[0]||0,last:dates[dates.length-1]||0,best:p.bestStreak||0,u:Date.now()};
+  return{played:p.p,w:p.w,l:p.l,rating:Math.round(p.rating),form:p.form.slice(-5),badges:Object.keys(p.badges||{}).length,top,bmap:Object.assign({},p.badges||{},PROF.founder?{founder:PROF.founderAt}:{}),prog,first:dates[0]||0,last:dates[dates.length-1]||0,best:p.bestStreak||0,u:Date.now()};
 }
 async function refreshFriend(f,key){
   if(!f||!f.uid||!FB.user)return;
