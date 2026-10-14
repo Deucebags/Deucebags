@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="5.4">
+<meta name="app-version" content="5.5">
 <title>Deucebags</title>
 <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1179x2556.jpg">
 <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1290x2796.jpg">
@@ -141,6 +141,9 @@ button{cursor:pointer;font-family:var(--heading)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---- additions ---- */
+.connectbox{display:grid;gap:8px;background:var(--white);border:2px dashed var(--navy);border-radius:16px;padding:14px;margin:6px 0 14px}
+.connectbox b{font-family:var(--heading);font-weight:600;font-size:16px;color:var(--navy)}
+.connectbox span{font-size:14px;line-height:1.45;color:var(--muted)}
 .frtag2{display:table;margin-top:6px;background:var(--lime);color:var(--navy);border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700;justify-self:start}
 #playerBody .profhero{margin-bottom:4px}
 .fbadges{background:var(--white);border:2px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:12px}
@@ -1354,7 +1357,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
   <input type="file" id="restoreFile" accept="application/json,.json" class="hide">
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v5.4<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v5.5<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -2710,7 +2713,7 @@ function openPlayer(key,refreshing){
   $('playerBody').querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>openRow(b.dataset.id));
   $('meBtn').onclick=()=>{setMe(isMe?'':key);if(!isMe&&!PROF.name){PROF.name=p.name;saveProf()}openPlayer(key);if(tab==='league')renderPlayers();toast(isMe?'Cleared.':'Done. Your weekly recap now follows '+p.name+'.')};
   if(!refreshing)showSheet('playerSheet');
-  if(!refreshing){const fr0=friendOf(key);if(fr0&&fr0.uid)refreshFriend(fr0,key)}
+  if(!refreshing){const fr0=friendOf(key);if(fr0&&fr0.uid)refreshFriend(fr0,key);if(fr0)bindConnect(fr0)}
 }
 
 /* ================= awards ================= */
@@ -3567,7 +3570,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='5.4';
+const APP_VERSION='5.5';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -3824,7 +3827,7 @@ function openFriendSheet(key,refreshing){
   $('playerTitle').textContent=f.name+(f.country?' '+flagOf(f.country):'');
   $('playerBody').dataset.key=key;
   $('playerBody').innerHTML=friendHero(f)+friendDetails(f)+'<div style="height:6px"></div>'+friendExtras(f,key)+friendBadges(f)+'<p class="help" style="margin-top:12px">No matches together on your phone yet. Add '+esc(f.name)+' to a match and your record together builds up here.</p><button class="danger" id="frRemove">Remove friend</button>';
-  $('frRemove').onclick=()=>removeFriend(key);
+  $('frRemove').onclick=()=>removeFriend(key);bindConnect(f);
   if(!refreshing)showSheet('playerSheet');
 }
 function openFriend(key){openFriendSheet(key);const f=friendOf(key);if(f)refreshFriend(f,key)}
@@ -5517,6 +5520,24 @@ function syncHomeAvatar(){const b=$('hmAv');if(!b)return;b.innerHTML=$('avBtn').
 
 
 /* ================= richer friend profiles ================= */
+function bindConnect(f){
+  if($('frSignIn'))$('frSignIn').onclick=()=>{hideSheet();openAccount()};
+  if($('frConnect'))$('frConnect').onclick=async()=>{
+    const v=(f.username||'').toLowerCase();
+    try{const u=await FB.db.collection('usernames').doc(v).get();
+      if(!u.exists){toast('@'+v+' hasn\'t claimed that username on Deucebags yet. Try inviting them instead.');return}
+      const uid=u.data().uid;if(SOC.links.some(l=>l.id===linkId(myUid(),uid))){toast('You\'ve already sent '+f.name+' a request.');return}
+      const p=await FB.db.collection('profiles').doc(uid).get();await sendRequest(uid,p.exists?p.data():{username:v,name:f.name});
+    }catch(e){toast(fbError(e))}
+  };
+  if($('frInvite'))$('frInvite').onclick=async()=>{
+    const text='Join me on Deucebags, the padel app we use. Create an account, pick a username and add me'+(PROF.username?': @'+PROF.username:'')+'.';
+    const url=appUrl();
+    if(navigator.share){try{await navigator.share({title:'Deucebags',text,url});return}catch(e){if(e&&e.name==='AbortError')return}}
+    try{await navigator.clipboard.writeText(text+' '+url);toast('Invite copied. Paste it into a chat.')}catch(e){toast('Couldn\'t share the invite here.')}
+  };
+}
+
 function friendHero(f){
   return'<div class="profhero">'+avatar('pav big',f.name,f.photo)+'<div class="phinfo"><h3>'+esc(f.name)+(f.country?' <span class="flag-e">'+flagOf(f.country)+'</span>':'')+'</h3>'+(f.username?'<span class="handle">@'+esc(f.username)+'</span>':'')+'<span class="frtag2">'+(f.uid?'Friend on Deucebags':'Friend')+'</span></div></div>';
 }
@@ -5577,6 +5598,7 @@ function friendExtras(f,key){
       (st.bmap?'':'<div class="fbadges"><b>'+st.badges+' of '+BADGES.length+' achievements</b>'+(st.top&&st.top.length?'<div>'+st.top.map(id=>BADGE[id]?'<span class="fbadge '+TIERS[BADGE[id][2]].c+'"><i class="medal">'+badgeSvg(id)+'</i>'+esc(BADGE[id][1])+'</span>':'').join('')+'</div>':'')+'</div>')+
       '<p class="help" style="margin:4px 2px 14px">From '+esc(f.name.split(' ')[0])+'\'s own app, updated '+timeAgo(st.u)+'.</p>';
   }else if(f.uid){h+='<p class="help" style="margin:4px 2px 14px">'+esc(f.name.split(' ')[0])+'\'s stats will show here once they\'ve played a match in Deucebags.</p>'}
+  else{const first=esc(f.name.split(' ')[0]);h+='<div class="connectbox"><b>Not connected yet</b><span>You added '+first+' with a friend code, so only their basic details are saved on your phone. Connect on Deucebags to see their full profile, stats and achievements, and to send results automatically.</span>'+(FB.user?(f.username?'<button class="primary" id="frConnect">Connect with @'+esc(f.username)+'</button>':'<button class="primary" id="frInvite">Invite '+first+' to Deucebags</button>'):'<button class="primary" id="frSignIn">Sign in to connect</button>')+'</div>'}
   const t=togetherWith(key);
   if(t&&(t.pw+t.pl+t.ow+t.ol)){
     h+='<p class="sh">You and '+esc(f.name.split(' ')[0])+'</p><div class="together"><div><b>'+t.pw+'–'+t.pl+'</b><span>As partners</span></div><div><b>'+t.ow+'–'+t.ol+'</b><span>Against each other</span></div></div>'+
