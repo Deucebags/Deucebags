@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="5.0">
+<meta name="app-version" content="5.2">
 <title>Deucebags</title>
 <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1179x2556.jpg">
 <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1290x2796.jpg">
@@ -1287,10 +1287,10 @@ button{transition:transform .12s ease}
 </section>
 
 <section class="sheet" id="usernameSheet" aria-label="Choose a username">
-  <h3>Choose a username</h3>
-  <p class="help" style="margin:-4px 2px 12px">It's how friends find you. Every username is unique, so nobody else can take yours.</p>
+  <h3 id="unTitle">Pick your username</h3>
+  <p class="help" id="unWhy" style="margin:-4px 2px 12px"></p>
   <div class="field"><div class="unwrap"><span>@</span><input type="text" id="unInput" maxlength="20" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="yourname"></div><p class="help" id="unMsg"></p></div>
-  <div class="btns"><button class="primary" id="unSave">Save username</button><button class="secondary" id="unSkip">Later</button></div>
+  <div class="btns"><button class="primary" id="unSave">Save username</button><button class="secondary" id="unSkip">Sign out instead</button></div>
 </section>
 
 <section class="sheet" id="groupsSheet" aria-label="Shared groups">
@@ -1341,7 +1341,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
   <input type="file" id="restoreFile" accept="application/json,.json" class="hide">
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v5.0<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v5.2<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -1830,7 +1830,8 @@ function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('on');c
 let openSheet=null;
 let lastFocus=null;
 function showSheet(id){hideSheet();lastFocus=document.activeElement;openSheet=$(id);openSheet.scrollTop=0;openSheet.classList.add('on');$('scrim').classList.add('on');setTimeout(()=>{const h=openSheet&&openSheet.querySelector('h3');if(h)h.focus({preventScroll:true})},280)}
-function hideSheet(){const was=!!openSheet;const wasSetup=openSheet&&openSheet.id==='setup';if(wasSetup&&setupFromHome&&!setupStarted&&!M.pts.length&&typeof showHome==='function')setTimeout(()=>{if(!openSheet&&!$('resultsView').classList.contains('on'))showHome()},50);if(wasSetup){setupStarted=false;setupFromHome=false}if(openSheet)openSheet.classList.remove('on');openSheet=null;$('scrim').classList.remove('on');if(was&&lastFocus&&document.body.contains(lastFocus)){try{lastFocus.focus({preventScroll:true})}catch(e){}}lastFocus=null}
+function hideSheet(){if(openSheet&&openSheet.id==='usernameSheet'&&typeof unameRequired!=='undefined'&&unameRequired&&needsUsername()){toast('Pick a username to carry on.');return}
+  const was=!!openSheet;const wasSetup=openSheet&&openSheet.id==='setup';if(wasSetup&&setupFromHome&&!setupStarted&&!M.pts.length&&typeof showHome==='function')setTimeout(()=>{if(!openSheet&&!$('resultsView').classList.contains('on'))showHome()},50);if(wasSetup){setupStarted=false;setupFromHome=false}if(openSheet)openSheet.classList.remove('on');openSheet=null;$('scrim').classList.remove('on');if(was&&lastFocus&&document.body.contains(lastFocus)){try{lastFocus.focus({preventScroll:true})}catch(e){}}lastFocus=null}
 $('scrim').onclick=()=>{if(openSheet&&openSheet.id==='clipSheet')return;hideSheet()};
 
 /* ================= setup ================= */
@@ -3508,8 +3509,8 @@ function openProfEdit(){
   SOCIALS.forEach(([k])=>$('pe_'+k).value=PROF[k]);
   ['peSide','peHand','peLevel','peShot'].forEach(id=>setSeg(id,PROF[{peSide:'side',peHand:'hand',peLevel:'level',peShot:'shot'}[id]]));
   fillCountries();$('peCountry').value=PROF.country||'';pendingAvatar=null;$('peLevelPt').value=PROF.ptLevel||'';$('pePlaytomic').value=PROF.playtomic||'';
-  const signedIn=!!(typeof FB!=='undefined'&&FB.user);$('peUser').disabled=signedIn;$('peUserChange').classList.toggle('hide',!signedIn);
-  $('peUserHelp').textContent=signedIn?(PROF.username?'Your username is unique to you.':'You haven\'t picked a username yet.'):'Sign in to claim a username nobody else can use.';
+  const signedIn=!!(typeof FB!=='undefined'&&FB.user);$('peUser').disabled=true;$('peUser').classList.toggle('hide',!signedIn);$('peUserChange').classList.toggle('hide',!signedIn);
+  $('peUserHelp').textContent=signedIn?(PROF.username?'Your username is unique to you.':'You haven\'t picked a username yet.'):'You\'ll pick a username when you create an account. It\'s how friends find you.';
   peSyncPhoto();peCount();fillNameList();showSheet('profSheet');
 }
 function peSyncPhoto(){$('pePhoto').innerHTML=avatar('pav big',$('peName').value||PROF.name,draftPhoto);$('peRemove').classList.toggle('hide',!draftPhoto)}
@@ -3537,7 +3538,7 @@ $('peSave').onclick=()=>{
   const name=tidyName($('peName').value),oldId=PROF.id;
   if(!name){toast('Add the name you play under first.');$('peName').focus();return}
   if(FRIENDS.some(f=>f.key===pkey(name))){toast('One of your friends already goes by '+name+'. Pick something that tells you apart.');return}
-  PROF={photo:draftPhoto,name,username:(typeof FB!=='undefined'&&FB.user)?(PROF.username||''):cleanHandle($('peUser').value),bio:$('peBio').value.replace(/\r/g,'').replace(/\n{3,}/g,'\n\n').trim().slice(0,160),
+  PROF={photo:draftPhoto,name,username:PROF.username||'',bio:$('peBio').value.replace(/\r/g,'').replace(/\n{3,}/g,'\n\n').trim().slice(0,160),
     side:segVal('peSide'),hand:segVal('peHand'),level:segVal('peLevel'),club:$('peClub').value.trim(),racket:$('peRacket').value.trim(),
     since:($('peSince').value||'').replace(/\D/g,'').slice(0,4),shot:segVal('peShot'),country:$('peCountry').value,ptLevel:cleanLevel($('peLevelPt').value),playtomic:cleanPlaytomic($('pePlaytomic').value),avatar:pendingAvatar||PROF.avatar||null};
   SOCIALS.forEach(([k])=>PROF[k]=cleanHandle($('pe_'+k).value));
@@ -3550,7 +3551,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='5.0';
+const APP_VERSION='5.2';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -4968,7 +4969,9 @@ async function forgotPassword(){
 async function signOutNow(){
   if(!(await ask('Sign out?','Your results are saved to your account, so you can sign back in on any phone.','Sign out',false)))return;
   const wipe=await ask('Remove your data from this phone?','Handy if this isn\'t your phone. Your account keeps everything, and it all comes back when you sign in again.','Remove from this phone',true,'Keep it here');
+  unameRequired=false;
   try{await FB.auth.signOut()}catch(e){}
+  if(openSheet&&openSheet.id==='usernameSheet')hideSheet();
   if(wipe)wipeLocal();else toast('Signed out.');
 }
 function wipeLocal(){
@@ -4986,7 +4989,8 @@ async function onAuthChange(){
   if(!FB.user){stopSocial();return}
   await syncNow(true);startSocial();
   if(openSheet&&openSheet.id==='accountSheet'){renderAccount();toast('Signed in. Your results are synced.')}
-  if(!PROF.username&&!(FB.doc&&FB.doc.username))setTimeout(openUsername,600);
+  if(PROF.username)await ensureUsername();
+  if(needsUsername())setTimeout(()=>{if(needsUsername()&&!$('obView').classList.contains('on'))openUsername()},700);
 }
 function syncAccountBits(){
   const el=$('profAccount');if(!el)return;
@@ -4998,11 +5002,37 @@ function syncAccountBits(){
 /* --- a basic filter for offensive usernames and group names --- */
 const BAD=atob('ZnVja3xzaGl0fGN1bnR8bmlnZ3xmYWdnfG5heml8aGl0bGVyfHdob3JlfHNsdXR8Yml0Y2h8ZGlja2hlYWR8cHVzc3l8dHdhdHx3YW5rfHJldGFyZHxraWtlfGNoaW5rfGJvbGxvY2s=').split('|');
 const badWords=s=>{const v=(s||'').toLowerCase().replace(/0/g,'o').replace(/[1!|]/g,'i').replace(/3/g,'e').replace(/[4@]/g,'a').replace(/[5$]/g,'s').replace(/7/g,'t').replace(/[^a-z]/g,'');return BAD.some(w=>v.includes(w))};
+/* --- make sure your username is really claimed, not just saved on this phone --- */
+async function ensureUsername(){
+  if(!FB.user||!PROF.username)return false;
+  const v=PROF.username.toLowerCase(),uid=FB.user.uid;
+  if(!USER_RE.test(v)||badWords(v)){PROF.username='';saveProfRaw();openUsername();return false}
+  const ref=FB.db.collection('usernames').doc(v);
+  try{
+    await FB.db.runTransaction(async tx=>{
+      const s=await tx.get(ref);
+      if(s.exists&&s.data().uid!==uid)throw{code:'taken'};
+      if(!s.exists)tx.set(ref,{uid});
+      tx.set(FB.db.collection('users').doc(uid),{username:v,usernameLower:v},{merge:true});
+    });
+    if(PROF.username!==v){PROF.username=v;saveProfRaw()}
+    publishProfile().catch(()=>{});return true;
+  }catch(e){
+    if(e&&e.code==='taken'){PROF.username='';saveProfRaw();toast('@'+v+' already belongs to someone else. Pick a new one.');setTimeout(openUsername,500)}
+    return false;
+  }
+}
 /* --- usernames: unique across everyone --- */
 const USER_RE=/^[a-z0-9_.]{3,20}$/;
 let unameT=null;
+var unameRequired=false;
+const needsUsername=()=>!!(FB.user&&!PROF.username);
 function openUsername(){
   if(!FB.user){openAccount();return}
+  unameRequired=needsUsername();
+  $('unTitle').textContent=unameRequired?'Pick your username':'Change your username';
+  $('unWhy').textContent=unameRequired?'You need one to use your account. It\'s how friends find and add you, and nobody else can take it.':'It\'s how friends find you. Every username is unique, so nobody else can take yours.';
+  $('unSkip').textContent=unameRequired?'Sign out instead':'Cancel';
   $('unInput').value=PROF.username||'';$('unMsg').textContent='3 to 20 letters, numbers, dots or underscores.';$('unMsg').className='help';
   showSheet('usernameSheet');setTimeout(()=>$('unInput').focus(),300);
 }
@@ -5023,7 +5053,7 @@ $('unSave').onclick=async()=>{
   const v=$('unInput').value.trim().toLowerCase();if(!USER_RE.test(v)){toast('Use 3 to 20 letters, numbers, dots or underscores.');return}
   if(badWords(v)){toast('That username isn\'t allowed. Try another.');return}
   const old=(PROF.username||'').toLowerCase(),uid=FB.user.uid;
-  if(v===old){hideSheet();return}
+  if(v===old){const ok=await ensureUsername();if(ok){unameRequired=false;hideSheet();toast('You\'re @'+v+'.')}return}
   try{
     await FB.db.runTransaction(async tx=>{
       const ref=FB.db.collection('usernames').doc(v),d=await tx.get(ref);
@@ -5032,10 +5062,10 @@ $('unSave').onclick=async()=>{
       if(old&&old!==v)tx.delete(FB.db.collection('usernames').doc(old));
       tx.set(FB.db.collection('users').doc(uid),{username:v,usernameLower:v},{merge:true});
     });
-    PROF.username=v;saveProf();hideSheet();toast('You\'re @'+v+'.');if(tab==='profile')renderProfile();syncNow(true);
+    PROF.username=v;saveProf();unameRequired=false;hideSheet();toast('You\'re @'+v+'.');if(tab==='profile')renderProfile();syncNow(true);
   }catch(e){toast(e&&e.code==='taken'?'@'+v+' was just taken. Try another.':fbError(e))}
 };
-$('unSkip').onclick=()=>hideSheet();
+$('unSkip').onclick=()=>{if(unameRequired&&needsUsername()){signOutNow();return}hideSheet()};
 
 /* --- delete everything --- */
 async function deleteAccount(){
