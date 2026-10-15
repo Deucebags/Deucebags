@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="8.9">
+<meta name="app-version" content="9.0">
 <title>Deucebags</title>
 <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1179x2556.jpg">
 <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1290x2796.jpg">
@@ -143,6 +143,7 @@ button{cursor:pointer;font-family:var(--heading)}
 :root[data-theme="dark"]{--bg:#071B33;--card:#12345A;--sheet:#0B2540;--field:#0A2139;--tx:#EAF7FF;--ink:#EAF7FF;--edge:#3A6A99;--fill:#183B60;--shade:#020A14;--muted:rgba(234,247,255,.72);--line:rgba(234,247,255,.16);--panel:#0B2540;--glass:rgba(11,37,64,.6);color-scheme:dark}
 
 /* ---- additions ---- */
+.vsstatus{margin:0;padding:10px 12px;font-size:13px;line-height:1.4;font-weight:600;color:var(--muted)}
 .vswrap{position:relative}
 .vsbox{position:absolute;left:0;right:0;top:100%;z-index:30;background:var(--card);border:2px solid var(--edge);border-radius:14px;box-shadow:0 10px 26px rgba(7,27,51,.25);overflow:hidden;max-height:320px;overflow-y:auto}
 .vsitem{width:100%;display:grid;grid-template-columns:1fr auto;align-items:center;gap:0 8px;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:10px 12px;color:var(--tx)}
@@ -1910,7 +1911,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="privacyBtn">Privacy</button>
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v8.9<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v9.0<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -4404,6 +4405,7 @@ function attachVenueSearch(input){
   let timer=null,ctrl=null,items=[];
   const close=()=>{box.classList.add('hide');box.innerHTML=''};
   const pick=it=>{input.value=it.name;VREG[it.name.toLowerCase()]=it;store.set('db-venues',VREG);close();input.dispatchEvent(new Event('input',{bubbles:true}))};
+  const status=msg=>{box.style.top=(input.offsetTop+input.offsetHeight+4)+'px';box.innerHTML=(items.length?box.innerHTML.replace(/<p class="vsstatus">.*?<\/p>/,''):'')+'<p class="vsstatus">'+msg+'</p>';box.classList.remove('hide')};
   const show=(local,remote)=>{
     const dup={};remote.forEach(r=>{const k=r.name.toLowerCase();dup[k]=(dup[k]||0)+1});
     remote=remote.map(r=>dup[r.name.toLowerCase()]>1&&r.place?Object.assign({},r,{name:r.name+', '+r.place}):r);
@@ -4420,19 +4422,23 @@ function attachVenueSearch(input){
     if(q.length<2){close();return}
     const ql=q.toLowerCase(),local=allVenues().filter(v=>v.toLowerCase().includes(ql)).slice(0,3).map(v=>Object.assign({name:v,past:true},VREG[v.toLowerCase()]||{}));
     show(local,[]);
-    if(q.length<3||!navigator.onLine)return;
+    if(q.length<3)return;
+    if(!navigator.onLine){status('You\'re offline, so venue search is paused. Type the full name and it\'ll be saved as you type it.');return}
+    status('Searching OpenStreetMap…');
     timer=setTimeout(async()=>{
       try{
         ctrl=new AbortController();
         const r=await fetch('https://photon.komoot.io/api/?limit=8&lang=en&q='+encodeURIComponent(q),{signal:ctrl.signal});
-        if(!r.ok)return;const j=await r.json();
+        if(!r.ok){if(input.value.trim()===q)status('Venue search isn\'t reachable right now. Type the full name and it\'ll be saved as you type it.');return}const j=await r.json();
         const seen=new Set(),res=[];
         (j.features||[]).forEach(f=>{const p=f.properties||{};if(!p.name)return;const place=p.city||p.town||p.village||p.district||p.county||p.state||'';const key=(p.name+'|'+place).toLowerCase();if(seen.has(key))return;seen.add(key);
           const sporty=/sports|padel|pitch|fitness|tennis|leisure|club/i.test((p.osm_value||'')+' '+(p.osm_key||'')+' '+p.name);
           res.push({name:p.name,place,country:p.country||'',lat:f.geometry&&f.geometry.coordinates?f.geometry.coordinates[1]:null,lon:f.geometry&&f.geometry.coordinates?f.geometry.coordinates[0]:null,osm:(p.osm_type||'')+(p.osm_id||''),score:sporty?1:0})});
         res.sort((a,b)=>b.score-a.score);
-        if(input.value.trim()===q)show(local,res.slice(0,6));
-      }catch(err){}
+        if(input.value.trim()!==q)return;
+        show(local,res.slice(0,6));
+        if(!res.length)status('No clubs found for \u201c'+esc(q)+'\u201d. Just type the full name and it\'ll be saved as you type it.');
+      }catch(err){if(err&&err.name==='AbortError')return;if(input.value.trim()===q)status('Venue search isn\'t reachable right now. Type the full name and it\'ll be saved as you type it.')}
     },320);
   });
   input.addEventListener('blur',()=>setTimeout(close,150));
@@ -4973,7 +4979,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='8.9';
+const APP_VERSION='9.0';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
