@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="8.7">
+<meta name="app-version" content="8.8">
 <title>Deucebags</title>
 <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1179x2556.jpg">
 <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1290x2796.jpg">
@@ -143,6 +143,14 @@ button{cursor:pointer;font-family:var(--heading)}
 :root[data-theme="dark"]{--bg:#071B33;--card:#12345A;--sheet:#0B2540;--field:#0A2139;--tx:#EAF7FF;--ink:#EAF7FF;--edge:#3A6A99;--fill:#183B60;--shade:#020A14;--muted:rgba(234,247,255,.72);--line:rgba(234,247,255,.16);--panel:#0B2540;--glass:rgba(11,37,64,.6);color-scheme:dark}
 
 /* ---- additions ---- */
+.vswrap{position:relative}
+.vsbox{position:absolute;left:0;right:0;top:100%;z-index:30;background:var(--card);border:2px solid var(--edge);border-radius:14px;box-shadow:0 10px 26px rgba(7,27,51,.25);overflow:hidden;max-height:320px;overflow-y:auto}
+.vsitem{width:100%;display:grid;grid-template-columns:1fr auto;align-items:center;gap:0 8px;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:10px 12px;color:var(--tx)}
+.vsitem b{font-weight:700;font-size:15px;grid-column:1}
+.vsitem span{grid-column:1;font-size:12.5px;color:var(--muted)}
+.vsitem em{grid-column:2;grid-row:1/3;font-style:normal;font-weight:800;font-size:11px;background:#DFFF32;color:#071B33;border-radius:999px;padding:2px 8px}
+.vsitem:active,.vsitem:hover{background:var(--sheet)}
+.vscredit{margin:0;padding:6px 12px;font-size:10.5px;color:var(--muted);text-align:right}
 body{font-family:var(--body);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 h1,h2,h3{letter-spacing:-.02em}
 .bugcard{background:var(--card);border:2px solid var(--edge);border-radius:14px;padding:10px 12px;margin-bottom:10px;color:var(--tx)}
@@ -1901,7 +1909,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="privacyBtn">Privacy</button>
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v8.7<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v8.8<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -2451,7 +2459,7 @@ function openSetup(){
   $('pA1').value=pa[0]||'';$('pA2').value=pa[1]||'';$('pB1').value=pb[0]||'';$('pB2').value=pb[1]||'';
   $('inA').value=draft.an!==undefined?draft.an:(draft.a==='Us'?'':draft.a);
   $('inB').value=draft.bn!==undefined?draft.bn:(draft.b==='Them'?'':draft.b);
-  fillNameList();fillGroupList();fillVenueList();$('inVenue').value=draft.venue!==undefined?draft.venue:(store.get('db-lastVenue')||'');$('inGroup').value=draft.group!==undefined?draft.group:(store.get('db-lastGroup')||'');
+  fillNameList();fillGroupList();fillVenueList();attachVenueSearch($('inVenue'));$('inVenue').value=draft.venue!==undefined?draft.venue:(store.get('db-lastVenue')||'');$('inGroup').value=draft.group!==undefined?draft.group:(store.get('db-lastGroup')||'');
   $('inOverlay').checked=!!draft.overlay;
   $('inBrand').checked=camPrefs.brand!==false;
   $('inClips').checked=camPrefs.clips!==false;
@@ -2475,7 +2483,7 @@ function takeDraft(){
   draft.a=teamNameFrom(draft.an,draft.pa[0],draft.pa[1],'Us');draft.b=teamNameFrom(draft.bn,draft.pb[0],draft.pb[1],'Them');
   draft.overlay=$('inOverlay').checked;
   draft.group=$('inGroup').value.trim();store.set('db-lastGroup',draft.group);
-  draft.venue=$('inVenue').value.trim();store.set('db-lastVenue',draft.venue);
+  draft.venue=canonicalVenue($('inVenue').value);store.set('db-lastVenue',draft.venue);
   {const sg=typeof sharedGroup==='function'?sharedGroup(draft.group):null;draft.gid=sg?sg.id:'';if(sg)draft.group=sg.name}
   return Object.assign({},draft);
 }
@@ -3101,7 +3109,7 @@ function openAdd(h){
   $('arB').value=src.bn!==undefined?src.bn:(h&&h.cfg.b!=='Them'?h.cfg.b:'');
   fillNameList();
   $('arNotes').value=h?(h.notes||''):'';
-  fillGroupList();fillVenueList();$('arGroup').value=h?groupOf(h.cfg):(store.get('db-lastGroup')||'');$('arVenue').value=h?(h.cfg.venue||''):(store.get('db-lastVenue')||'');
+  fillGroupList();fillVenueList();attachVenueSearch($('arVenue'));$('arGroup').value=h?groupOf(h.cfg):(store.get('db-lastGroup')||'');$('arVenue').value=h?(h.cfg.venue||''):(store.get('db-lastVenue')||'');
   arCount=h?Math.max(3,h.sets.length):3;
   drawSetRows(h?h.sets.map(s=>[String(s[0]),String(s[1])]):[]);
   syncAddLabels();showSheet('addSheet');
@@ -3127,7 +3135,7 @@ $('arSave').onclick=async()=>{
   const date=parts.length===3&&!parts.some(isNaN)?new Date(parts[0],parts[1]-1,parts[2],12).getTime():Date.now();
   const entry={id:editId||('m'+Date.now().toString(36)),manual:true,date,sets,
     cfg:(()=>{const pa=[$('arA1').value.trim(),$('arA2').value.trim()],pb=[$('arB1').value.trim(),$('arB2').value.trim()],an=$('arA').value.trim(),bn=$('arB').value.trim();
-      return{pa,pb,an,bn,group:$('arGroup').value.trim(),venue:$('arVenue').value.trim(),a:teamNameFrom(an,pa[0],pa[1],'Us'),b:teamNameFrom(bn,pb[0],pb[1],'Them')}})(),notes:$('arNotes').value.trim()};
+      return{pa,pb,an,bn,group:$('arGroup').value.trim(),venue:canonicalVenue($('arVenue').value),a:teamNameFrom(an,pa[0],pa[1],'Us'),b:teamNameFrom(bn,pb[0],pb[1],'Them')}})(),notes:$('arNotes').value.trim()};
   if(!editId&&findDuplicate(entry)&&!(await ask('Already got this one?','There\'s already a match with these players, on this day, with this score.','Add anyway',false,'Don\'t add'))){hideSheet();return}
   const i=history.findIndex(x=>x.id===entry.id);
   if(i>=0)history[i]=entry;else history.unshift(entry);
@@ -4265,7 +4273,7 @@ function amNew(){
   const ev={id:newId(),type:d.type,players:d.players.slice(),pts:d.pts,courts,venue:d.venue||'',created:Date.now(),u:Date.now(),done:false,rounds:[],planned:d.type==='americano'?null:d.rounds};
   if(d.type==='americano'){ev.rounds=americanoRounds(ev.players,courts);ev.at=0}
   else{ev.rounds=[mexicanoRound(ev)];ev.at=0}
-  if(d.venue)store.set('db-lastVenue',d.venue);
+  if(d.venue){d.venue=canonicalVenue(d.venue);ev.venue=d.venue;store.set('db-lastVenue',d.venue)}
   AM.list.unshift(ev);AM.view=ev.id;saveAmer();renderAmer();
 }
 function amRoundReady(ev){const r=ev.rounds[ev.at];return r&&r.matches.every(m=>m.sa!=null&&m.sb!=null)}
@@ -4333,7 +4341,7 @@ function renderAmer(){
     box.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{d.players.splice(+b.dataset.rm,1);renderAmer()});
     const add=()=>{const v=tidyName($('amAdd').value);if(!v)return;if(badWords(v)){toast('That name isn\'t allowed. Try a different one.');return}if(d.players.some(p=>pkey(p)===pkey(v))){toast(v+' is already in.');return}if(d.players.length>=16){toast('16 players is the most for one night.');return}d.players.push(v);d.courts=Math.max(1,Math.floor(d.players.length/4));renderAmer();setTimeout(()=>$('amAdd')&&$('amAdd').focus(),50)};
     $('amAddBtn').onclick=add;$('amAdd').onkeydown=e=>{if(e.key==='Enter')add()};
-    $('amVenue').oninput=e=>{d.venue=e.target.value.trim()};
+    $('amVenue').oninput=e=>{d.venue=e.target.value.trim()};attachVenueSearch($('amVenue'));
     $('amStart').onclick=amNew;
     box.querySelectorAll('.amcard').forEach(b=>b.onclick=()=>{AM.view=b.dataset.id;renderAmer();$('amerView').scrollTop=0});
     fillVenueList();return;
@@ -4385,6 +4393,50 @@ function mergeAmer(remote){
   return changed;
 }
 
+/* ================= venue search, powered by OpenStreetMap ================= */
+const VREG=store.get('db-venues')||{};
+function canonicalVenue(v){v=(v||'').trim();if(!v)return'';const hit=VREG[v.toLowerCase()];return hit?hit.name:v}
+function attachVenueSearch(input){
+  if(!input||input.dataset.vs)return;input.dataset.vs='1';input.removeAttribute('list');input.setAttribute('autocomplete','off');
+  const wrap=input.parentElement;wrap.classList.add('vswrap');
+  const box=document.createElement('div');box.className='vsbox hide';box.setAttribute('role','listbox');wrap.appendChild(box);
+  let timer=null,ctrl=null,items=[];
+  const close=()=>{box.classList.add('hide');box.innerHTML=''};
+  const pick=it=>{input.value=it.name;VREG[it.name.toLowerCase()]=it;store.set('db-venues',VREG);close();input.dispatchEvent(new Event('input',{bubbles:true}))};
+  const show=(local,remote)=>{
+    const dup={};remote.forEach(r=>{const k=r.name.toLowerCase();dup[k]=(dup[k]||0)+1});
+    remote=remote.map(r=>dup[r.name.toLowerCase()]>1&&r.place?Object.assign({},r,{name:r.name+', '+r.place}):r);
+    items=[...local,...remote.filter(r=>!local.some(l=>l.name.toLowerCase()===r.name.toLowerCase()))].slice(0,7);
+    if(!items.length){close();return}
+    box.innerHTML=items.map((it,i)=>'<button type="button" class="vsitem" data-i="'+i+'" role="option"><b>'+esc(it.name)+'</b><span>'+esc([it.place,it.country].filter(Boolean).join(', ')||(it.past?'You\'ve played here':''))+'</span>'+(it.past?'<em>Played here</em>':'')+'</button>').join('')+(remote.length?'<p class="vscredit">Venue search by Photon · © OpenStreetMap contributors</p>':'');
+    box.style.top=(input.offsetTop+input.offsetHeight+4)+'px';
+    box.classList.remove('hide');
+    box.querySelectorAll('.vsitem').forEach(b=>b.onmousedown=e=>{e.preventDefault();pick(items[+b.dataset.i])});
+  };
+  input.addEventListener('input',e=>{
+    if(e.isTrusted===false&&!e.detail)return;
+    const q=input.value.trim();clearTimeout(timer);if(ctrl)ctrl.abort();
+    if(q.length<2){close();return}
+    const ql=q.toLowerCase(),local=allVenues().filter(v=>v.toLowerCase().includes(ql)).slice(0,3).map(v=>Object.assign({name:v,past:true},VREG[v.toLowerCase()]||{}));
+    show(local,[]);
+    if(q.length<3||!navigator.onLine)return;
+    timer=setTimeout(async()=>{
+      try{
+        ctrl=new AbortController();
+        const r=await fetch('https://photon.komoot.io/api/?limit=8&lang=en&q='+encodeURIComponent(q),{signal:ctrl.signal});
+        if(!r.ok)return;const j=await r.json();
+        const seen=new Set(),res=[];
+        (j.features||[]).forEach(f=>{const p=f.properties||{};if(!p.name)return;const place=p.city||p.town||p.village||p.district||p.county||p.state||'';const key=(p.name+'|'+place).toLowerCase();if(seen.has(key))return;seen.add(key);
+          const sporty=/sports|padel|pitch|fitness|tennis|leisure|club/i.test((p.osm_value||'')+' '+(p.osm_key||'')+' '+p.name);
+          res.push({name:p.name,place,country:p.country||'',lat:f.geometry&&f.geometry.coordinates?f.geometry.coordinates[1]:null,lon:f.geometry&&f.geometry.coordinates?f.geometry.coordinates[0]:null,osm:(p.osm_type||'')+(p.osm_id||''),score:sporty?1:0})});
+        res.sort((a,b)=>b.score-a.score);
+        if(input.value.trim()===q)show(local,res.slice(0,6));
+      }catch(err){}
+    },320);
+  });
+  input.addEventListener('blur',()=>setTimeout(close,150));
+  input.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+}
 /* ================= venues ================= */
 function allVenues(){const m={};history.forEach(h=>{const v=h.cfg&&h.cfg.venue;if(v)m[v.toLowerCase()]=v});AM.list.forEach(e=>{if(e.venue)m[e.venue.toLowerCase()]=e.venue});return Object.values(m)}
 function fillVenueList(){const dl=$('venueNames');if(dl)dl.innerHTML=allVenues().map(v=>'<option value="'+esc(v)+'">').join('')}
@@ -4920,7 +4972,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='8.7';
+const APP_VERSION='8.8';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}

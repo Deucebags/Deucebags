@@ -1,5 +1,5 @@
 // Deucebags offline support. Change the version when you update the app.
-const VERSION = 'deucebags-v87';
+const VERSION = 'deucebags-v88';
 const SHELL = ['./', 'index.html', 'manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'icon-maskable-512.png', 'favicon-64.png'];
 
 self.addEventListener('install', e => {
@@ -14,6 +14,8 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  // Live lookups (venue search, accounts and sync) always go straight to the network.
+  if (/photon\.komoot\.io|firestore\.googleapis|identitytoolkit|securetoken|googleapis\.com\/identity/.test(e.request.url)) return;
   // Pages: try the network first so updates come through, fall back to the saved copy offline.
   if (e.request.mode === 'navigate') {
     e.respondWith(fetch(e.request)
