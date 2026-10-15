@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="8.2">
+<meta name="app-version" content="8.5">
 <title>Deucebags</title>
 <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1179x2556.jpg">
 <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1290x2796.jpg">
@@ -143,6 +143,104 @@ button{cursor:pointer;font-family:var(--heading)}
 :root[data-theme="dark"]{--bg:#071B33;--card:#12345A;--sheet:#0B2540;--field:#0A2139;--tx:#EAF7FF;--ink:#EAF7FF;--edge:#3A6A99;--fill:#183B60;--shade:#020A14;--muted:rgba(234,247,255,.72);--line:rgba(234,247,255,.16);--panel:#0B2540;--glass:rgba(11,37,64,.6);color-scheme:dark}
 
 /* ---- additions ---- */
+.ovrcard{display:flex;align-items:center;gap:14px;border-radius:20px;padding:14px;margin-top:14px;border:2.5px solid #071B33;box-shadow:0 4px 0 var(--shade);color:#071B33;position:relative;overflow:hidden}
+.ovrcard.o-rookie{background:linear-gradient(140deg,#A9DBFB,#7FC8F8);color:#071B33}
+.ovrcard.o-club{background:linear-gradient(140deg,#24507E,#183B60 60%,#0E2A47);color:#EAF7FF}
+.ovrcard.o-club .ovrnum{background:#071B33;box-shadow:inset 0 0 0 2px #7FC8F8}
+.ovrcard.o-club .ovrinfo>b em{background:#7FC8F8;color:#071B33}
+.ovrcard.o-club .ovrchg.up{color:#DFFF32}.ovrcard.o-club .ovrchg.down{color:#FFB3B3}
+.ovrcard.o-pro{background:linear-gradient(140deg,#EBFF7A,#DFFF32);color:#071B33}
+.ovrcard.o-legend{border:2.5px solid transparent;background:linear-gradient(135deg,#0E2E50 0%,#071B33 55%,#0A2440 100%) padding-box,linear-gradient(120deg,#DFFF32,#7FC8F8,#DFFF32) border-box;color:#EAF7FF;box-shadow:0 0 0 1px rgba(223,255,50,.15),0 6px 22px rgba(127,200,248,.3)}
+.ovrcard.o-legend .ovrnum{background:linear-gradient(135deg,#DFFF32,#7FC8F8);color:#071B33}
+.ovrcard.o-legend .ovrnum span{color:#071B33}
+.ovrcard.o-legend .ovrinfo>b{color:#DFFF32}
+.ovrcard.o-legend .ovrinfo>b em{background:linear-gradient(135deg,#DFFF32,#7FC8F8);color:#071B33}
+.ovrcard.o-legend .ovrchg.up{color:#DFFF32}.ovrcard.o-legend .ovrchg.down{color:#FFB3B3}
+.ovrcard.o-legend::after{background:linear-gradient(110deg,transparent 35%,rgba(223,255,50,.18) 50%,transparent 65%)}
+.ovrcard::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.45) 50%,transparent 65%);transform:translateX(-100%);animation:shine 4s ease-in-out infinite;pointer-events:none}
+.ovrnum{display:grid;justify-items:center;background:#071B33;color:#DFFF32;border-radius:16px;padding:8px 12px;min-width:74px;flex:none}
+.ovrnum b{font-family:var(--display);font-weight:400;font-size:44px;line-height:1}
+.ovrnum span{font-weight:800;font-size:12px;letter-spacing:1.5px;color:#7FC8F8}
+.ovrinfo{display:grid;gap:3px;min-width:0}
+.ovrinfo>b{font-family:var(--heading);font-weight:600;font-size:17px}
+.ovrinfo>b em{font-style:normal;font-size:12px;font-weight:800;background:#071B33;color:#DFFF32;border-radius:999px;padding:2px 8px;margin-left:4px;vertical-align:2px}
+.ovrrow{font-size:13.5px;font-weight:700}
+.ovrrow i{font-style:normal;opacity:.7;margin-right:6px}
+.ovrchg{font-weight:800;font-size:12.5px}.ovrchg.up{color:#1E6B3A}.ovrchg.down{color:#9B2C2C}
+.ovrcard.empty .ovrnum b{color:#7FC8F8}
+.ovrnote{margin:8px 4px 0;font-size:11.5px;line-height:1.45;color:var(--muted)}
+.ratepeers{background:var(--card);border:2px solid var(--edge);border-radius:16px;padding:10px 12px;margin-bottom:10px}
+.done .ratepeers{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.25)}
+.ratepeers>p{margin:0 0 6px;font-family:var(--heading);font-weight:600;font-size:14px;color:var(--tx);text-align:center}
+.done .ratepeers>p{color:#DFFF32}
+.rprow{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 0}
+.rprow b{font-family:var(--heading);font-weight:600;font-size:14px;color:var(--tx);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.done .rprow b{color:#fff}
+.rpbtns{display:flex;gap:5px;flex:none}
+.rpbtns button{width:30px;height:30px;border-radius:50%;border:2px solid var(--edge);background:transparent;display:grid;place-items:center;padding:0}
+.done .rpbtns button{border-color:rgba(255,255,255,.4)}
+.rpbtns button i{width:14px;height:14px;border-radius:50%;background:rgba(127,200,248,.35)}
+.rpbtns button[aria-pressed="true"]{border-color:#DFFF32}.rpbtns button[aria-pressed="true"] i{background:#DFFF32}
+.rphint{display:block;text-align:center;margin-top:4px;font-size:11.5px;font-weight:700;color:var(--muted)}
+.done .rphint{color:rgba(255,255,255,.7)}
+:root[data-theme="dark"] .ovrcard:not(.o-legend){border-color:#3A6A99}
+.tscroll{overflow-x:auto;max-width:100%}
+.hmamer{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:var(--card);border:2px solid var(--edge);border-radius:18px;padding:12px 14px;margin:12px 0 0;color:var(--tx);box-shadow:0 3px 0 var(--shade)}
+.hmamer>span:nth-child(2){flex:1;display:grid;gap:2px;min-width:0}
+.hmamer b{font-family:var(--heading);font-weight:600;font-size:17px}
+.hmamer em{font-style:normal;font-size:13px;color:var(--muted)}
+.hmamer i{font-style:normal;background:var(--fill);color:#DFFF32;border-radius:999px;padding:7px 14px;font-weight:800;font-size:14px;flex:none}
+.hmamic{width:44px;height:44px;border-radius:50%;background:#7FC8F8;border:2px solid #071B33;display:grid;place-items:center;flex:none}
+.hmamic svg{width:24px;height:24px;fill:none;stroke:#071B33;stroke-width:2;stroke-linecap:round}
+#amerView{overflow-y:auto}
+.amchips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.amlist{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.amlist span{background:var(--card);border:2px solid var(--line);border-radius:999px;padding:4px 10px;font-weight:700;font-size:14px;color:var(--tx)}
+.amround{display:grid;gap:2px;background:var(--fill);color:#EAF7FF;border-radius:16px;padding:12px 14px;margin-bottom:10px}
+.amround b{font-family:var(--display);font-weight:400;font-size:26px;color:#DFFF32}
+.amround span{font-weight:700;font-size:13.5px;opacity:.85}
+.amcourt{width:100%;display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:auto auto;align-items:center;gap:4px 10px;background:var(--card);border:2px solid var(--edge);border-radius:18px;padding:12px 14px;margin-bottom:10px;color:var(--tx);text-align:center}
+.amcourt em{grid-column:1/-1;font-style:normal;font-weight:800;font-size:12px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted)}
+.amteam{font-family:var(--heading);font-weight:600;font-size:15px;line-height:1.25}
+.amsc{font-family:var(--display);font-size:28px;color:var(--tx);white-space:nowrap}
+.amcourt:not(.scored) .amsc{font-family:var(--body);font-weight:800;font-size:13px;background:#DFFF32;color:#071B33;border-radius:999px;padding:6px 10px}
+.amcourt.scored{border-color:#2E9D6A}
+.amsit{margin:0 2px 10px}
+.amtable td.num,.amtable th.num{text-align:right}
+.amtable tr.top1 td{background:rgba(223,255,50,.25)}
+.amscore{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+.amscore>div{display:grid;justify-items:center;gap:6px;background:var(--card);border:2px solid var(--edge);border-radius:18px;padding:12px 8px;text-align:center}
+.amscore span{font-family:var(--heading);font-weight:600;font-size:14px;color:var(--tx);min-height:36px}
+.amscore b{font-family:var(--display);font-weight:400;font-size:56px;line-height:1;color:var(--tx)}
+.ampm{display:flex;gap:8px}.ampm button{width:52px;height:46px;padding:0;font-size:26px;font-weight:800}
+.amcard{width:100%;display:grid;gap:2px;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px;color:var(--tx)}
+.amcard b{font-family:var(--heading);font-weight:600;font-size:15px}.amcard span{font-size:13px;color:var(--muted)}
+.amwhen{margin:-4px 2px 10px;font-weight:700;font-size:14px;color:var(--muted)}
+.podium{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:8px;margin:6px 0 16px}
+.pd{display:grid;justify-items:center;gap:4px;text-align:center}
+.pd .pav{width:58px;height:58px;font-size:22px}
+.pd.p1 .pav{width:76px;height:76px;font-size:28px;box-shadow:0 0 0 4px #DFFF32}
+.pd b{font-family:var(--heading);font-weight:600;font-size:15px;color:var(--tx)}
+.pd span{font-weight:800;font-size:13px;color:var(--muted)}
+.pd i{display:grid;place-items:center;width:100%;box-sizing:border-box;border:2.5px solid #071B33;border-bottom-width:0;border-radius:12px 12px 4px 4px;font-style:normal;font-family:var(--display);font-size:30px;color:#071B33}
+.pd.p1 i{height:96px;background:#DFFF32}.pd.p2 i{height:70px;background:#7FC8F8}.pd.p3 i{height:52px;background:#F7E08A}
+.rategame{background:var(--card);border:2px solid var(--edge);border-radius:16px;padding:10px 12px;text-align:center;margin-bottom:10px}
+.done .rategame{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.25)}
+.rategame p{margin:0 0 6px;font-family:var(--heading);font-weight:600;font-size:14px;color:var(--tx)}
+.done .rategame p{color:#DFFF32}
+.ratebtns{display:flex;justify-content:center;gap:8px}
+.ratebtns button{width:40px;height:40px;border-radius:50%;border:2px solid var(--edge);background:transparent;display:grid;place-items:center;padding:0}
+.done .ratebtns button{border-color:rgba(255,255,255,.4)}
+.ratebtns button i{width:20px;height:20px;border-radius:50%;background:rgba(127,200,248,.35);transition:transform .15s}
+.ratebtns button[aria-pressed="true"] i,.ratebtns button.lit i{background:#DFFF32;box-shadow:inset -3px -3px 0 rgba(7,27,51,.15)}
+.ratebtns button[aria-pressed="true"]{border-color:#DFFF32;transform:scale(1.08)}
+.ratew{display:block;margin-top:6px;font-weight:700;font-size:13px;color:var(--muted)}
+.done .ratew{color:rgba(255,255,255,.8)}
+.ratechart line{stroke:var(--line);stroke-width:1}
+.ratechart polyline{fill:none;stroke:var(--tx);stroke-width:2;opacity:.5}
+.ratechart circle.w{fill:#DFFF32;stroke:#071B33;stroke-width:2}.ratechart circle.l{fill:#8A93A0;stroke:#071B33;stroke-width:2}
+.venuefact{margin:0 2px 10px;font-size:15px;line-height:1.4;color:var(--tx)}
+.venuefact b{color:var(--tx)}
 .view .vhead{display:flex;align-items:center;gap:8px;margin-bottom:14px;min-width:0}
 .view .vhead h2{flex:1;min-width:0;margin:0;font-size:30px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .view .vhead .ghost{flex:none;height:38px;padding:0 14px;font-size:14px;display:inline-flex;align-items:center;white-space:nowrap}
@@ -1393,6 +1491,7 @@ button{transition:transform .12s ease}
     <div class="pair"><input type="text" id="arB1" list="playerNames" maxlength="20" placeholder="Player 1" autocomplete="off" aria-label="Opponents, player 1"><input type="text" id="arB2" list="playerNames" maxlength="20" placeholder="Player 2" autocomplete="off" aria-label="Opponents, player 2"></div>
     <input type="text" id="arB" maxlength="24" placeholder="Team name (optional)" aria-label="Opponents team name">
   </div>
+  <div class="field"><label for="arVenue">Venue (optional)</label><input type="text" id="arVenue" list="venueNames" maxlength="40" autocomplete="off" placeholder="For example, Padel Social Club"></div>
   <div class="field"><label for="arGroup">Group (optional)</label><input type="text" id="arGroup" list="groupNames" maxlength="24" autocomplete="off" placeholder="For example, Sunday crew"></div>
   <div class="field"><span class="lbl">Score</span>
     <div class="setlabels"><span></span><span id="arLa">Us</span><span id="arLb">Them</span></div>
@@ -1450,6 +1549,7 @@ button{transition:transform .12s ease}
     <p class="help" id="gamesHelp"></p>
   </div>
   <details class="moreopts" id="moreOpts"><summary>More options<span>Group, team names, deciding set, video and display settings</span></summary>
+  <div class="field"><label for="inVenue">Venue (optional)</label><input type="text" id="inVenue" list="venueNames" maxlength="40" autocomplete="off" placeholder="For example, Padel Social Club"><datalist id="venueNames"></datalist><p class="help">Remembered for next time, so you can see how you do at each club.</p></div>
   <div class="field"><label for="inGroup">Group (optional)</label><input type="text" id="inGroup" list="groupNames" maxlength="24" autocomplete="off" placeholder="For example, Sunday crew"><p class="help">Keeps different friend groups apart. Filter by group in Results.</p></div>
   <datalist id="groupNames"></datalist>
   <div class="field"><span class="lbl">Team names (optional)</span><div class="pair">
@@ -1735,6 +1835,16 @@ button{transition:transform .12s ease}
   <div class="btns"><button class="primary" id="stChange">Change style</button><button class="secondary" id="stClose">Close</button></div>
 </section>
 
+<section class="sheet" id="amScoreSheet" aria-label="Court score">
+  <h3>Court score</h3>
+  <div class="amscore">
+    <div><span id="amsA"></span><b id="amsVa">12</b><div class="ampm"><button class="secondary" id="amsMinus" aria-label="One less">−</button><button class="secondary" id="amsPlus" aria-label="One more">+</button></div></div>
+    <div><span id="amsB"></span><b id="amsVb">12</b><div class="ampm"><button class="secondary" id="amsPlus2" aria-label="One less">−</button><button class="secondary" id="amsMinus2" aria-label="One more">+</button></div></div>
+  </div>
+  <p class="help" id="amsTot"></p>
+  <div class="btns"><button class="primary" id="amsSave">Save score</button><button class="secondary" id="amsCancel">Cancel</button></div>
+</section>
+
 <section class="sheet" id="recapSheet" aria-label="Your week in padel">
   <h3 id="recapTitle">Your week in padel</h3>
   <div class="seg three" id="recapSeg" style="margin-bottom:14px"><button data-v="7">Week</button><button data-v="30">Month</button><button data-v="365">Year</button></div>
@@ -1767,7 +1877,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="privacyBtn">Privacy</button>
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v8.2<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v8.5<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -1942,6 +2052,10 @@ button{transition:transform .12s ease}
   <button class="yipclose" id="yipClose" aria-label="Close">&times;</button>
   <div class="yipslide" id="yipSlide"></div>
 </div>
+<section class="view" id="amerView" aria-label="Americano night">
+  <div class="vhead"><h2 id="amTitle">Americano night</h2><button class="themebtn sm" data-theme-toggle aria-label="Switch between light and dark"><svg class="ic-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><svg class="ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></button><button class="ghost" id="amHome">Home</button></div>
+  <div id="amBody"></div>
+</section>
 <canvas class="fx" id="fx"></canvas>
 <div class="toast" id="toast" role="status"></div>
 
@@ -2095,7 +2209,7 @@ function recordHistory(){
     const entry={id:M.id,cfg:M.cfg,pts:M.pts.slice(),start:M.start,end:M.end,tags:Object.assign({},M.tags||{})};
     if(M.session)entry.session=M.session.id;
     if(i>=0)history[i]=entry;else history.unshift(entry);
-    setTimeout(()=>autoSend(entry),300);setTimeout(checkSecrets,2500);setTimeout(()=>invitePrompt(entry),4000);
+    setTimeout(()=>autoSend(entry),300);setTimeout(checkSecrets,2500);setTimeout(()=>{if(WRAP.on)renderWrap()},400);setTimeout(()=>invitePrompt(entry),4000);
   }else{
     M.end=null;
     if(i>=0)history.splice(i,1);
@@ -2313,7 +2427,7 @@ function openSetup(){
   $('pA1').value=pa[0]||'';$('pA2').value=pa[1]||'';$('pB1').value=pb[0]||'';$('pB2').value=pb[1]||'';
   $('inA').value=draft.an!==undefined?draft.an:(draft.a==='Us'?'':draft.a);
   $('inB').value=draft.bn!==undefined?draft.bn:(draft.b==='Them'?'':draft.b);
-  fillNameList();fillGroupList();$('inGroup').value=draft.group!==undefined?draft.group:(store.get('db-lastGroup')||'');
+  fillNameList();fillGroupList();fillVenueList();$('inVenue').value=draft.venue!==undefined?draft.venue:(store.get('db-lastVenue')||'');$('inGroup').value=draft.group!==undefined?draft.group:(store.get('db-lastGroup')||'');
   $('inOverlay').checked=!!draft.overlay;
   $('inBrand').checked=camPrefs.brand!==false;
   $('inClips').checked=camPrefs.clips!==false;
@@ -2337,6 +2451,7 @@ function takeDraft(){
   draft.a=teamNameFrom(draft.an,draft.pa[0],draft.pa[1],'Us');draft.b=teamNameFrom(draft.bn,draft.pb[0],draft.pb[1],'Them');
   draft.overlay=$('inOverlay').checked;
   draft.group=$('inGroup').value.trim();store.set('db-lastGroup',draft.group);
+  draft.venue=$('inVenue').value.trim();store.set('db-lastVenue',draft.venue);
   {const sg=typeof sharedGroup==='function'?sharedGroup(draft.group):null;draft.gid=sg?sg.id:'';if(sg)draft.group=sg.name}
   return Object.assign({},draft);
 }
@@ -2345,7 +2460,7 @@ function nameFilterFail(ids){
   return false;
 }
 $('startBtn').onclick=async()=>{
-  if(nameFilterFail(['pA1','pA2','pB1','pB2','inA','inB','inGroup'])){if($('moreOpts')&&['inA','inB','inGroup'].some(i=>$(i)&&$(i).value&&badWords($(i).value)))$('moreOpts').open=true;return}
+  if(nameFilterFail(['pA1','pA2','pB1','pB2','inA','inB','inGroup','inVenue'])){if($('moreOpts')&&['inA','inB','inGroup','inVenue'].some(i=>$(i)&&$(i).value&&badWords($(i).value)))$('moreOpts').open=true;return}
   setupStarted=true;
   await checkNames(['pA1','pA2','pB1','pB2']);
   const cfg=takeDraft();
@@ -2915,8 +3030,8 @@ function openRow(id){
   const h=history.find(x=>x.id===id);if(!h)return;
   const r=rowOf(h);rowId=id;
   $('rowTitle').textContent=r.unfinished?(r.h.leader===0?r.a+' led '+r.b:r.h.leader===1?r.b+' led '+r.a:r.a+' v '+r.b):r.winner===0?r.a+' beat '+r.b:r.winner===1?r.b+' beat '+r.a:r.a+' v '+r.b;
-  $('rowWhen').textContent=dLong(r.date)+(groupOf(r.cfg)?', '+groupOf(r.cfg):'')+(r.h.manual?'. Added manually.':r.unfinished?'. Ended early'+(r.h.counts?', counts in the league.':', doesn\'t count in the league.'):'. Scored live.');
-  $('rowBody').innerHTML='<p class="setline">'+esc(r.score)+'</p>'+awardsHtml(r)+(r.st?statsTable(r.cfg,r.st,h.start,h.end)+(r.st.log.length>3?'<p class="sh">Momentum</p>'+momentumSvg(r.st,r.cfg):''):'');
+  $('rowWhen').textContent=dLong(r.date)+(r.cfg.venue?', '+r.cfg.venue:'')+(groupOf(r.cfg)?', '+groupOf(r.cfg):'')+(r.h.manual?'. Added manually.':r.unfinished?'. Ended early'+(r.h.counts?', counts in the league.':', doesn\'t count in the league.'):'. Scored live.');
+  $('rowBody').innerHTML='<p class="setline">'+esc(r.score)+'</p>'+(meKey()&&[0,1].some(s=>members(r.cfg,s).some(n=>pkey(n)===meKey()))&&r.winner!==null?rateHtml(h.id,h.rate,'Your game')+ratePeersHtml(h):'')+awardsHtml(r)+(r.st?statsTable(r.cfg,r.st,h.start,h.end)+(r.st.log.length>3?'<p class="sh">Momentum</p>'+momentumSvg(r.st,r.cfg):''):'');
   $('rowCard').onclick=()=>openCard(r);
   if(h.session){$('rowBody').insertAdjacentHTML('afterbegin',sessionHtml(h.session))}
 
@@ -2962,7 +3077,7 @@ function openAdd(h){
   $('arB').value=src.bn!==undefined?src.bn:(h&&h.cfg.b!=='Them'?h.cfg.b:'');
   fillNameList();
   $('arNotes').value=h?(h.notes||''):'';
-  fillGroupList();$('arGroup').value=h?groupOf(h.cfg):(store.get('db-lastGroup')||'');
+  fillGroupList();fillVenueList();$('arGroup').value=h?groupOf(h.cfg):(store.get('db-lastGroup')||'');$('arVenue').value=h?(h.cfg.venue||''):(store.get('db-lastVenue')||'');
   arCount=h?Math.max(3,h.sets.length):3;
   drawSetRows(h?h.sets.map(s=>[String(s[0]),String(s[1])]):[]);
   syncAddLabels();showSheet('addSheet');
@@ -2972,7 +3087,7 @@ $('arMore').onclick=()=>{if(arCount<5){arCount++;drawSetRows()}};
 $('arCancel').onclick=()=>hideSheet();
 $('addResult').onclick=()=>openAdd(null);
 $('arSave').onclick=async()=>{
-  if(nameFilterFail(['arA1','arA2','arB1','arB2','arA','arB','arGroup']))return;
+  if(nameFilterFail(['arA1','arA2','arB1','arB2','arA','arB','arGroup','arVenue']))return;
   await checkNames(['arA1','arA2','arB1','arB2']);
   const sets=[];let bad=false;
   $('arSets').querySelectorAll('.setrow').forEach(r=>{
@@ -2988,7 +3103,7 @@ $('arSave').onclick=async()=>{
   const date=parts.length===3&&!parts.some(isNaN)?new Date(parts[0],parts[1]-1,parts[2],12).getTime():Date.now();
   const entry={id:editId||('m'+Date.now().toString(36)),manual:true,date,sets,
     cfg:(()=>{const pa=[$('arA1').value.trim(),$('arA2').value.trim()],pb=[$('arB1').value.trim(),$('arB2').value.trim()],an=$('arA').value.trim(),bn=$('arB').value.trim();
-      return{pa,pb,an,bn,group:$('arGroup').value.trim(),a:teamNameFrom(an,pa[0],pa[1],'Us'),b:teamNameFrom(bn,pb[0],pb[1],'Them')}})(),notes:$('arNotes').value.trim()};
+      return{pa,pb,an,bn,group:$('arGroup').value.trim(),venue:$('arVenue').value.trim(),a:teamNameFrom(an,pa[0],pa[1],'Us'),b:teamNameFrom(bn,pb[0],pb[1],'Them')}})(),notes:$('arNotes').value.trim()};
   if(!editId&&findDuplicate(entry)&&!(await ask('Already got this one?','There\'s already a match with these players, on this day, with this score.','Add anyway',false,'Don\'t add'))){hideSheet();return}
   const i=history.findIndex(x=>x.id===entry.id);
   if(i>=0)history[i]=entry;else history.unshift(entry);
@@ -3882,8 +3997,9 @@ function checkSecrets(){
 var WRAP={on:false,items:[],invite:null};
 function renderWrap(){
   const box=$('doneWrap');if(!box)return;
-  if(!WRAP.on||(!WRAP.items.length&&!WRAP.invite)){box.innerHTML='';box.classList.remove('has');return}
-  let h='';
+  const canRate=WRAP.on&&M&&M.id&&meKey()&&[0,1].some(s=>members(M.cfg,s).some(n=>pkey(n)===meKey()))&&history.some(x=>x.id===M.id);
+  if(!WRAP.on||(!WRAP.items.length&&!WRAP.invite&&!canRate)){box.innerHTML='';box.classList.remove('has');return}
+  let h=canRate?rateHtml(M.id,(history.find(x=>x.id===M.id)||{}).rate)+ratePeersHtml(history.find(x=>x.id===M.id)):'';
   if(WRAP.items.length)h+='<div class="wrapach"><p>'+(WRAP.items.length===1?'New achievement':WRAP.items.length+' new achievements')+'</p><div class="wrapchips">'+WRAP.items.map((it,i)=>'<button class="wchip '+(TIERCLS[it.tier]||'t1')+'" data-i="'+i+'" style="--i:'+i+'"><i class="medal">'+badgeSvg(it.id)+'</i><span><b>'+esc(it.name)+(it.extra?' '+esc(it.extra):'')+'</b><em>'+(TIERNAME[it.tier]||'')+'</em></span></button>').join('')+'</div></div>';
   if(WRAP.invite){const n=WRAP.invite,list=n.length>1?n.slice(0,-1).join(', ')+' and '+n[n.length-1]:n[0];
     h+='<div class="wrapinv"><span><b>'+esc(list)+'</b> '+(n.length>1?'aren\'t':'isn\'t')+' on Deucebags yet</span><button class="mini lime" id="wrapInvite">Invite</button></div>'}
@@ -4072,6 +4188,289 @@ function yipShow(){
 function yipGo(d){const n=YIP.i+d;if(n<0)return;if(n>=YIP.slides.length){closeYip();return}YIP.i=n;yipShow()}
 function closeYip(){clearTimeout(YIP.t);$('yipView').classList.remove('on')}
 $('yipView').addEventListener('click',e=>{if(e.target.closest('#yipClose')){closeYip();return}if(e.target.closest('button'))return;const r=$('yipView').getBoundingClientRect();yipGo(e.clientX<r.left+r.width*0.33?-1:1)});
+
+
+/* ================= Americano and Mexicano nights ================= */
+const AM={list:store.get('db-amer')||[],view:null,draft:null,scoring:null};
+const amCur=()=>AM.list.find(e=>!e.done)||null;
+function saveAmer(){store.set('db-amer',AM.list);if(typeof profChanged==='function')profChanged()}
+function amStandings(ev){
+  const S={};ev.players.forEach(n=>S[n]={name:n,pts:0,w:0,l:0,d:0,played:0,diff:0,sat:0});
+  ev.rounds.forEach(r=>{(r.sit||[]).forEach(n=>{if(S[n])S[n].sat++});r.matches.forEach(m=>{if(m.sa==null||m.sb==null)return;
+    m.a.forEach(n=>{const s=S[n];s.pts+=m.sa;s.played++;s.diff+=m.sa-m.sb;if(m.sa>m.sb)s.w++;else if(m.sa<m.sb)s.l++;else s.d++});
+    m.b.forEach(n=>{const s=S[n];s.pts+=m.sb;s.played++;s.diff+=m.sb-m.sa;if(m.sb>m.sa)s.w++;else if(m.sb<m.sa)s.l++;else s.d++})})});
+  return Object.values(S).sort((a,b)=>b.pts-a.pts||b.w-a.w||b.diff-a.diff||a.name.localeCompare(b.name));
+}
+// Americano: everyone partners everyone once (circle method), pairs meet on courts
+function americanoRounds(players,courts){
+  const list=players.slice();if(list.length%2)list.push(null);
+  const m=list.length,rounds=[];let rot=list.slice();
+  for(let r=0;r<m-1;r++){
+    const pairs=[],sit=[];
+    for(let i=0;i<m/2;i++){const p=rot[i],q=rot[m-1-i];if(p&&q)pairs.push([p,q]);else sit.push(p||q)}
+    const sh=pairs.length?r%pairs.length:0,ordered=pairs.slice(sh).concat(pairs.slice(0,sh));
+    const matches=[];while(ordered.length>=2&&matches.length<courts){const a=ordered.shift(),b=ordered.shift();matches.push({a,b,sa:null,sb:null})}
+    ordered.forEach(p=>sit.push(...p));
+    rounds.push({matches,sit:sit.filter(Boolean)});
+    rot=[rot[0],rot[m-1]].concat(rot.slice(1,m-1));
+  }
+  return rounds;
+}
+// Mexicano: next round from the standings, 1st and 4th v 2nd and 3rd on each court
+function mexicanoRound(ev){
+  const st=ev.rounds.length?amStandings(ev):ev.players.map(n=>({name:n,sat:0}));
+  const order=st.map(s=>s.name),cap=Math.min(ev.courts*4,Math.floor(order.length/4)*4);
+  let sit=[];
+  if(order.length>cap){
+    const sats={};st.forEach(s=>sats[s.name]=s.sat||0);
+    const cand=order.slice().reverse().sort((a,b)=>sats[a]-sats[b]);
+    sit=cand.slice(0,order.length-cap);
+  }
+  const play=order.filter(n=>!sit.includes(n)),matches=[];
+  for(let i=0;i+3<play.length;i+=4)matches.push({a:[play[i],play[i+3]],b:[play[i+1],play[i+2]],sa:null,sb:null});
+  return{matches,sit};
+}
+function amNew(){
+  const d=AM.draft;
+  if(d.players.length<4){toast('Add at least 4 players.');return}
+  if(d.players.some(n=>typeof badWords==='function'&&badWords(n))||(d.venue&&badWords(d.venue))){toast('One of those names isn\'t allowed. Try a different one.');return}
+  const courts=Math.max(1,Math.min(d.courts,Math.floor(d.players.length/4)));
+  const ev={id:newId(),type:d.type,players:d.players.slice(),pts:d.pts,courts,venue:d.venue||'',created:Date.now(),u:Date.now(),done:false,rounds:[],planned:d.type==='americano'?null:d.rounds};
+  if(d.type==='americano'){ev.rounds=americanoRounds(ev.players,courts);ev.at=0}
+  else{ev.rounds=[mexicanoRound(ev)];ev.at=0}
+  if(d.venue)store.set('db-lastVenue',d.venue);
+  AM.list.unshift(ev);AM.view=ev.id;saveAmer();renderAmer();
+}
+function amRoundReady(ev){const r=ev.rounds[ev.at];return r&&r.matches.every(m=>m.sa!=null&&m.sb!=null)}
+function amNext(ev){
+  if(!amRoundReady(ev)){toast('Add every court\'s score first.');return}
+  const total=ev.type==='americano'?ev.rounds.length:ev.planned;
+  if(ev.at+1>=total){amFinish(ev);return}
+  if(ev.type==='mexicano')ev.rounds.push(mexicanoRound(ev));
+  ev.at++;ev.u=Date.now();saveAmer();renderAmer();window.scrollTo(0,0);$('amerView').scrollTop=0;
+}
+async function amFinish(ev,early){
+  if(early&&!(await ask('Finish the night now?','The leaderboard is final from the rounds you\'ve scored.','Finish night',false)))return;
+  ev.rounds=ev.rounds.filter((r,i)=>i<ev.at||r.matches.some(m=>m.sa!=null));
+  ev.rounds.forEach(r=>r.matches=r.matches.filter(m=>m.sa!=null&&m.sb!=null));
+  ev.rounds=ev.rounds.filter(r=>r.matches.length);
+  ev.done=true;ev.finished=Date.now();ev.u=Date.now();saveAmer();renderAmer();
+  if(!reduceMotion)setTimeout(()=>fxCannons(90),300);
+}
+function amOpenScore(ev,ri,mi){
+  const m=ev.rounds[ri].matches[mi];AM.scoring={ev,ri,mi,a:m.sa!=null?m.sa:Math.floor(ev.pts/2)};
+  $('amsA').textContent=m.a.join(' & ');$('amsB').textContent=m.b.join(' & ');
+  amScoreShow();showSheet('amScoreSheet');
+}
+function amScoreShow(){const s=AM.scoring;$('amsVa').textContent=s.a;$('amsVb').textContent=s.ev.pts-s.a;$('amsTot').textContent='Played to '+s.ev.pts+' points in total.'}
+$('amsMinus').onclick=()=>{const s=AM.scoring;if(s&&s.a>0){s.a--;amScoreShow()}};
+$('amsPlus').onclick=()=>{const s=AM.scoring;if(s&&s.a<s.ev.pts){s.a++;amScoreShow()}};
+$('amsMinus2').onclick=()=>{const s=AM.scoring;if(s&&s.a<s.ev.pts){s.a++;amScoreShow()}};
+$('amsPlus2').onclick=()=>{const s=AM.scoring;if(s&&s.a>0){s.a--;amScoreShow()}};
+$('amsSave').onclick=()=>{const s=AM.scoring;if(!s)return;const m=s.ev.rounds[s.ri].matches[s.mi];m.sa=s.a;m.sb=s.ev.pts-s.a;s.ev.u=Date.now();saveAmer();hideSheet();renderAmer()};
+$('amsCancel').onclick=()=>hideSheet();
+function amTable(ev,compact){
+  const st=amStandings(ev);
+  return'<table class="grid amtable"><thead><tr><th>#</th><th>Player</th><th class="num">Pts</th><th class="num">W</th><th class="num">+/−</th></tr></thead><tbody>'+
+    st.map((s,i)=>'<tr'+(i<3&&ev.done?' class="top'+(i+1)+'"':'')+'><td class="rank'+(i===0?' r1':'')+'">'+(i+1)+'</td><td><b>'+esc(s.name)+'</b></td><td class="num"><b>'+s.pts+'</b></td><td class="num">'+s.w+'</td><td class="num">'+(s.diff>0?'+':'')+s.diff+'</td></tr>').join('')+'</tbody></table>';
+}
+function amPlayerChips(){
+  const d=AM.draft,known=[...new Set([PROF.name,...FRIENDS.map(f=>f.name),...(typeof knownNames==='function'?knownNames():[])].filter(Boolean))].slice(0,24);
+  return'<div class="amchips">'+known.map(n=>'<button class="qp'+(d.players.includes(n)?' on':'')+'" data-n="'+esc(n)+'">'+esc(n)+'</button>').join('')+'</div>';
+}
+function renderAmer(){
+  const box=$('amBody');if(!box)return;
+  const view=AM.view?AM.list.find(e=>e.id===AM.view):amCur();
+  $('amTitle').textContent=view?(view.type==='americano'?'Americano':'Mexicano'):'Americano night';
+  if(!view){
+    const d=AM.draft=AM.draft||{type:'americano',players:PROF.name?[PROF.name]:[],pts:24,courts:1,rounds:6,venue:store.get('db-lastVenue')||''};
+    const n=d.players.length,maxC=Math.max(1,Math.floor(n/4));if(d.courts>maxC)d.courts=maxC;
+    let h='<p class="help" style="margin:-4px 2px 14px">Rotating partners, points-based scoring and a leaderboard at the end of the night. Every point counts.</p>'+
+      '<div class="field"><span class="lbl">Format</span><div class="seg" id="amType"><button data-v="americano">Americano</button><button data-v="mexicano">Mexicano</button></div><p class="help">'+(d.type==='americano'?'Everyone partners everyone once. Fair and social.':'After each round, players are paired by the standings: 1st and 4th play 2nd and 3rd. Competitive and close.')+'</p></div>'+
+      '<div class="field"><span class="lbl">Players <span class="muted">'+n+'</span></span>'+amPlayerChips()+'<div class="inrow"><input type="text" id="amAdd" maxlength="20" placeholder="Add a player"><button class="mini lime" id="amAddBtn">Add</button></div>'+
+      (n?'<div class="amlist">'+d.players.map((p,i)=>'<span>'+esc(p)+' <button class="linkbtn inl" data-rm="'+i+'" aria-label="Remove '+esc(p)+'">remove</button></span>').join('')+'</div>':'')+'<p class="help">At least 4. If the number isn\'t a multiple of 4, players take turns sitting out.</p></div>'+
+      '<div class="field"><span class="lbl">Points per match</span><div class="seg quad" id="amPts">'+[16,21,24,32].map(v=>'<button data-v="'+v+'">'+v+'</button>').join('')+'</div><p class="help">Each match is played to this many points in total. Serve 4 points each, then swap.</p></div>'+
+      '<div class="field"><span class="lbl">Courts</span><div class="seg" id="amCourts">'+[1,2,3,4].filter(c=>c<=maxC).map(c=>'<button data-v="'+c+'">'+c+'</button>').join('')+'</div></div>'+
+      (d.type==='mexicano'?'<div class="field"><span class="lbl">Rounds</span><div class="seg quad" id="amRounds">'+[4,5,6,8].map(v=>'<button data-v="'+v+'">'+v+'</button>').join('')+'</div></div>':'')+
+      '<div class="field"><label for="amVenue">Venue (optional)</label><input type="text" id="amVenue" maxlength="40" list="venueNames" value="'+esc(d.venue||'')+'" placeholder="For example, Padel Social Club"></div>'+
+      '<div class="btns"><button class="primary" id="amStart">Start the night</button></div>';
+    const past=AM.list.filter(e=>e.done);
+    if(past.length)h+='<p class="sh">Past nights</p>'+past.slice(0,12).map(e=>{const w=amStandings(e)[0];return'<button class="amcard" data-id="'+e.id+'"><b>'+(e.type==='americano'?'Americano':'Mexicano')+(e.venue?', '+esc(e.venue):'')+'</b><span>'+dShort(e.created)+', '+e.players.length+' players. Winner: '+esc(w?w.name:'–')+'</span></button>'}).join('');
+    box.innerHTML=h;
+    segSet('amType',d.type);segSet('amPts',String(d.pts));segSet('amCourts',String(d.courts));if($('amRounds'))segSet('amRounds',String(d.rounds));
+    box.querySelectorAll('#amType button').forEach(b=>b.onclick=()=>{d.type=b.dataset.v;renderAmer()});
+    box.querySelectorAll('#amPts button').forEach(b=>b.onclick=()=>{d.pts=+b.dataset.v;segSet('amPts',b.dataset.v)});
+    box.querySelectorAll('#amCourts button').forEach(b=>b.onclick=()=>{d.courts=+b.dataset.v;segSet('amCourts',b.dataset.v)});
+    box.querySelectorAll('#amRounds button').forEach(b=>b.onclick=()=>{d.rounds=+b.dataset.v;segSet('amRounds',b.dataset.v)});
+    box.querySelectorAll('.amchips .qp').forEach(b=>b.onclick=()=>{const nm=b.dataset.n;const i=d.players.indexOf(nm);if(i>=0)d.players.splice(i,1);else if(d.players.length<16)d.players.push(nm);d.courts=Math.max(1,Math.floor(d.players.length/4));renderAmer()});
+    box.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{d.players.splice(+b.dataset.rm,1);renderAmer()});
+    const add=()=>{const v=tidyName($('amAdd').value);if(!v)return;if(badWords(v)){toast('That name isn\'t allowed. Try a different one.');return}if(d.players.some(p=>pkey(p)===pkey(v))){toast(v+' is already in.');return}if(d.players.length>=16){toast('16 players is the most for one night.');return}d.players.push(v);d.courts=Math.max(1,Math.floor(d.players.length/4));renderAmer();setTimeout(()=>$('amAdd')&&$('amAdd').focus(),50)};
+    $('amAddBtn').onclick=add;$('amAdd').onkeydown=e=>{if(e.key==='Enter')add()};
+    $('amVenue').oninput=e=>{d.venue=e.target.value.trim()};
+    $('amStart').onclick=amNew;
+    box.querySelectorAll('.amcard').forEach(b=>b.onclick=()=>{AM.view=b.dataset.id;renderAmer();$('amerView').scrollTop=0});
+    fillVenueList();return;
+  }
+  const ev=view;
+  if(ev.done){
+    const st=amStandings(ev),pod=st.slice(0,3);
+    box.innerHTML='<p class="amwhen">'+dLong(ev.created)+(ev.venue?', '+esc(ev.venue):'')+'. '+ev.players.length+' players, '+ev.rounds.length+' rounds.</p>'+
+      '<div class="podium">'+[1,0,2].map(i=>pod[i]?'<div class="pd p'+(i+1)+'">'+avatar('pav',pod[i].name,photoFor(pod[i].name))+'<b>'+esc(pod[i].name)+'</b><span>'+pod[i].pts+' pts</span><i>'+(i+1)+'</i></div>':'').join('')+'</div>'+
+      amTable(ev)+'<div class="btns"><button class="primary" id="amShare">Share the leaderboard</button><button class="secondary" id="amBack">All nights</button><button class="linkbtn" id="amDel">Delete this night</button></div>';
+    $('amShare').onclick=()=>amShare(ev);$('amBack').onclick=()=>{AM.view=null;renderAmer()};
+    $('amDel').onclick=async()=>{if(await ask('Delete this night?','Its leaderboard will be gone for good.','Delete',true)){AM.list=AM.list.filter(x=>x.id!==ev.id);AM.view=null;saveAmer();renderAmer()}};
+    return;
+  }
+  const total=ev.type==='americano'?ev.rounds.length:ev.planned,r=ev.rounds[ev.at],ready=amRoundReady(ev),last=ev.at+1>=total;
+  box.innerHTML='<div class="amround"><b>Round '+(ev.at+1)+' of '+total+'</b><span>'+ev.pts+' points per match'+(ev.venue?', '+esc(ev.venue):'')+'</span></div>'+
+    r.matches.map((m,i)=>'<button class="amcourt'+(m.sa!=null?' scored':'')+'" data-mi="'+i+'"><em>Court '+(i+1)+'</em><span class="amteam">'+esc(m.a.join(' & '))+'</span><span class="amsc">'+(m.sa!=null?m.sa+' – '+m.sb:'Tap to score')+'</span><span class="amteam">'+esc(m.b.join(' & '))+'</span></button>').join('')+
+    (r.sit&&r.sit.length?'<p class="help amsit">Sitting out this round: '+r.sit.map(esc).join(', ')+'</p>':'')+
+    '<div class="btns"><button class="primary" id="amNext"'+(ready?'':' disabled')+'>'+(last?'Finish the night':'Next round')+'</button></div>'+
+    '<p class="sh">Leaderboard</p>'+amTable(ev)+
+    '<div class="btns"><button class="linkbtn" id="amEnd">Finish early</button><button class="linkbtn" id="amCancel">Cancel this night</button></div>';
+  box.querySelectorAll('.amcourt').forEach(b=>b.onclick=()=>amOpenScore(ev,ev.at,+b.dataset.mi));
+  $('amNext').onclick=()=>amNext(ev);
+  $('amEnd').onclick=()=>amFinish(ev,true);
+  $('amCancel').onclick=async()=>{if(await ask('Cancel this night?','Scores from this night won\'t be kept.','Cancel night',true)){AM.list=AM.list.filter(x=>x.id!==ev.id);AM.view=null;saveAmer();renderAmer()}};
+}
+function openAmer(){hideSheet();if(typeof hideHome==='function')hideHome();AM.view=null;renderAmer();$('amerView').classList.add('on');$('amerView').scrollTop=0}
+function closeAmer(){$('amerView').classList.remove('on');if(typeof showHome==='function')showHome()}
+async function amShare(ev){
+  const st=amStandings(ev),c=document.createElement('canvas');c.width=1080;c.height=1350;const x=c.getContext('2d');
+  try{await document.fonts.load('80px "Lilita One"');await document.fonts.load('600 40px Fredoka')}catch(e){}
+  const g=x.createLinearGradient(0,0,1080,1350);g.addColorStop(0,'#071B33');g.addColorStop(1,'#183B60');x.fillStyle=g;x.fillRect(0,0,1080,1350);
+  x.textAlign='center';x.fillStyle='#7FC8F8';x.font='600 46px Fredoka, sans-serif';x.fillText((ev.type==='americano'?'AMERICANO':'MEXICANO')+' NIGHT',540,120);
+  x.fillStyle='#EAF7FF';x.font='600 36px Fredoka, sans-serif';x.fillText(dLong(ev.created)+(ev.venue?' · '+ev.venue:''),540,175);
+  x.fillStyle='#DFFF32';x.font='130px "Lilita One", sans-serif';x.fillText(st[0]?st[0].name:'',540,330);
+  x.fillStyle='#EAF7FF';x.font='600 40px Fredoka, sans-serif';x.fillText('WINS WITH '+(st[0]?st[0].pts:0)+' POINTS',540,390);
+  let y=480;st.slice(0,8).forEach((s,i)=>{x.fillStyle=i===0?'rgba(223,255,50,.16)':'rgba(255,255,255,.07)';x.beginPath();x.roundRect?x.roundRect(120,y-62,840,86,22):x.rect(120,y-62,840,86);x.fill();
+    x.textAlign='left';x.fillStyle=i===0?'#DFFF32':'#7FC8F8';x.font='54px "Lilita One", sans-serif';x.fillText(String(i+1),160,y);
+    x.fillStyle='#EAF7FF';x.font='600 44px Fredoka, sans-serif';x.fillText(s.name,240,y);
+    x.textAlign='right';x.fillStyle='#DFFF32';x.font='54px "Lilita One", sans-serif';x.fillText(s.pts+' pts',920,y);y+=100});
+  if(camPrefs.brand!==false&&logoImg.complete&&logoImg.naturalWidth){const lw=260,lh=lw*logoImg.naturalHeight/logoImg.naturalWidth;x.drawImage(logoImg,540-lw/2,1350-lh-40,lw,lh)}
+  const blob=await new Promise(r=>c.toBlob(r,'image/png')),name='deucebags-'+ev.type+'-night.png',f=new File([blob],name,{type:'image/png'});
+  if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:'Our '+ev.type+' night'})}catch(e){}}else{await saveBlob(blob,name);toast(savedMsg(name))}
+}
+function mergeAmer(remote){
+  if(!Array.isArray(remote))return false;let changed=false;
+  remote.forEach(e=>{const i=AM.list.findIndex(x=>x.id===e.id);if(i<0){AM.list.push(e);changed=true}else if((e.u||0)>(AM.list[i].u||0)){AM.list[i]=e;changed=true}});
+  if(changed){AM.list.sort((a,b)=>b.created-a.created);store.set('db-amer',AM.list)}
+  return changed;
+}
+
+/* ================= venues ================= */
+function allVenues(){const m={};history.forEach(h=>{const v=h.cfg&&h.cfg.venue;if(v)m[v.toLowerCase()]=v});AM.list.forEach(e=>{if(e.venue)m[e.venue.toLowerCase()]=e.venue});return Object.values(m)}
+function fillVenueList(){const dl=$('venueNames');if(dl)dl.innerHTML=allVenues().map(v=>'<option value="'+esc(v)+'">').join('')}
+function venueStats(key){
+  const V={};
+  allRows().forEach(r=>{const v=r.cfg.venue;if(!v||r.winner===null)return;const side=members(r.cfg,0).some(n=>pkey(n)===key)?0:members(r.cfg,1).some(n=>pkey(n)===key)?1:-1;if(side<0)return;
+    const k=v.toLowerCase(),x=V[k]=V[k]||{name:v,p:0,w:0};x.p++;if(r.winner===side)x.w++});
+  return Object.values(V).sort((a,b)=>b.p-a.p);
+}
+function venueHtml(key){
+  const vs=venueStats(key);if(!vs.length)return'';
+  const fort=vs.filter(v=>v.p>=3&&v.w===v.p).sort((a,b)=>b.p-a.p)[0],best=vs.filter(v=>v.p>=3).sort((a,b)=>b.w/b.p-a.w/a.p)[0];
+  return'<p class="sh">By venue</p>'+(fort?'<p class="venuefact"><b>Fortress:</b> you\'ve never lost at '+esc(fort.name)+' ('+fort.w+' from '+fort.p+').</p>':best?'<p class="venuefact"><b>Happy place:</b> '+esc(best.name)+', where you win '+Math.round(best.w/best.p*100)+'% of the time.</p>':'')+
+    '<div class="tscroll"><table class="grid"><thead><tr><th>Venue</th><th class="num">Played</th><th class="num">Won</th><th class="num">Win %</th></tr></thead><tbody>'+vs.map(v=>'<tr><td><b>'+esc(v.name)+'</b></td><td class="num">'+v.p+'</td><td class="num">'+v.w+'</td><td class="num">'+Math.round(v.w/v.p*100)+'%</td></tr>').join('')+'</tbody></table></div>';
+}
+
+/* ================= rate your game ================= */
+const RATE_WORDS=['','Off day','Not my best','Solid','Really good','On fire'];
+function rateHtml(id,cur,prefix){
+  return'<div class="rategame" data-id="'+id+'"><p>'+(prefix||'How did you play?')+'</p><div class="ratebtns">'+[1,2,3,4,5].map(v=>'<button data-v="'+v+'" aria-label="'+v+' out of 5, '+RATE_WORDS[v]+'" aria-pressed="'+(cur===v)+'"><i></i></button>').join('')+'</div><span class="ratew">'+(cur?RATE_WORDS[cur]:'Tap to rate your own game')+'</span></div>';
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest&&e.target.closest('.rategame .ratebtns button');if(!b)return;
+  const box=b.closest('.rategame'),h=history.find(x=>x.id===box.dataset.id);if(!h)return;
+  const v=+b.dataset.v;h.rate=h.rate===v?null:v;saveH();
+  box.querySelectorAll('.ratebtns button').forEach(x=>x.setAttribute('aria-pressed',String(+x.dataset.v===h.rate)));
+  box.querySelector('.ratew').textContent=h.rate?RATE_WORDS[h.rate]:'Tap to rate your own game';
+});
+function rateStatsHtml(key){
+  const rows=allRows().filter(r=>r.h.rate&&r.winner!==null&&[0,1].some(s=>members(r.cfg,s).some(n=>pkey(n)===key))).sort((a,b)=>a.date-b.date);
+  if(rows.length<3)return'<p class="sh">Form v feeling</p><p class="help">Rate your game after a few matches and you\'ll see how your feeling lines up with your results.</p>';
+  const won=r=>r.winner===(members(r.cfg,0).some(n=>pkey(n)===key)?0:1);
+  const last=rows.slice(-15),W=320,H=120,step=last.length>1?(W-30)/(last.length-1):0;
+  const pts=last.map((r,i)=>[15+i*step,H-15-(r.h.rate-1)*((H-30)/4),won(r)]);
+  const hi=rows.filter(r=>r.h.rate>=4),lo=rows.filter(r=>r.h.rate<=2);
+  const avgW=rows.filter(won),avgL=rows.filter(r=>!won(r));
+  const avg=a=>a.length?(a.reduce((s,r)=>s+r.h.rate,0)/a.length).toFixed(1):'–';
+  return'<p class="sh">Form v feeling</p><div class="chartbox"><svg viewBox="0 0 '+W+' '+H+'" class="ratechart">'+[1,2,3,4,5].map(v=>'<line x1="10" x2="'+(W-10)+'" y1="'+(H-15-(v-1)*((H-30)/4))+'" y2="'+(H-15-(v-1)*((H-30)/4))+'"/>').join('')+
+    '<polyline points="'+pts.map(p=>p[0]+','+p[1]).join(' ')+'"/>'+pts.map(p=>'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="6" class="'+(p[2]?'w':'l')+'"/>').join('')+'</svg>'+
+    '<p class="help" style="margin:6px 2px 0">Your rating for each match. Lime dots are wins, grey are losses.</p></div>'+
+    '<table class="stats plain"><tbody><tr><td>Average rating when you win</td><td>'+avg(avgW)+' / 5</td></tr><tr><td>Average rating when you lose</td><td>'+avg(avgL)+' / 5</td></tr>'+
+    (hi.length>=2?'<tr><td>When you rate yourself 4 or 5</td><td>you win '+Math.round(hi.filter(won).length/hi.length*100)+'%</td></tr>':'')+
+    (lo.length>=2?'<tr><td>When you rate yourself 1 or 2</td><td>you win '+Math.round(lo.filter(won).length/lo.length*100)+'%</td></tr>':'')+'</tbody></table>';
+}
+
+
+/* ================= peer ratings and your Overall ================= */
+const PR={items:store.get('db-pr')||[],given:store.get('db-pr-given')||{}};
+const OVR_W_RESULTS=.7,OVR_W_PEER=.3,PEER_MIN=3,PEER_DAYS=90,OVR_STEP=3;
+const perfScore=rating=>Math.max(40,Math.min(99,Math.round(40+(rating-700)*(55/600))));
+function peerAgg(){
+  const cut=Date.now()-PEER_DAYS*864e5,list=PR.items.filter(x=>x.at>=cut&&x.v>=1&&x.v<=5);
+  const raters=new Set(list.map(x=>x.from));
+  if(raters.size<PEER_MIN)return{ready:false,raters:raters.size,n:list.length};
+  let vs=list.map(x=>x.v).sort((a,b)=>a-b);
+  if(vs.length>=5)vs=vs.slice(1,-1);
+  const avg=vs.reduce((a,b)=>a+b,0)/vs.length;
+  return{ready:true,avg,raters:raters.size,n:list.length};
+}
+function overallFor(p){
+  if(!p||!p.p)return null;
+  const perf=perfScore(p.rating),peer=peerAgg();
+  const target=peer.ready?Math.round(OVR_W_RESULTS*perf+OVR_W_PEER*(40+(peer.avg-1)*(59/4))):perf;
+  // move gently: at most a few points a day
+  const today=new Date().toDateString(),saved=store.get('db-ovr');let v=target;
+  if(saved&&typeof saved.v==='number'){
+    if(saved.day===today)v=Math.max(saved.base-OVR_STEP,Math.min(saved.base+OVR_STEP,target));
+    else v=Math.max(saved.v-OVR_STEP,Math.min(saved.v+OVR_STEP,target));
+  }
+  const base=saved&&saved.day===today?saved.base:(saved&&typeof saved.v==='number'?saved.v:v);
+  if(!saved||saved.v!==v||saved.day!==today){const hist=(saved&&saved.hist)||[];if(!saved||saved.day!==today)hist.push({d:Date.now(),v});store.set('db-ovr',{v,base,day:today,hist:hist.slice(-60)})}
+  const wk=((store.get('db-ovr')||{}).hist||[]).filter(h=>h.d<=Date.now()-6*864e5).pop();
+  return{v,perf,peer,target,change:wk?v-wk.v:0};
+}
+const ovrTier=v=>v>=85?['o-legend','Legend']:v>=75?['o-pro','Pro']:v>=60?['o-club','Club']:['o-rookie','Rookie'];
+function ovrCard(o,mine,name){
+  if(!o)return mine?'<div class="ovrcard o-rookie empty"><div class="ovrnum"><b>–</b><span>OVR</span></div><div class="ovrinfo"><b>Your Overall</b><span>Play a match to get your Overall.</span></div></div>':'';
+  const [cls,label]=ovrTier(o.v),pe=o.peer;
+  return'<div class="ovrcard '+cls+'"><div class="ovrnum"><b>'+o.v+'</b><span>OVR</span></div><div class="ovrinfo"><b>'+(mine?'Your Overall':esc((name||'').split(' ')[0])+'\'s Overall')+' <em>'+label+'</em></b>'+
+    '<span class="ovrrow"><i>Results</i>'+o.perf+'</span>'+
+    (pe&&pe.ready?'<span class="ovrrow"><i>Rated by friends</i>'+pe.avg.toFixed(1)+' / 5 from '+pe.raters+' players</span>':'<span class="ovrrow"><i>Rated by friends</i>'+(mine?'unlocks after '+PEER_MIN+' people rate you'+(pe&&pe.raters?' ('+pe.raters+' so far)':''):'not yet')+'</span>')+
+    (mine&&o.change?'<span class="ovrchg '+(o.change>0?'up':'down')+'">'+(o.change>0?'▲ +':'▼ ')+o.change+' this week</span>':'')+
+    '</div></div>'+(mine?'<p class="ovrnote">Your Overall blends your results (70%, from your rating, which moves when you win or lose) with how friends you play rate you after matches (30%). Friend ratings only count once at least '+PEER_MIN+' different people have rated you, the highest and lowest are dropped, they\'re only ever shown as an average, and your Overall moves by no more than '+OVR_STEP+' points a day.</p>':'');
+}
+// friend card from their published stats
+function friendOvrCard(f){const st=f.stats;if(!st||!st.ovr)return'';return ovrCard({v:st.ovr.v,perf:st.ovr.perf,peer:st.ovr.peer||{ready:false},change:0},false,f.name)}
+async function loadPeer(){
+  if(!FB.user)return;
+  try{
+    const snap=await FB.db.collection('pratings').doc(FB.user.uid).collection('items').get(),list=[];
+    snap.forEach(d=>{const x=d.data();list.push({id:d.id,from:x.from,v:x.v,at:x.at,match:x.match})});
+    PR.items=list;store.set('db-pr',list);
+  }catch(e){}
+}
+// rate the others you played with, from the wrap-up or match details
+function ratePeersHtml(h){
+  if(!FB.user||!h||!h.cfg)return'';const me=meKey();
+  if(Date.now()-(h.end||h.start||h.date||0)>3*864e5)return'';
+  const ppl=[0,1].flatMap(s=>members(h.cfg,s)).filter(n=>{const k=pkey(n);if(k===me)return false;const f=friendOf(k);return f&&f.uid});
+  if(!ppl.length)return'';
+  return'<div class="ratepeers"><p>Rate the others</p>'+ppl.map(n=>{const f=friendOf(pkey(n)),key=h.id+'_'+f.uid,cur=PR.given[key]||0;
+    return'<div class="rprow" data-uid="'+f.uid+'" data-match="'+h.id+'"><b>'+esc(n)+'</b><span class="rpbtns">'+[1,2,3,4,5].map(v=>'<button data-v="'+v+'" aria-label="Rate '+esc(n)+' '+v+' out of 5" aria-pressed="'+(cur===v)+'"><i></i></button>').join('')+'</span></div>'}).join('')+
+    '<span class="rphint">Private. Friends only ever see an average.</span></div>';
+}
+document.addEventListener('click',async e=>{
+  const b=e.target.closest&&e.target.closest('.rprow .rpbtns button');if(!b||!FB.user)return;
+  const row=b.closest('.rprow'),uid=row.dataset.uid,match=row.dataset.match,v=+b.dataset.v,key=match+'_'+uid;
+  row.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(+x.dataset.v===v)));
+  try{
+    await FB.db.collection('pratings').doc(uid).collection('items').doc(match+'_'+FB.user.uid).set({from:FB.user.uid,match,v,at:Date.now()});
+    PR.given[key]=v;store.set('db-pr-given',PR.given);
+  }catch(err){toast('Couldn\'t save that rating. Check your signal and try again.')}
+});
 
 /* ================= achievements ================= */
 const TIERS=[null,{n:'Rookie',c:'t1'},{n:'Club',c:'t2'},{n:'Pro',c:'t3'},{n:'Legend',c:'t4'}];
@@ -4357,6 +4756,7 @@ function renderProfile(){
     (PROF.bio?'<p class="bio">'+esc(PROF.bio)+'</p>':'')+
     (chips.length?'<div class="pchips">'+chips.map(c=>'<span>'+esc(c)+'</span>').join('')+'</div>':'')+
     (socials?'<div class="socials">'+socials+'</div>':'')+
+    ovrCard(i>=0?overallFor(p):null,true)+
     (yipSeason()?'<button class="hmyip" id="profYip" style="margin-top:14px"><span><em>Your '+yipYear()+' in padel</em><b>Your year, wrapped.</b></span><i>Play</i></button>':'')+
     '<div class="frbox">'+friendsHtml()+'</div>'+
     badgesHtml(Object.assign({},p,{ex:myExclusive(),exMine:true}))+
@@ -4366,7 +4766,7 @@ function renderProfile(){
       (partner?'<tr><td>Best partner</td><td>'+esc(partner.name)+' ('+partner.w+' of '+partner.p+' won)</td></tr>':'')+
       (nemesis?'<tr><td>Toughest opponent</td><td>'+esc(nemesis.name)+'</td></tr>':'')+'</tbody></table>'
       :'<p class="help" style="margin:14px 2px">Play a match as '+esc(PROF.name)+' and your stats show up here.</p>')+
-    (i>=0?'<details class="morestats"><summary>More stats<span>Win rate and points won, month by month</span><i class="chev" aria-hidden="true"></i></summary>'+progressHtml(key)+'</details>':'');
+    (i>=0?venueHtml(key):'')+(i>=0?'<details class="morestats"><summary>More stats<span>Form v feeling, win rate and points won by month</span><i class="chev" aria-hidden="true"></i></summary>'+rateStatsHtml(key)+progressHtml(key)+'</details>':'');
   $('profEdit').onclick=openProfEdit;bindFriends();syncAccountBits();if($('profYip'))$('profYip').onclick=()=>openYip();
 }
 let draftPhoto='';
@@ -4452,7 +4852,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='8.2';
+const APP_VERSION='8.5';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -5318,6 +5718,7 @@ if(NATIVE){
     if($('edView').classList.contains('on')){if(ED.busy){toast('Your clip is still being made. Nearly there.');return}closeEditor();return}
     if($('camView').classList.contains('on')){closeCam();return}
     if($('resultsView').classList.contains('on')){$('resultsView').classList.remove('on');return}
+    if($('amerView').classList.contains('on')){closeAmer();return}
     if(!$('homeView').classList.contains('on'))showHome();
   }
   window.addEventListener('popstate',()=>{
@@ -5635,6 +6036,7 @@ function progressHtml(key){
 
 $('rulesClose').onclick=()=>hideSheet();
 $('acClose').onclick=()=>hideSheet();
+$('amHome').onclick=closeAmer;
 $('stClose').onclick=()=>hideSheet();$('stChange').onclick=()=>{hideSheet();setTimeout(()=>{openProfEdit();setTimeout(()=>{const g=$('peStyle');if(g)g.scrollIntoView({block:'start'})},350)},200)};
 $('invYes').onclick=()=>{hideSheet();inviteFriend()};$('invNo').onclick=()=>hideSheet();
 $('awGo').onclick=findForAward;$('awClose').onclick=()=>hideSheet();
@@ -5806,6 +6208,7 @@ async function syncNow(quiet){
     if(typeof syncGroups==='function')pulled+=await syncGroups();
     if(pulled||removed){history.sort((a,b)=>((b.date||b.start||0)-(a.date||a.start||0)));saveH(true);render();if($('resultsView').classList.contains('on'))setTab(tab)}
     await syncProfile();
+    await loadPeer();
     FB.last=Date.now();store.set('db-last-sync',FB.last);setSyncLabel();
     if(!quiet)toast(pulled?'Synced. '+pulled+(pulled===1?' match':' matches')+' added.':'All synced.');
   }catch(e){setSyncLabel('Couldn\'t sync. It\'ll try again soon.');if(!quiet)toast(fbError(e))}
@@ -5824,10 +6227,11 @@ async function syncProfile(){
   if(r&&r.u>localU){
     try{const p=JSON.parse(r.profile||'{}');PROF=Object.assign({},PROF_DEF,PROF,p);saveProfRaw();syncAvatar()}catch(e){}
     try{const fr=JSON.parse(r.friends||'[]');fr.forEach(f=>{if(f&&f.key&&!friendOf(f.key))FRIENDS.push(f)});saveFriendsRaw()}catch(e){}
+    try{if(r.amer)mergeAmer(JSON.parse(r.amer))}catch(e){}
     store.set('db-prof-u',r.u);
   }else if(!r||localU>(r.u||0)){
     const u=localU||Date.now();
-    await ref.set({username:PROF.username||'',usernameLower:(PROF.username||'').toLowerCase(),profile:JSON.stringify(PROF),friends:JSON.stringify(FRIENDS),u},{merge:true});
+    await ref.set({username:PROF.username||'',usernameLower:(PROF.username||'').toLowerCase(),profile:JSON.stringify(PROF),friends:JSON.stringify(FRIENDS),amer:JSON.stringify(AM.list.slice(0,60)),u},{merge:true});
     store.set('db-prof-u',u);
     publishProfile().catch(()=>{});
   }
@@ -6003,6 +6407,7 @@ async function deleteAccount(){
     const wipe=async col=>{const s=await col.get(),ids=[];s.forEach(d=>ids.push(d.id));for(let i=0;i<ids.length;i+=400){const b=db.batch();ids.slice(i,i+400).forEach(id=>b.delete(col.doc(id)));await b.commit()}};
     await wipe(db.collection('users').doc(uid).collection('matches'));
     await wipe(db.collection('inbox').doc(uid).collection('items'));
+    try{await wipe(db.collection('pratings').doc(uid).collection('items'))}catch(e){}
     try{const ls=await db.collection('links').where('users','array-contains',uid).get();const b=db.batch();ls.forEach(d=>b.delete(db.collection('links').doc(d.id)));await b.commit()}catch(e){}
     for(const g of (GRP.list||[])){
       try{await db.collection('groups').doc(g.id).collection('live').doc(uid).delete()}catch(e){}
@@ -6401,6 +6806,7 @@ function renderHome(){
     h+='<button class="hmcard hmcarry" id="hmCarry"><span class="hmtag"><span class="livedot"></span>Match in progress</span><b>'+esc(nm(0))+' v '+esc(nm(1))+'</b><span class="hmscore">'+esc((setLine(S)||'0–0')+', '+L2[0]+'–'+L2[1])+'</span><span class="hmgo">Carry on</span></button>';
   }
   h+='<button class="hmcard hmstart'+(inProgress?' sec':'')+'" id="hmStart"><b>'+(inProgress?'Start a new match':'Start a match')+'</b><span>'+esc(fmtLine)+(lastTeams&&!inProgress?'<br>Last time: '+esc(lastTeams):'')+(!(typeof FB!=='undefined'&&FB.user)?'<em class="hmwarn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19z"/><path d="M12 9.5v5M12 17.4v.1"/></svg>Your results won\'t be backed up without an account.</em>':'')+'</span><span class="hmgo">'+(inProgress?'New':'Let\'s play')+'</span></button>';
+  {const cur=amCur();h+='<button class="hmamer" id="hmAmer"><span class="hmamic"><svg viewBox="0 0 24 24"><circle cx="7" cy="7" r="2.6"/><circle cx="17" cy="7" r="2.6"/><circle cx="7" cy="17" r="2.6"/><circle cx="17" cy="17" r="2.6"/><path d="M9.6 7h4.8M7 9.6v4.8M17 9.6v4.8M9.6 17h4.8"/></svg></span><span><b>'+(cur?'Carry on: '+(cur.type==="americano"?"Americano":"Mexicano")+', round '+(cur.at+1):'Americano night')+'</b><em>'+(cur?cur.players.length+' players, '+(cur.venue?esc(cur.venue):cur.pts+' points per match'):'Rotating partners, points scoring, a leaderboard at the end')+'</em></span><i>'+(cur?'Open':'Set up')+'</i></button>'}
   if(live.length){const r=live[0],st=r.st;
     h+='<button class="hmcard hmlive" id="hmLive"><span class="hmtag"><span class="livedot'+(r.ended?' off':'')+'"></span>'+(r.ended?'Just finished':'Live now')+', '+esc(r.g)+'</span><b>'+esc(st.us.name)+' v '+esc(st.them.name)+'</b><span class="hmscore">'+(r.ended?esc(st.winner+' won '+st.score):esc((st.score?st.score+', ':'')+st.us.points+'–'+st.them.points))+'</span></button>'}
   if(reqs.length)h+='<button class="hmcard hmreq" id="hmReq"><b>'+reqs.length+' friend request'+(reqs.length===1?'':'s')+'</b><span>'+esc(reqs.map(l=>l.fromName||'@'+l.fromUsername).slice(0,3).join(', '))+'</span><span class="hmgo">View</span></button>';
@@ -6423,6 +6829,7 @@ function renderHome(){
   if($('hmLast'))$('hmLast').onclick=()=>{openResults();setTab('matches');setTimeout(()=>openRow(last.id),150)};
   box.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{openResults();setTab(b.dataset.go)});
   $('hmRules').onclick=()=>openRules();
+  if($('hmAmer'))$('hmAmer').onclick=()=>openAmer();
   if($('hmYip'))$('hmYip').onclick=()=>openYip();
   if($('hmAcc'))$('hmAcc').onclick=()=>{authMode='up';openAccount()};
   $('hmTour').onclick=()=>startTour();
@@ -6469,7 +6876,8 @@ function myStats(){
   const dates=p.matches.map(id=>{const h=history.find(x=>x.id===id);return h?(h.start||h.date||0):0}).filter(Boolean).sort((a,b)=>a-b);
   const top=Object.keys(p.badges||{}).filter(id=>BADGE[id]).sort((a,b)=>BADGE[b][2]-BADGE[a][2]).slice(0,3);
   const prog={p:p.p,w:p.w,bestStreak:p.bestStreak||0,partners:p.partnersWon?p.partnersWon.size:0,tbw:p.tbw||0,maxRating:Math.round(p.maxRating||START_RATING),maxOpp:p.maxOpp||0,maxOppWins:p.maxOppWins||0,setsWon:p.setsWon||0,maxWeekend:p.maxWeekend||0,wallMatches:p.wallMatches||0,bagels:p.bagels||0};
-  return{played:p.p,w:p.w,l:p.l,rating:Math.round(p.rating),form:p.form.slice(-5),badges:Object.keys(p.badges||{}).length,top,bmap:Object.assign({},p.badges||{},PROF.founder?{founder:PROF.founderAt}:{}),prog,first:dates[0]||0,last:dates[dates.length-1]||0,best:p.bestStreak||0,u:Date.now()};
+  const ov=overallFor(p);
+  return{ovr:ov?{v:ov.v,perf:ov.perf,peer:ov.peer.ready?{ready:true,avg:Math.round(ov.peer.avg*10)/10,raters:ov.peer.raters}:{ready:false}}:null,played:p.p,w:p.w,l:p.l,rating:Math.round(p.rating),form:p.form.slice(-5),badges:Object.keys(p.badges||{}).length,top,bmap:Object.assign({},p.badges||{},PROF.founder?{founder:PROF.founderAt}:{}),prog,first:dates[0]||0,last:dates[dates.length-1]||0,best:p.bestStreak||0,u:Date.now()};
 }
 async function refreshFriend(f,key){
   if(!f||!f.uid||!FB.user)return;
@@ -6493,7 +6901,7 @@ function togetherWith(key){
   return out;
 }
 function friendExtras(f,key){
-  let h='';const st=f.stats;
+  let h=friendOvrCard(f);const st=f.stats;
   if(st&&st.played){
     const card=(v,l,i)=>'<div class="card" style="--i:'+i+'"><b>'+v+'</b><span>'+l+'</span></div>';
     const mon=ts=>new Date(ts).toLocaleDateString('en-GB',{month:'long',year:'numeric'});
