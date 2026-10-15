@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="9.0">
+<meta name="app-version" content="9.1">
 <title>Deucebags</title>
 <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1179x2556.jpg">
 <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1290x2796.jpg">
@@ -143,6 +143,15 @@ button{cursor:pointer;font-family:var(--heading)}
 :root[data-theme="dark"]{--bg:#071B33;--card:#12345A;--sheet:#0B2540;--field:#0A2139;--tx:#EAF7FF;--ink:#EAF7FF;--edge:#3A6A99;--fill:#183B60;--shade:#020A14;--muted:rgba(234,247,255,.72);--line:rgba(234,247,255,.16);--panel:#0B2540;--glass:rgba(11,37,64,.6);color-scheme:dark}
 
 /* ---- additions ---- */
+.arrottoggle{margin:4px 2px 12px}
+.arround{background:var(--card);border:2px solid var(--edge);border-radius:16px;padding:10px 12px;margin-bottom:10px}
+.arrhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.arrhead b{font-weight:800;font-size:16px;color:var(--tx)}
+.arpair{display:grid;gap:6px;margin-bottom:10px}
+.arpair button{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;background:var(--sheet);border:2px solid var(--line);border-radius:12px;padding:9px 10px;font-weight:700;font-size:14px;color:var(--tx);text-align:center}
+.arpair button i{font-style:normal;font-weight:800;font-size:12px;opacity:.6}
+.arpair button[aria-pressed="true"]{background:#DFFF32;border-color:#071B33;color:#071B33}
+.arround .setlabels span{font-size:12.5px;line-height:1.2}
 .vsstatus{margin:0;padding:10px 12px;font-size:13px;line-height:1.4;font-weight:600;color:var(--muted)}
 .vswrap{position:relative}
 .vsbox{position:absolute;left:0;right:0;top:100%;z-index:30;background:var(--card);border:2px solid var(--edge);border-radius:14px;box-shadow:0 10px 26px rgba(7,27,51,.25);overflow:hidden;max-height:320px;overflow-y:auto}
@@ -1514,7 +1523,9 @@ button{transition:transform .12s ease}
   </div>
   <div class="field"><label for="arVenue">Venue (optional)</label><input type="text" id="arVenue" list="venueNames" maxlength="40" autocomplete="off" placeholder="For example, Padel Social Club"></div>
   <div class="field"><label for="arGroup">Group (optional)</label><input type="text" id="arGroup" list="groupNames" maxlength="24" autocomplete="off" placeholder="For example, Sunday crew"></div>
-  <div class="field"><span class="lbl">Score</span>
+  <label class="livetoggle arrottoggle"><input type="checkbox" id="arRot"> We swapped partners during the session</label>
+  <div class="field hide" id="arRotBox"><span class="lbl">Rounds</span><p class="help" style="margin:-2px 2px 8px">Add each round in the order you played it: who partnered whom, then the score. A round can be one set, best of three or first to three.</p><div id="arRounds"></div><button class="secondary" id="arAddRound">Add another round</button></div>
+  <div class="field" id="arScoreBox"><span class="lbl">Score</span>
     <div class="setlabels"><span></span><span id="arLa">Us</span><span id="arLb">Them</span></div>
     <div class="setrows" id="arSets"></div>
     <button class="linkbtn" id="arMore">Add another set</button>
@@ -1709,7 +1720,6 @@ button{transition:transform .12s ease}
 <p>Signing in is optional. If you do, your results, profile and friends list are also saved to your Deucebags account on Google Firebase, stored in London, so they sync between your devices. Your results stay private to you, apart from matches you play with friends you've connected with, which are sent to them. Your profile card (name, username, photo, bio, padel details and headline stats such as matches played, win rate, rating and achievements) can be seen by other Deucebags users who search for your username. If you join a shared group, matches tagged with that group, and live scores while you're scoring one, are shared with its members. Your email is used to sign you in and is never shown to anyone. You can delete your account and everything in it at any time from Account and sync.</p>
 <h4>Other services the app uses</h4>
 <p>The app is hosted on GitHub Pages and loads its fonts from Google Fonts and its QR code tool from Cloudflare. Like any website, those services can see your device's IP address when the app loads. They don't receive any of your scores, videos or profile.</p>
-<p>When you type in a venue box, what you type is sent to Photon, a venue search run by komoot using OpenStreetMap data, so it can suggest matching clubs. Only the text you type is sent, along with your device's IP address like any web request. Nothing else about you, your matches or your profile goes with it.</p>
 <h4>Questions</h4>
 <p>Ask the person who shared Deucebags with you. You can delete everything at any time by clearing the app's data.</p>
 <p class="pv-date">Deucebags is made by Raza Rebuilt. Last updated October 2026.</p>
@@ -1911,7 +1921,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="privacyBtn">Privacy</button>
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v9.0<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v9.1<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -2461,7 +2471,7 @@ function openSetup(){
   $('pA1').value=pa[0]||'';$('pA2').value=pa[1]||'';$('pB1').value=pb[0]||'';$('pB2').value=pb[1]||'';
   $('inA').value=draft.an!==undefined?draft.an:(draft.a==='Us'?'':draft.a);
   $('inB').value=draft.bn!==undefined?draft.bn:(draft.b==='Them'?'':draft.b);
-  fillNameList();fillGroupList();fillVenueList();attachVenueSearch($('inVenue'));$('inVenue').value=draft.venue!==undefined?draft.venue:(store.get('db-lastVenue')||'');$('inGroup').value=draft.group!==undefined?draft.group:(store.get('db-lastGroup')||'');
+  fillNameList();fillGroupList();fillVenueList();$('inVenue').value=draft.venue!==undefined?draft.venue:(store.get('db-lastVenue')||'');$('inGroup').value=draft.group!==undefined?draft.group:(store.get('db-lastGroup')||'');
   $('inOverlay').checked=!!draft.overlay;
   $('inBrand').checked=camPrefs.brand!==false;
   $('inClips').checked=camPrefs.clips!==false;
@@ -3111,7 +3121,8 @@ function openAdd(h){
   $('arB').value=src.bn!==undefined?src.bn:(h&&h.cfg.b!=='Them'?h.cfg.b:'');
   fillNameList();
   $('arNotes').value=h?(h.notes||''):'';
-  fillGroupList();fillVenueList();attachVenueSearch($('arVenue'));$('arGroup').value=h?groupOf(h.cfg):(store.get('db-lastGroup')||'');$('arVenue').value=h?(h.cfg.venue||''):(store.get('db-lastVenue')||'');
+  $('arRot').checked=false;AR.rounds=[];arRotMode(false);$('arRot').closest('label').classList.toggle('hide',!!h);
+  fillGroupList();fillVenueList();$('arGroup').value=h?groupOf(h.cfg):(store.get('db-lastGroup')||'');$('arVenue').value=h?(h.cfg.venue||''):(store.get('db-lastVenue')||'');
   arCount=h?Math.max(3,h.sets.length):3;
   drawSetRows(h?h.sets.map(s=>[String(s[0]),String(s[1])]):[]);
   syncAddLabels();showSheet('addSheet');
@@ -3120,7 +3131,61 @@ function openAdd(h){
 $('arMore').onclick=()=>{if(arCount<5){arCount++;drawSetRows()}};
 $('arCancel').onclick=()=>hideSheet();
 $('addResult').onclick=()=>openAdd(null);
+// rounds for a session where partners swapped
+const AR={rounds:[]};
+const arPlayers=()=>['arA1','arA2','arB1','arB2'].map(id=>tidyName($(id).value));
+function arPairings(){const [a,b,c,d]=arPlayers();return[[[a,b],[c,d]],[[a,c],[b,d]],[[a,d],[b,c]]]}
+function renderArRounds(){
+  const pls=arPlayers(),ready=pls.every(Boolean),P=arPairings(),box=$('arRounds');
+  if(!ready){box.innerHTML='<p class="help">Add all four players above first.</p>';return}
+  box.innerHTML=AR.rounds.map((r,ri)=>'<div class="arround" data-r="'+ri+'"><div class="arrhead"><b>Round '+(ri+1)+'</b>'+(AR.rounds.length>1?'<button class="linkbtn inl" data-a="rm">remove</button>':'')+'</div>'+
+    '<div class="arpair">'+P.map((pr,pi)=>'<button data-p="'+pi+'" aria-pressed="'+(r.p===pi)+'">'+esc(pr[0].join(' & '))+'<i>v</i>'+esc(pr[1].join(' & '))+'</button>').join('')+'</div>'+
+    '<div class="setlabels"><span></span><span>'+esc(P[r.p][0].join(' & '))+'</span><span>'+esc(P[r.p][1].join(' & '))+'</span></div>'+
+    r.sets.map((s,si)=>'<div class="setrow"><span>Set '+(si+1)+'</span><input type="number" inputmode="numeric" min="0" max="99" data-s="'+si+'" data-k="0" value="'+(s[0]??'')+'" aria-label="Round '+(ri+1)+' set '+(si+1)+', first pair"><input type="number" inputmode="numeric" min="0" max="99" data-s="'+si+'" data-k="1" value="'+(s[1]??'')+'" aria-label="Round '+(ri+1)+' set '+(si+1)+', second pair"></div>').join('')+
+    (r.sets.length<5?'<button class="linkbtn" data-a="set">Add another set to this round</button>':'')+'</div>').join('');
+  box.querySelectorAll('.arround').forEach(el=>{const r=AR.rounds[+el.dataset.r];
+    el.querySelectorAll('.arpair button').forEach(b=>b.onclick=()=>{r.p=+b.dataset.p;renderArRounds()});
+    el.querySelectorAll('input').forEach(inp=>inp.oninput=()=>{const v=inp.value.trim();r.sets[+inp.dataset.s][+inp.dataset.k]=v===''?null:parseInt(v,10)});
+    const st=el.querySelector('[data-a="set"]');if(st)st.onclick=()=>{r.sets.push([null,null]);renderArRounds()};
+    const rm=el.querySelector('[data-a="rm"]');if(rm)rm.onclick=()=>{AR.rounds.splice(+el.dataset.r,1);renderArRounds()};
+  });
+}
+function arRotMode(on){
+  $('arRotBox').classList.toggle('hide',!on);$('arScoreBox').classList.toggle('hide',on);
+  ['arA','arB'].forEach(id=>$(id).classList.toggle('hide',on));
+  const lbls=document.querySelectorAll('#addSheet .teambox .lbl');if(lbls.length>=2){lbls[0].textContent=on?'The four players':'Your team';lbls[1].textContent=on?'':'Opponents';lbls[1].classList.toggle('hide',on)}
+  if(on&&!AR.rounds.length)AR.rounds=[{p:0,sets:[[null,null]]},{p:1,sets:[[null,null]]},{p:2,sets:[[null,null]]}];
+  if(on)renderArRounds();
+}
+$('arRot').onchange=e=>arRotMode(e.target.checked);
+$('arAddRound').onclick=()=>{AR.rounds.push({p:AR.rounds.length%3,sets:[[null,null]]});renderArRounds()};
+['arA1','arA2','arB1','arB2'].forEach(id=>$(id).addEventListener('input',()=>{if($('arRot').checked)renderArRounds()}));
+async function saveArSession(){
+  const pls=arPlayers();if(!pls.every(Boolean)){toast('Add all four players first.');return}
+  if(new Set(pls.map(pkey)).size<4){toast('Each player needs a different name.');return}
+  const P=arPairings(),rounds=[];
+  for(let ri=0;ri<AR.rounds.length;ri++){const r=AR.rounds[ri],sets=[];
+    for(const s of r.sets){if(s[0]==null&&s[1]==null)continue;if(s[0]==null||s[1]==null||isNaN(s[0])||isNaN(s[1])||s[0]<0||s[1]<0||s[0]===s[1]){toast('Round '+(ri+1)+': each set needs two different scores, like 6 and 4.');return}sets.push([s[0],s[1]])}
+    if(!sets.length){toast('Round '+(ri+1)+' needs a score.');return}
+    const w0=sets.filter(s=>s[0]>s[1]).length,w1=sets.length-w0;if(w0===w1){toast('Round '+(ri+1)+' needs a winner. Add the deciding set.');return}
+    rounds.push({pr:P[r.p],sets});
+  }
+  if(!rounds.length){toast('Add at least one round.');return}
+  const parts=$('arDate').value.split('-').map(Number);
+  const base=parts.length===3&&!parts.some(isNaN)?new Date(parts[0],parts[1]-1,parts[2],12).getTime():Date.now();
+  const sid='s'+Date.now().toString(36),group=$('arGroup').value.trim(),venue=canonicalVenue($('arVenue').value),notes=$('arNotes').value.trim(),now=Date.now();
+  const entries=rounds.map((r,i)=>{const pa=r.pr[0].slice(),pb=r.pr[1].slice();
+    return{id:'m'+now.toString(36)+i,manual:true,date:base+i*60000,sets:r.sets,session:sid,added:now,notes:i===0?notes:'',
+      cfg:{pa,pb,an:'',bn:'',group,venue,a:teamNameFrom('',pa[0],pa[1],'Us'),b:teamNameFrom('',pb[0],pb[1],'Them')}}});
+  entries.forEach(e=>history.unshift(e));
+  if(venue)store.set('db-lastVenue',venue);
+  saveH();hideSheet();renderResults();toast(entries.length+' rounds added as one session. Rate your games in each round.');
+  entries.forEach((e,i)=>setTimeout(()=>autoSend(e),300+i*200));
+  const mine=entries.find(e=>meKey()&&[0,1].some(s=>members(e.cfg,s).some(n=>pkey(n)===meKey())));
+  if(mine)setTimeout(()=>{if(!openSheet)openRow(mine.id)},500);
+}
 $('arSave').onclick=async()=>{
+  if($('arRot').checked){if(nameFilterFail(['arA1','arA2','arB1','arB2','arGroup','arVenue']))return;await checkNames(['arA1','arA2','arB1','arB2']);return saveArSession()}
   if(nameFilterFail(['arA1','arA2','arB1','arB2','arA','arB','arGroup','arVenue']))return;
   await checkNames(['arA1','arA2','arB1','arB2']);
   const sets=[];let bad=false;
@@ -4343,7 +4408,7 @@ function renderAmer(){
     box.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{d.players.splice(+b.dataset.rm,1);renderAmer()});
     const add=()=>{const v=tidyName($('amAdd').value);if(!v)return;if(badWords(v)){toast('That name isn\'t allowed. Try a different one.');return}if(d.players.some(p=>pkey(p)===pkey(v))){toast(v+' is already in.');return}if(d.players.length>=16){toast('16 players is the most for one night.');return}d.players.push(v);d.courts=Math.max(1,Math.floor(d.players.length/4));renderAmer();setTimeout(()=>$('amAdd')&&$('amAdd').focus(),50)};
     $('amAddBtn').onclick=add;$('amAdd').onkeydown=e=>{if(e.key==='Enter')add()};
-    $('amVenue').oninput=e=>{d.venue=e.target.value.trim()};attachVenueSearch($('amVenue'));
+    $('amVenue').oninput=e=>{d.venue=e.target.value.trim()};
     $('amStart').onclick=amNew;
     box.querySelectorAll('.amcard').forEach(b=>b.onclick=()=>{AM.view=b.dataset.id;renderAmer();$('amerView').scrollTop=0});
     fillVenueList();return;
@@ -4397,7 +4462,7 @@ function mergeAmer(remote){
 
 /* ================= venue search, powered by OpenStreetMap ================= */
 const VREG=store.get('db-venues')||{};
-function canonicalVenue(v){v=(v||'').trim();if(!v)return'';const hit=VREG[v.toLowerCase()];return hit?hit.name:v}
+function canonicalVenue(v){v=(v||'').trim();if(!v)return'';const hit=allVenues().find(x=>x.toLowerCase()===v.toLowerCase());return hit||v}
 function attachVenueSearch(input){
   if(!input||input.dataset.vs)return;input.dataset.vs='1';input.removeAttribute('list');input.setAttribute('autocomplete','off');
   const wrap=input.parentElement;wrap.classList.add('vswrap');
@@ -4979,7 +5044,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='9.0';
+const APP_VERSION='9.1';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
