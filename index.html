@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Deucebags">
-<meta name="app-version" content="9.7">
+<meta name="app-version" content="9.9">
 <title>Deucebags</title>
 <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1179x2556.jpg">
 <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="launch-1290x2796.jpg">
@@ -143,6 +143,11 @@ button{cursor:pointer;font-family:var(--heading)}
 :root[data-theme="dark"]{--bg:#071B33;--card:#12345A;--sheet:#0B2540;--field:#0A2139;--tx:#EAF7FF;--ink:#EAF7FF;--edge:#3A6A99;--fill:#183B60;--shade:#020A14;--muted:rgba(234,247,255,.72);--line:rgba(234,247,255,.16);--panel:#0B2540;--glass:rgba(11,37,64,.6);color-scheme:dark}
 
 /* ---- additions ---- */
+.scrow{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px;color:var(--tx)}
+.scrow i{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:13px}
+.scrow.ok i{background:#2E9D6A;color:#fff}.scrow.bad i{background:#E8505B;color:#fff}
+.scrow.bad{border-color:#E8505B}
+.scrow>div{display:grid;gap:3px;min-width:0}.scrow b{font-weight:700;font-size:14.5px}.scrow span{font-size:13px;line-height:1.4;color:var(--muted);word-break:break-word}
 .fstat{display:grid;gap:4px;background:var(--card);border:2px dashed var(--edge);border-radius:14px;padding:10px 12px;margin:8px 0 10px;color:var(--tx)}
 .fstat.ok{border-style:solid;background:linear-gradient(135deg,#FFF6CF,#F1D67A);color:#071B33;border-color:#071B33}
 .fstat b{font-weight:700;font-size:15px}.fstat span{font-size:13px;line-height:1.4;word-break:break-word}
@@ -1917,6 +1922,13 @@ button{transition:transform .12s ease}
   <div class="btns"><button class="primary" id="vtApply">Move ticked venues</button><button class="secondary" id="vtCancel">Cancel</button></div>
 </section>
 
+<section class="sheet" id="syncSheet" aria-label="Sync check">
+  <h3>Sync check</h3>
+  <p class="help" style="margin:-4px 2px 12px">What's working, what isn't, and why. If something's wrong, tap Copy report and send it to Raza.</p>
+  <div id="syncBody"></div>
+  <div class="btns"><button class="primary" id="syncCopy">Copy report</button><button class="secondary" id="syncRun">Sync now and recheck</button><button class="secondary" id="syncClose">Close</button></div>
+</section>
+
 <section class="sheet" id="recapSheet" aria-label="Your week in padel">
   <h3 id="recapTitle">Your week in padel</h3>
   <div class="seg three" id="recapSeg" style="margin-bottom:14px"><button data-v="7">Week</button><button data-v="30">Month</button><button data-v="365">Year</button></div>
@@ -1951,7 +1963,7 @@ button{transition:transform .12s ease}
     <button class="secondary" id="privacyBtn">Privacy</button>
     <button class="secondary" id="dataUpdate">Check for updates</button>
   </div>
-  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v9.7<br><span class="builtby">Made by Raza Rebuilt</span></p>
+  <p class="help" style="text-align:center;margin:14px 0 0">Deucebags v9.9<br><span class="builtby">Made by Raza Rebuilt</span></p>
 </section>
 
 <section class="camview" id="camView" aria-label="Camera">
@@ -4760,6 +4772,39 @@ function renderBugs(){
     c.querySelector('[data-a="del"]').onclick=async()=>{if(!(await ask('Delete this report?','It will be gone for good.','Delete',true)))return;try{await FB.db.collection('reports').doc(b.id).delete();BUGS.list=BUGS.list.filter(x=>x.id!==b.id);renderBugs()}catch(e){toast(fbError(e))}};
   });
 }
+/* ================= sync check ================= */
+function syncCheckRows(){
+  const rows=[],ago=ts=>ts?timeAgo(ts):'never',ok=(b,t,d)=>rows.push([b?'ok':'bad',t,d||'']);
+  ok(!!FB.user,FB.user?'Signed in as @'+(PROF.username||'(no username)'):'Not signed in','Results only sync and send when you\'re signed in.');
+  if(!FB.user)return rows;
+  ok(!!PROF.username,PROF.username?'Username set':'No username yet','Friends find you by username.');
+  const s=DIAG.sync;ok(s?s.ok:false,'Last sync: '+ago(s&&s.at),s&&!s.ok?s.err:'');
+  const acc=SOC.links.filter(l=>l.status==='accepted');
+  ok(acc.length>0,acc.length+' connected friend'+(acc.length===1?'':'s'),acc.length?FRIENDS.filter(f=>f.uid).map(f=>f.name+(f.username?' (@'+f.username+')':'')).join(', '):'Add friends by username and have them accept, or results won\'t reach them.');
+  const pend=SOC.links.filter(l=>l.status==='pending');if(pend.length)ok(false,pend.length+' friend request'+(pend.length===1?'':'s')+' still waiting',pend.map(l=>l.from===myUid()?'Waiting for '+(l.toName||'@'+l.toUsername):(l.fromName||'@'+l.fromUsername)+' wants to connect').join('. '));
+  const L=DIAG.links;if(L&&!L.ok)ok(false,'Couldn\'t load your friends',L.err);
+  const I=DIAG.inbox;ok(I?I.ok:false,I?(I.ok?'Ready to receive results from friends':'Can\'t receive results'):'Not listening for results yet',I&&!I.ok?I.err:'');
+  const h=history.find(x=>x.cfg&&!x.amer);
+  if(h){
+    const me=meKey(),map=uidsFor(h.cfg),names=[0,1].flatMap(s2=>members(h.cfg,s2));
+    const parts=names.map(n=>{const k=pkey(n);if(k===me)return n+': you';const u=map[n];if(!u){const loose=FRIENDS.filter(f=>!f.uid&&pkey(f.name)===k).length;return n+': '+(loose?'added with an old friend code, not connected on Deucebags':'not a connected friend')}return n+': connected friend'});
+    ok(names.every(n=>pkey(n)===me||map[n]),'Last match: '+(rowOf(h)?rowOf(h).a+' v '+rowOf(h).b:'match'),parts.join('. ')+'.');
+    const sd=DIAG.send;if(sd&&sd.match===h.id)ok(sd.ok,sd.ok?(sd.to&&sd.to.length?'Sent to '+sd.to.join(', '):'Not sent'):'Sending failed',sd.ok?(sd.note||''):sd.err);
+    else ok(false,'This match hasn\'t been sent yet','It sends a few seconds after the match ends, when you\'re signed in and online.');
+    if(h.cfg.gid){const g=DIAG.gsend;ok(g?g.ok:false,'Shared group: '+(h.cfg.group||''),g&&!g.ok?g.err:(g?'Sent to the group':'Not sent to the group yet'))}
+  }
+  return rows;
+}
+function renderSyncCheck(){
+  const rows=syncCheckRows();
+  $('syncBody').innerHTML=rows.map(r=>'<div class="scrow '+r[0]+'"><i>'+(r[0]==='ok'?'✓':'!')+'</i><div><b>'+esc(r[1])+'</b>'+(r[2]?'<span>'+esc(r[2])+'</span>':'')+'</div></div>').join('');
+  SYNCREPORT='Deucebags v'+appVersion()+' sync check, '+new Date().toLocaleString('en-GB')+'\n'+rows.map(r=>(r[0]==='ok'?'[ok] ':'[!!] ')+r[1]+(r[2]?' — '+r[2]:'')).join('\n');
+}
+let SYNCREPORT='';
+function openSyncCheck(){hideSheet();renderSyncCheck();setTimeout(()=>showSheet('syncSheet'),200)}
+$('syncClose').onclick=()=>hideSheet();
+$('syncRun').onclick=async()=>{$('syncRun').disabled=true;await syncNow(true);const h=history.find(x=>x.cfg&&!x.amer);if(h){const sent=store.get('db-sent')||{};delete sent[h.id];store.set('db-sent',sent);await autoSend(h)}renderSyncCheck();$('syncRun').disabled=false};
+$('syncCopy').onclick=async()=>{try{await navigator.clipboard.writeText(SYNCREPORT);toast('Report copied. Paste it into a message to Raza.')}catch(e){toast('Couldn\'t copy here. Take a screenshot instead.')}};
 /* ================= achievements ================= */
 const TIERS=[null,{n:'Rookie',c:'t1'},{n:'Club',c:'t2'},{n:'Pro',c:'t3'},{n:'Legend',c:'t4'}];
 const DAY=86400000;
@@ -5140,7 +5185,7 @@ $('peCancel').onclick=()=>hideSheet();
 
 
 /* ================= home logo and updates ================= */
-const APP_VERSION='9.7';
+const APP_VERSION='9.9';
 document.querySelectorAll('.vlogo').forEach(i=>i.src=$('logo').src);
 function goHome(e){
   const el=e&&e.currentTarget;if(el){el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap')}
@@ -5398,7 +5443,7 @@ function friendHeader(f){
   const chips=[];if(f.side)chips.push(f.side==='Either'?'Plays either side':'Plays on the '+f.side.toLowerCase());if(f.hand)chips.push(f.hand);if(f.level)chips.push(f.level);
   if(f.club)chips.push('Home club: '+f.club);if(f.racket)chips.push('Racket: '+f.racket);if(f.since)chips.push('Playing since '+f.since);if(f.shot)chips.push('Favourite shot: '+f.shot);
   if(f.ptLevel)chips.unshift('Playtomic level '+f.ptLevel);
-  const soc=(f.playtomic?'<a class="soc ptk" href="'+esc(f.playtomic)+'" target="_blank" rel="noopener">'+PT_ICON+'<span>Playtomic</span></a>':'')+SOCIALS.filter(([k])=>f[k]).map(([k,l,u])=>'<a class="soc" href="'+u(f[k])+'" target="_blank" rel="noopener">'+SOC_ICON[k]+'<span>'+l+'</span></a>').join('');
+  const soc=(f.playtomic?'<a class="soc ptk" href="'+esc(f.playtomic)+'" target="_blank" rel="noopener">'+PT_ICON+'<span>Playtomic</span></a>':'')+SOCIALS.filter(([k])=>f[k]&&typeof f[k]==='string').map(([k,l,u])=>'<a class="soc" href="'+u(f[k])+'" target="_blank" rel="noopener">'+SOC_ICON[k]+'<span>'+l+'</span></a>').join('');
   return'<div class="inprof">'+avatar('pav big',f.name,f.photo)+'<div><b>'+esc(f.name)+(f.country?' '+flagOf(f.country):'')+'</b>'+(f.username?'<span>@'+esc(f.username)+'</span>':'')+'<span class="frtag">Friend</span></div></div>'+
     (f.bio?'<p class="bio">'+esc(f.bio)+'</p>':'')+(chips.length?'<div class="pchips">'+chips.map(c=>'<span>'+esc(c)+'</span>').join('')+'</div>':'')+(soc?'<div class="socials">'+soc+'</div>':'')+'<div style="height:14px"></div>';
 }
@@ -6498,9 +6543,9 @@ async function syncNow(quiet){
     await syncProfile();
     await loadPeer();
     if(!PROF.founder&&PROF.username&&typeof ensureFounder==='function')ensureFounder();
-    FB.last=Date.now();store.set('db-last-sync',FB.last);setSyncLabel();
+    FB.last=Date.now();store.set('db-last-sync',FB.last);setSyncLabel();diag('sync',{ok:true});
     if(!quiet)toast(pulled?'Synced. '+pulled+(pulled===1?' match':' matches')+' added.':'All synced.');
-  }catch(e){setSyncLabel('Couldn\'t sync. It\'ll try again soon.');if(!quiet)toast(fbError(e))}
+  }catch(e){diag('sync',{ok:false,err:errText(e)});setSyncLabel('Couldn\'t sync. It\'ll try again soon.');if(!quiet)toast(fbError(e))}
   finally{FB.syncing=false}
 }
 let syncT=null;
@@ -6548,11 +6593,11 @@ function renderAccount(){
     $('acTitle').textContent='Your account';
     b.innerHTML='<div class="acrow"><b>'+esc(PROF.username?'@'+PROF.username:'No username yet')+'</b><span>'+esc(FB.user.email||'Signed in with Google')+'</span></div>'+
       '<p class="help" id="acSync"></p>'+founderStatusHtml()+
-      '<div class="btns"><button class="primary" id="acSyncBtn">Sync now</button><button class="secondary" id="acUser">'+(PROF.username?'Change username':'Choose a username')+'</button><button class="secondary" id="acGroups">Shared groups</button>'+(FB.admin?'<button class="secondary" id="acAward">Award badges and bug reports'+(BUGS.list.filter(b=>b.status==='new').length?' ('+BUGS.list.filter(b=>b.status==='new').length+' new)':'')+'</button>':'')+'<button class="secondary" id="acOut">Sign out</button><button class="danger" id="acDelete">Delete my account</button></div>'+
+      '<div class="btns"><button class="primary" id="acSyncBtn">Sync now</button><button class="secondary" id="acUser">'+(PROF.username?'Change username':'Choose a username')+'</button><button class="secondary" id="acCheck">Sync check</button><button class="secondary" id="acGroups">Shared groups</button>'+(FB.admin?'<button class="secondary" id="acAward">Award badges and bug reports'+(BUGS.list.filter(b=>b.status==='new').length?' ('+BUGS.list.filter(b=>b.status==='new').length+' new)':'')+'</button>':'')+'<button class="secondary" id="acOut">Sign out</button><button class="danger" id="acDelete">Delete my account</button></div>'+
       '<label class="livetoggle" style="margin:12px 2px"><input type="checkbox" id="acAuto"'+(autoSendOn()?' checked':'')+'> Send results to friends automatically</label>'+
       '<p class="help">Your results, profile and friends are saved to your account and kept in sync on every device you sign in on. Friends you\'ve connected with get matches you play together straight away. Videos stay on your phone.</p>';
     setSyncLabel();
-    $('acSyncBtn').onclick=()=>syncNow(false);$('acAuto').onchange=e=>store.set('db-autosend',e.target.checked);$('acUser').onclick=openUsername;$('acGroups').onclick=openGroups;if($('acAward'))$('acAward').onclick=openAward;$('acOut').onclick=signOutNow;$('acDelete').onclick=deleteAccount;
+    $('acSyncBtn').onclick=()=>syncNow(false);$('acAuto').onchange=e=>store.set('db-autosend',e.target.checked);$('acUser').onclick=openUsername;$('acGroups').onclick=openGroups;$('acCheck').onclick=openSyncCheck;if($('acAward'))$('acAward').onclick=openAward;$('acOut').onclick=signOutNow;$('acDelete').onclick=deleteAccount;
     return;
   }
   $('acTitle').textContent=authMode==='up'?'Create your account':'Sign in';
@@ -6717,6 +6762,9 @@ async function deleteAccount(){
 
 
 /* ================= stage two: friends by username and results that send themselves ================= */
+const DIAG=store.get('db-diag')||{};
+function diag(k,v){DIAG[k]=Object.assign({at:Date.now()},v);store.set('db-diag',DIAG)}
+const errText=e=>((e&&e.code)||'error')+': '+((e&&e.message)||String(e)).slice(0,200);
 const SOC={links:[],unsubLinks:null,unsubInbox:null,found:null};
 const linkId=(a,b)=>a<b?a+'_'+b:b+'_'+a;
 const autoSendOn=()=>store.get('db-autosend')!==false;
@@ -6727,10 +6775,10 @@ const myUid=()=>FB.user?FB.user.uid:null;
 async function publishProfile(){
   if(!FB.user)return;
   const photo=PROF.photo?await smallPhoto(PROF.photo,96):'';
-  const pub={username:PROF.username||'',name:PROF.name||'',photo,bio:PROF.bio||'',country:'',side:PROF.side||'',hand:PROF.hand||'',level:PROF.level||'',club:PROF.club||'',racket:PROF.racket||'',since:PROF.since||'',shot:PROF.shot||'',ig:PROF.ig||'',tiktok:PROF.tiktok||'',x:PROF.x||'',yt:PROF.yt||'',ptLevel:PROF.ptLevel||'',playtomic:PROF.playtomic||'',style:PROF.style||'',founder:PROF.founder||0,x:myExclusive(),stats:myStats(),u:Date.now()};
+  const pub={username:PROF.username||'',name:PROF.name||'',photo,bio:PROF.bio||'',country:'',side:PROF.side||'',hand:PROF.hand||'',level:PROF.level||'',club:PROF.club||'',racket:PROF.racket||'',since:PROF.since||'',shot:PROF.shot||'',ig:PROF.ig||'',tiktok:PROF.tiktok||'',x:PROF.x||'',yt:PROF.yt||'',ptLevel:PROF.ptLevel||'',playtomic:PROF.playtomic||'',style:PROF.style||'',founder:PROF.founder||0,excl:myExclusive(),stats:myStats(),u:Date.now()};
   await FB.db.collection('profiles').doc(FB.user.uid).set(pub);
 }
-const pubToFriend=(uid,p)=>({uid,id:uid,key:pkey(p.name||p.username),name:p.name||p.username,username:p.username||'',bio:p.bio||'',country:p.country||'',side:p.side||'',hand:p.hand||'',level:p.level||'',club:p.club||'',racket:p.racket||'',since:p.since||'',shot:p.shot||'',ptLevel:p.ptLevel||'',playtomic:p.playtomic||'',style:p.style||'',ig:p.ig||'',tiktok:p.tiktok||'',x:p.x||'',yt:p.yt||'',photo:p.photo||'',founder:p.founder||0,x:p.x||null,stats:p.stats||null});
+const pubToFriend=(uid,p)=>({uid,id:uid,key:pkey(p.name||p.username),name:p.name||p.username,username:p.username||'',bio:p.bio||'',country:p.country||'',side:p.side||'',hand:p.hand||'',level:p.level||'',club:p.club||'',racket:p.racket||'',since:p.since||'',shot:p.shot||'',ptLevel:p.ptLevel||'',playtomic:p.playtomic||'',style:p.style||'',ig:p.ig||'',tiktok:p.tiktok||'',x:p.x||'',yt:p.yt||'',photo:p.photo||'',founder:p.founder||0,excl:p.excl||(p.x&&typeof p.x==='object'?p.x:null),x:typeof p.x==='string'?p.x:'',stats:p.stats||null});
 
 /* --- live listeners while signed in --- */
 function startSocial(){
@@ -6742,12 +6790,12 @@ function startSocial(){
     SOC.links=list;
     list.filter(l=>l.status==='accepted'&&!before.has(l.id)).forEach(l=>linkFriend(l.users.find(u=>u!==me)));
     checkSocialBadges();
-    syncRequestBadge();if(tab==='profile'&&$('resultsView').classList.contains('on'))renderProfile();
-  },()=>{});
+    syncRequestBadge();if(tab==='profile'&&$('resultsView').classList.contains('on'))renderProfile();diag('links',{ok:true,n:list.filter(l=>l.status==='accepted').length});
+  },e=>diag('links',{ok:false,err:errText(e)}));
   SOC.unsubInbox=FB.db.collection('inbox').doc(me).collection('items').onSnapshot(snap=>{
     const items=[];snap.forEach(d=>items.push(Object.assign({_id:d.id},d.data())));
-    if(items.length)receiveResults(items);
-  },()=>{});
+    diag('inbox',{ok:true,waiting:items.length});if(items.length)receiveResults(items);
+  },e=>diag('inbox',{ok:false,err:errText(e)}));
   publishProfile().catch(()=>{});startGroups();
 }
 function stopSocial(){if(SOC.unsubLinks)SOC.unsubLinks();if(SOC.unsubInbox)SOC.unsubInbox();SOC.unsubLinks=SOC.unsubInbox=null;SOC.links=[];syncRequestBadge();if(typeof stopGroups==='function')stopGroups()}
@@ -6808,16 +6856,21 @@ async function linkFriend(uid){
 }
 
 /* --- results that send themselves --- */
+function friendForName(k){
+  const f=friendOf(k);if(f&&f.uid)return f;
+  const c=FRIENDS.filter(x=>x.uid&&(pkey(x.username||'')===k.replace(/^@/,'')||pkey((x.name||'').split(' ')[0])===k||pkey(x.name||'')===k));
+  return c.length===1?c[0]:null;
+}
 function uidsFor(cfg){
   const out={};const me=myUid();
-  [0,1].forEach(s=>members(cfg,s).forEach(n=>{const k=pkey(n);if(PROF.name&&k===pkey(PROF.name)&&me)out[n]=me;else{const f=friendOf(k);if(f&&f.uid)out[n]=f.uid}}));
+  [0,1].forEach(s=>members(cfg,s).forEach(n=>{const k=pkey(n);if(PROF.name&&k===pkey(PROF.name)&&me)out[n]=me;else{const f=friendForName(k);if(f)out[n]=f.uid}}));
   return out;
 }
 async function autoSend(h){
   if(FB.user&&h)groupSend(h).catch(()=>{});
   if(!FB.user||!autoSendOn()||!h)return;
   const me=myUid(),uids=uidsFor(h.cfg),targets=[...new Set(Object.values(uids).filter(u=>u!==me))];
-  if(!targets.length)return;
+  if(!targets.length){diag('send',{match:h.id,ok:true,to:[],note:'Nobody in this match is a connected friend, so there was no one to send it to.'});return}
   const e=h.manual?{id:h.id,manual:true,date:h.date,sets:h.sets,cfg:h.cfg}:{id:h.id,cfg:h.cfg,pts:h.pts,start:h.start,end:h.end};
   if(h.session)e.session=h.session;if(h.unfinished){e.unfinished=true;e.counts=h.counts;e.leader=h.leader}
   e.uids=uids;
@@ -6826,10 +6879,10 @@ async function autoSend(h){
   try{
     const b=FB.db.batch();
     targets.forEach(u=>b.set(FB.db.collection('inbox').doc(u).collection('items').doc(h.id),{from:me,fromName:PROF.name||'',j,createdAt:Date.now()}));
-    await b.commit();sent[h.id]=hh;store.set('db-sent',sent);
+    await b.commit();sent[h.id]=hh;store.set('db-sent',sent);diag('send',{match:h.id,ok:true,to:targets.map(u=>(friendByUid(u)||{}).name||u)});
     const names=targets.map(u=>(friendByUid(u)||{}).name).filter(Boolean);
     if(names.length)toast('Sent to '+(names.length>1?names.slice(0,-1).join(', ')+' and '+names[names.length-1]:names[0])+'.');
-  }catch(e){}
+  }catch(e){diag('send',{match:h.id,ok:false,err:errText(e)});toast('Couldn\'t send the result to your friends. Open Account and sync, then Sync check, for details.')}
 }
 function receiveResults(items){
   const me=myUid();let added=0,updated=0;const from=new Set();
@@ -6992,7 +7045,7 @@ async function groupSend(h){
   e.uids=uidsFor(h.cfg);
   const j=JSON.stringify(e),hh=strHash(j),key='db-gsent',sent=store.get(key)||{};
   if(sent[g.id+'/'+h.id]===hh)return;
-  try{await FB.db.collection('groups').doc(g.id).collection('matches').doc(h.id).set({j,h:hh,from:FB.user.uid,u:Date.now()});sent[g.id+'/'+h.id]=hh;store.set(key,sent)}catch(e){}
+  try{await FB.db.collection('groups').doc(g.id).collection('matches').doc(h.id).set({j,h:hh,from:FB.user.uid,u:Date.now()});sent[g.id+'/'+h.id]=hh;store.set(key,sent);diag('gsend',{ok:true,group:g.name})}catch(e){diag('gsend',{ok:false,group:g.name,err:errText(e)})}
 }
 async function syncGroups(){
   if(!FB.user||!GRP.list.length)return 0;
@@ -7148,14 +7201,14 @@ function friendDetails(f){
   const chips=[];if(f.ptLevel)chips.push('Playtomic level '+f.ptLevel);
   if(f.side)chips.push(f.side==='Either'?'Plays either side':'Plays on the '+f.side.toLowerCase());if(f.hand)chips.push(f.hand);if(f.level)chips.push(f.level);
   if(f.club)chips.push('Home club: '+f.club);if(f.racket)chips.push('Racket: '+f.racket);if(f.since)chips.push('Playing since '+f.since);if(f.shot)chips.push('Favourite shot: '+f.shot);
-  const soc=(f.playtomic?'<a class="soc ptk" href="'+esc(f.playtomic)+'" target="_blank" rel="noopener">'+PT_ICON+'<span>Playtomic</span></a>':'')+SOCIALS.filter(([k])=>f[k]).map(([k,l,u])=>'<a class="soc" href="'+u(f[k])+'" target="_blank" rel="noopener">'+SOC_ICON[k]+'<span>'+l+'</span></a>').join('');
+  const soc=(f.playtomic?'<a class="soc ptk" href="'+esc(f.playtomic)+'" target="_blank" rel="noopener">'+PT_ICON+'<span>Playtomic</span></a>':'')+SOCIALS.filter(([k])=>f[k]&&typeof f[k]==='string').map(([k,l,u])=>'<a class="soc" href="'+u(f[k])+'" target="_blank" rel="noopener">'+SOC_ICON[k]+'<span>'+l+'</span></a>').join('');
   return(f.bio?'<p class="bio">'+esc(f.bio)+'</p>':'')+(chips.length?'<div class="pchips">'+chips.map(c=>'<span>'+esc(c)+'</span>').join('')+'</div>':'')+(soc?'<div class="socials">'+soc+'</div>':'');
 }
 function friendBadges(f){
   const st=f.stats||{};
   const pr=st.prog||{};
   const pseudo=Object.assign({p:0,w:0,bestStreak:0,tbw:0,maxRating:START_RATING,maxOpp:0,maxOppWins:0,setsWon:0,maxWeekend:0,wallMatches:0,bagels:0},pr,{partnersWon:{size:pr.partners||0},badges:st.bmap||{}});
-  pseudo.ex=Object.assign({},f.x||{},(f.founder&&!(f.x&&f.x.founder))?{founder:{n:f.founder}}:{},{friend:true});return badgesHtml(pseudo);
+  const exd=f.excl||(f.x&&typeof f.x==='object'?f.x:null)||{};pseudo.ex=Object.assign({},exd,(f.founder&&!exd.founder)?{founder:{n:f.founder}}:{},{friend:true});return badgesHtml(pseudo);
 }
 
 // your headline stats, published on your public card so friends can see them
