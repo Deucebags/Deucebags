@@ -1,5 +1,5 @@
 // Deucebags offline support. Change the version when you update the app.
-const VERSION = 'deucebags-v107';
+const VERSION = 'deucebags-v109';
 const SHELL = ['./', 'index.html', 'manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'icon-maskable-512.png', 'favicon-64.png'];
 
 self.addEventListener('install', e => {
